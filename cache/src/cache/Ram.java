@@ -1,7 +1,7 @@
 package cache;
 
 public class Ram {
-    private int size;
+    private int size, addressBits, wordBits, cacheLines, lineBits, tagBits, numOfSets, setBits;
 
     public void setSize(int size) {
         this.size = size;
@@ -16,23 +16,29 @@ public class Ram {
      * with the calculated bit lengths.
      */
 
-    public void addressAnalysis(int ramSize, int cacheType, int cacheSize, int blockSize) {
+    public void addressAnalysis(int ramSize, int cacheType, int cacheSize, int blockSize, int kWays) {
         // calculate the bit length of the address based on the RAM size
-        int addressBits = (int) (Math.log(ramSize) / Math.log(2));
+        addressBits = (int) (Math.log(ramSize) / Math.log(2));
 
         if (cacheType == 1) {
-            // for the direct mapped cache the bits structure is ( tag, line, word )
-            int wordBits = (int) (Math.log(blockSize) / Math.log(2));
-            int cacheLines = (int) (cacheSize / blockSize);
-            int lineBits = (int) (Math.log(cacheLines) / Math.log(2));
-            int tagBits = addressBits - wordBits - lineBits;
-
-            System.out.println("****Direct Mapped****");
-            System.out.println("Tag:" + tagBits);
-            System.out.println("Line:" + lineBits);
-            System.out.println("Word:" + wordBits);
-
+            // For the Direct Mapped Cache the structure is ( tag, line, word )
+            wordBits = (int) (Math.log(blockSize) / Math.log(2));
+            cacheLines = (int) (cacheSize / blockSize);
+            lineBits = (int) (Math.log(cacheLines) / Math.log(2));
+            tagBits = addressBits - wordBits - lineBits;
             new DirectMappedCache(tagBits, lineBits, wordBits);
+        } else if (cacheType == 2) {
+            // For the Fully Associative Cache the structure is ( tag, word )
+            wordBits = (int) (Math.log(blockSize) / Math.log(2));
+            tagBits = addressBits - wordBits;
+            new FullyAssociativeCache(tagBits, wordBits);
+        } else if (cacheType == 3) {
+            // For the Set Associative Cache the structure is ( tag, set, word )
+            wordBits = (int) (Math.log(blockSize) / Math.log(2));
+            cacheLines = (int) (cacheSize / blockSize);
+            numOfSets = (int) (cacheLines / kWays);
+            setBits = (int) (Math.log(numOfSets) / Math.log(2));
+            tagBits = addressBits - wordBits - setBits;
         }
 
     }
