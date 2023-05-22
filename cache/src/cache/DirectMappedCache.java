@@ -6,6 +6,7 @@ public class DirectMappedCache extends Cache {
 
 	private int line;
 	private int validBit;
+	private String[][] dmCache;
 
 	public DirectMappedCache(int tag, int line, int offset) {
 		super(tag, offset);
@@ -16,10 +17,6 @@ public class DirectMappedCache extends Cache {
 		return this.line;
 	}
 
-	public void setLine(int line) {
-		this.line = line;
-	}
-
 	public int getValidBit() {
 		return this.validBit;
 	}
@@ -28,8 +25,8 @@ public class DirectMappedCache extends Cache {
 		this.validBit = validBit;
 	}
 
-	public void createMatrixDM(int cacheLines) {
-		int[][] dmCache = new int[cacheLines][3]; // 3 columns for valid bit, tag and data
+	public void createArrayDM(int cacheLines) {
+		dmCache = new String[cacheLines][3];
 	}
 
 	public boolean searchAddressDM(String address) {
@@ -37,15 +34,19 @@ public class DirectMappedCache extends Cache {
 		 * Split the input address String into the Direct Mapped Cache structure
 		 * (tag, line, offset)
 		 * In order to complete the search we need to compare the tag of the input
-		 * address
-		 * and the tag of a specific cache line.
+		 * address and the tag of a specific cache line. The line is indicated
+		 * by the splitting of the address based on the structure above.
 		 */
 
 		Map<String, String> addressBits = inputAddressAnalysis(address);
 
-		// definitely not working will check later
-		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(addressBits.get("Line"))][1])) {
+		// In order to find the line we need to convert the bits to hex value
+		String searchLine = binaryToHex(addressBits.get("Line"));
 
+		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine) - 1][1])) {
+			System.out.println("Hit!");
+		} else {
+			System.out.println("Miss!");
 		}
 
 		return true;
@@ -74,6 +75,12 @@ public class DirectMappedCache extends Cache {
 		bits.put("Offset", offsetBits);
 		// bits.forEach((key, value) -> System.out.println(key + " " + value));
 		return bits;
+	}
+
+	public String binaryToHex(String binary) {
+		int decimal = Integer.parseInt(binary, 2); // Convert binary to decimal
+		String hex = Integer.toHexString(decimal); // Convert decimal to hexadecimal
+		return hex;
 	}
 
 }

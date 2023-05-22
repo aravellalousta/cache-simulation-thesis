@@ -34,8 +34,9 @@ public class Ram {
             // Create a Direct Mapped Cache object based on the structure indicated above
             DirectMappedCache dm = new DirectMappedCache(tagBits, lineBits, offsetBits);
 
-            // Create a matrix to display the status of the cache
-            dm.createMatrixDM(cacheLines);
+            // In order to create the correct size of the cache matrix the object is
+            // provided with the number of lines
+            dm.createArrayDM(cacheLines);
 
             // Search for an address in the cache
             searchAdd = checkAddressInput(addressBits);
