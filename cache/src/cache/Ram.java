@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Ram {
     private int size, addressBits, offsetBits, cacheLines, lineBits, tagBits, numOfSets, setBits;
+    private String searchAdd;
 
     public void setSize(int size) {
         this.size = size;
@@ -19,7 +20,7 @@ public class Ram {
      */
 
     public void addressAnalysis(int ramSize, int cacheType, int cacheSize, int blockSize, int kWays) {
-        Scanner userInput = new Scanner(System.in);
+
         // calculate the bit length of the address based on the RAM size
         addressBits = (int) (Math.log(ramSize) / Math.log(2));
         cacheLines = (int) (cacheSize / blockSize);
@@ -37,8 +38,8 @@ public class Ram {
             dm.createMatrixDM(cacheLines);
 
             // Search for an address in the cache
-            System.out.println("Enter a valid " + addressBits + " bit address to search in the Direct Mapped Cache.");
-            String searchAdd = userInput.nextLine();
+            searchAdd = checkAddressInput(addressBits);
+
             dm.searchAddressDM(searchAdd);
 
         } else if (cacheType == 2) {
@@ -55,5 +56,19 @@ public class Ram {
             tagBits = addressBits - offsetBits - setBits;
         }
 
+    }
+
+    public String checkAddressInput(int addressBits) {
+        Scanner userInput = new Scanner(System.in);
+
+        System.out.println("Enter a valid " + addressBits + " bit address to search in the Direct Mapped Cache.");
+        String searchAdd = userInput.nextLine();
+        while (searchAdd.length() != addressBits) {
+            System.out.println("Error. Please enter an address that is exactly " + addressBits + " bits long.");
+            searchAdd = userInput.nextLine();
+        }
+
+        userInput.close();
+        return searchAdd;
     }
 }
