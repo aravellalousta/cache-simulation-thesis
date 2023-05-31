@@ -82,10 +82,4 @@ public class DirectMappedCache extends Cache {
 		return bits;
 	}
 
-	public String binaryToHex(String binary) {
-		int decimal = Integer.parseInt(binary, 2); // Convert binary to decimal
-		String hex = Integer.toHexString(decimal); // Convert decimal to hexadecimal
-		return hex;
-	}
-
 }

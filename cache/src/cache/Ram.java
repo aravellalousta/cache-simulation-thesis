@@ -34,20 +34,28 @@ public class Ram {
             // Create a Direct Mapped Cache object based on the structure indicated above
             DirectMappedCache dm = new DirectMappedCache(tagBits, lineBits, offsetBits);
 
-            // In order to create the correct size of the cache matrix the object is
-            // provided with the number of lines
+            // Creating the Cache array
             dm.createArrayDM(cacheLines);
 
             // Search for an address in the cache
             searchAdd = checkAddressInput(addressBits);
-
             dm.searchAddressDM(searchAdd);
 
         } else if (cacheType == 2) {
             // For the Fully Associative Cache the structure is ( tag, word )
             offsetBits = (int) (Math.log(blockSize) / Math.log(2));
             tagBits = addressBits - offsetBits;
-            new FullyAssociativeCache(tagBits, offsetBits);
+
+            // Create a Fully Associative Cache object based on the structure indicated
+            // above
+            FullyAssociativeCache fa = new FullyAssociativeCache(tagBits, offsetBits);
+
+            // Creating the Cache array
+            fa.createArrayFA(cacheLines);
+
+            // Search for an address in the cache
+            searchAdd = checkAddressInput(addressBits);
+
         } else if (cacheType == 3) {
             // For the Set Associative Cache the structure is ( tag, set, word )
             offsetBits = (int) (Math.log(blockSize) / Math.log(2));
@@ -62,7 +70,7 @@ public class Ram {
     public String checkAddressInput(int addressBits) {
         Scanner userInput = new Scanner(System.in);
 
-        System.out.println("Enter a valid " + addressBits + " bit address to search in the Direct Mapped Cache.");
+        System.out.println("Enter a valid " + addressBits + " bit address to search in the Cache.");
         String searchAdd = userInput.nextLine();
         while (searchAdd.length() != addressBits) {
             System.out.println("Error. Please enter an address that is exactly " + addressBits + " bits long.");
