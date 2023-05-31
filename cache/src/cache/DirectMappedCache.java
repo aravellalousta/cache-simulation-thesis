@@ -26,6 +26,7 @@ public class DirectMappedCache extends Cache {
 	}
 
 	public void createArrayDM(int cacheLines) {
+		// Cache structure is ()
 		dmCache = new String[cacheLines][3];
 	}
 
@@ -42,6 +43,9 @@ public class DirectMappedCache extends Cache {
 
 		// In order to find the line we need to convert the bits to hex value
 		String searchLine = binaryToHex(addressBits.get("Line"));
+
+		// Example to see if hit works for input address 0001101
+		// dmCache[2][1] = "00";
 
 		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine) - 1][1])) {
 			System.out.println("Hit!");
@@ -73,7 +77,7 @@ public class DirectMappedCache extends Cache {
 		bits.put("Tag", tagBits);
 		bits.put("Line", lineBits);
 		bits.put("Offset", offsetBits);
-		// bits.forEach((key, value) -> System.out.println(key + " " + value));
+		bits.forEach((key, value) -> System.out.println(key + " " + value));
 		return bits;
 	}
 
