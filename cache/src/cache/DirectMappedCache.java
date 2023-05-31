@@ -26,8 +26,8 @@ public class DirectMappedCache extends Cache {
 	}
 
 	public void createArrayDM(int cacheLines) {
-		// Cache structure is ()
-		dmCache = new String[cacheLines][3];
+		// Cache structure is (tag, data)
+		dmCache = new String[cacheLines][2];
 	}
 
 	public boolean searchAddressDM(String address) {
@@ -51,6 +51,7 @@ public class DirectMappedCache extends Cache {
 			System.out.println("Hit!");
 		} else {
 			System.out.println("Miss!");
+			dmCache[Integer.parseInt(searchLine) - 1][1] = addressBits.get("Tag");
 		}
 
 		return true;
