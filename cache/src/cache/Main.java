@@ -1,5 +1,6 @@
 package cache;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import javax.print.DocPrintJob;
@@ -7,7 +8,7 @@ import javax.print.DocPrintJob;
 public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		int ramSize, cacheSize, blockSize, cacheType, kWays = 0;
+		int ramSize, cacheSize, blockSize, cacheType = 0, kWays = 0;
 
 		// New scanner object to receive input from the user
 		Scanner userInput = new Scanner(System.in);
@@ -18,7 +19,16 @@ public class Main {
 		System.out.println("Select Cache Type:");
 		do {
 			System.out.println("1. Direct Mapped\n2. Fully Associative\n3. Set Associative");
-			cacheType = userInput.nextInt();
+
+			try {
+				cacheType = userInput.nextInt();
+
+			} catch (InputMismatchException ex) {
+				System.out.println("lathos");
+				cacheType = 0;
+				userInput.nextLine();
+				continue;
+			}
 
 			if (cacheType == 3) {
 				System.out.print("Enter k-way Size: ");
