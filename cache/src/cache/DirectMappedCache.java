@@ -45,13 +45,14 @@ public class DirectMappedCache extends Cache {
 		String searchLine = binaryToHex(addressBits.get("Line"));
 
 		// Example to see if hit works for input address 0001101
-		// dmCache[2][1] = "00";
+		// with ramSize=128, cacheSize=16, blockSize=4
+		// dmCache[2][0] = "000";
 
-		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine) - 1][1])) {
+		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine) - 1][0])) {
 			System.out.println("Hit!");
 		} else {
 			System.out.println("Miss!");
-			dmCache[Integer.parseInt(searchLine) - 1][1] = addressBits.get("Tag");
+			dmCache[Integer.parseInt(searchLine) - 1][0] = addressBits.get("Tag");
 		}
 
 		return true;

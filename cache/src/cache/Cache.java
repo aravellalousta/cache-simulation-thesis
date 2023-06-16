@@ -1,7 +1,8 @@
 package cache;
 
 public class Cache {
-	private int tag, offset, cacheLines;
+	private int tag, offset;
+	public static int cacheLines;
 
 	public Cache(int tag, int offset) {
 		super();

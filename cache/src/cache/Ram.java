@@ -3,7 +3,7 @@ package cache;
 import java.util.Scanner;
 
 public class Ram {
-    private int size, addressBits, offsetBits, cacheLines, lineBits, tagBits, numOfSets, setBits;
+    public int size, addressBits, offsetBits, cacheLines, lineBits, tagBits, numOfSets, setBits;
     private String searchAdd;
 
     public void setSize(int size) {
@@ -55,6 +55,7 @@ public class Ram {
 
             // Search for an address in the cache
             searchAdd = checkAddressInput(addressBits);
+            fa.searchAddressFA(searchAdd, cacheLines);
 
         } else if (cacheType == 3) {
             // For the Set Associative Cache the structure is ( tag, set, word )

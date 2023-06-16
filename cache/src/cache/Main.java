@@ -24,7 +24,7 @@ public class Main {
 				cacheType = userInput.nextInt();
 
 			} catch (InputMismatchException ex) {
-				System.out.println("lathos");
+				System.out.println("Select Cache Type: ");
 				cacheType = 0;
 				userInput.nextLine();
 				continue;
