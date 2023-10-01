@@ -26,7 +26,7 @@ public class Ram {
         cacheLines = (int) (cacheSize / blockSize);
 
         if (cacheType == 1) {
-            // For the Direct Mapped Cache the structure is ( tag, line, word )
+            // For the Direct Mapped Cache the structure is ( tag, line, offset )
             offsetBits = (int) (Math.log(blockSize) / Math.log(2));
             lineBits = (int) (Math.log(cacheLines) / Math.log(2));
             tagBits = addressBits - offsetBits - lineBits;
@@ -35,14 +35,14 @@ public class Ram {
             DirectMappedCache dm = new DirectMappedCache(tagBits, lineBits, offsetBits);
 
             // Creating the Cache array
-            dm.createArrayDM(cacheLines);
+            dm.createArrayDM(cacheLines, tagBits);
 
             // Search for an address in the cache
             searchAdd = checkAddressInput(addressBits);
             dm.searchAddressDM(searchAdd);
 
         } else if (cacheType == 2) {
-            // For the Fully Associative Cache the structure is ( tag, word )
+            // For the Fully Associative Cache the structure is ( tag, offset )
             offsetBits = (int) (Math.log(blockSize) / Math.log(2));
             tagBits = addressBits - offsetBits;
 
@@ -58,7 +58,7 @@ public class Ram {
             fa.searchAddressFA(searchAdd, cacheLines);
 
         } else if (cacheType == 3) {
-            // For the Set Associative Cache the structure is ( tag, set, word )
+            // For the Set Associative Cache the structure is ( tag, set, offset )
             offsetBits = (int) (Math.log(blockSize) / Math.log(2));
             cacheLines = (int) (cacheSize / blockSize);
             numOfSets = (int) (cacheLines / kWays);
@@ -70,7 +70,6 @@ public class Ram {
 
     public String checkAddressInput(int addressBits) {
         Scanner userInput = new Scanner(System.in);
-
         System.out.println("Enter a valid " + addressBits + " bit address to search in the Cache.");
         String searchAdd = userInput.nextLine();
         while (searchAdd.length() != addressBits) {

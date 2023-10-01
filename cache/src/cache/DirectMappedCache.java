@@ -25,9 +25,12 @@ public class DirectMappedCache extends Cache {
 		this.validBit = validBit;
 	}
 
-	public void createArrayDM(int cacheLines) {
+	public void createArrayDM(int cacheLines, int tagBits) {
 		// Cache structure is (tag, data)
 		dmCache = new String[cacheLines][2];
+		fillArrayWithTags(dmCache, tagBits);
+		fillArrayWithDummyData(dmCache);
+		printCacheContents(dmCache);
 	}
 
 	public boolean searchAddressDM(String address) {
@@ -46,13 +49,16 @@ public class DirectMappedCache extends Cache {
 
 		// Example to see if hit works for input address 0001101
 		// with ramSize=128, cacheSize=16, blockSize=4
+
 		// dmCache[2][0] = "000";
 
-		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine) - 1][0])) {
+		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine)][0])) {
 			System.out.println("Hit!");
+			// sto hit den xreiazetai kati parapanw
 		} else {
 			System.out.println("Miss!");
-			dmCache[Integer.parseInt(searchLine) - 1][0] = addressBits.get("Tag");
+			dmCache[Integer.parseInt(searchLine)][0] = addressBits.get("Tag");
+			// sto miss thelei politiki antikatastasis
 		}
 
 		return true;
