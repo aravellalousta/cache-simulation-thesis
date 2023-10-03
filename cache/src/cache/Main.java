@@ -3,12 +3,17 @@ package cache;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import javax.print.DocPrintJob;
+import javax.swing.SwingUtilities;
 
 public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		int ramSize, cacheSize, blockSize, cacheType = 0, kWays = 0;
+
+		SwingUtilities.invokeLater(() -> {
+			GUI gui = new GUI();
+			gui.frameConfiguration();
+		});
 
 		// New scanner object to receive input from the user
 		Scanner userInput = new Scanner(System.in);
