@@ -2,6 +2,8 @@ package cache;
 
 import java.util.Scanner;
 
+import cache.CacheTypes.*;
+
 public class Ram {
     public int size, addressBits, offsetBits, cacheLines, lineBits, tagBits, numOfSets, setBits;
     private String searchAdd;

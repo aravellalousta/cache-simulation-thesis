@@ -1,4 +1,4 @@
-package cache;
+package cache.CacheTypes;
 
 public class Cache {
 	private int tag, offset;

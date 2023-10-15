@@ -1,4 +1,4 @@
-package cache;
+package cache.CacheTypes;
 
 import java.util.*;
 
