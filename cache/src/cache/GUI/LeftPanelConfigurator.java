@@ -1,10 +1,23 @@
 package cache.GUI;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
 public class LeftPanelConfigurator extends InitGUI {
-    public static void configureLeftPanel(JPanel panel, JPanel leftPanel, int index) {
+    private RightPanelListener rightPanelListener; // Reference to the right panel listener
+    protected static int blockSize;
+    protected static int cacheSize;
+    protected static int ramSize;
+
+    // Constructor to set the right panel listener
+    public LeftPanelConfigurator(RightPanelListener rightPanelListener) {
+        this.rightPanelListener = rightPanelListener;
+    }
+
+    public static JPanel configureLeftPanel(int index) {
+        JPanel leftPanel = new JPanel(new GridBagLayout());
+
         // Create GridBagConstraints for left column
         GridBagConstraints leftConstraints = new GridBagConstraints();
         leftConstraints.anchor = GridBagConstraints.WEST;
@@ -108,6 +121,46 @@ public class LeftPanelConfigurator extends InitGUI {
         leftConstraints.gridx = 1;
         leftConstraints.gridy = 6;
         leftPanel.add(submitBtn, leftConstraints);
+
+        ramSizeOption1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ramSize = 128;
+            }
+        });
+        ramSizeOption2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ramSize = 256;
+            }
+        });
+        cacheSizeOption1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cacheSize = 16;
+            }
+        });
+        cacheSizeOption1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cacheSize = 32;
+            }
+        });
+        blockSizeOption.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                blockSize = 4;
+            }
+        });
+
+        submitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("selected options are: " + cacheSize + ramSize + blockSize);
+            }
+        });
+
+        return leftPanel;
     }
 
 }

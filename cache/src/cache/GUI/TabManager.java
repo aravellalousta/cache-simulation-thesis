@@ -55,12 +55,12 @@ public class TabManager extends InitGUI {
      */
     public static void displaySelectedTabContents(JPanel panel, int index) {
         // Left column: Add a nested JPanel with GridLayout for 3 input fields
-        JPanel leftPanel = new JPanel(new GridBagLayout());
-        leftPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        LeftPanelConfigurator.configureLeftPanel(panel, leftPanel, index);
 
-        JPanel rightPanel = new JPanel(new GridBagLayout());
-        RightPanelConfigurator.configureRightPanel(rightPanel);
+        RightPanelConfigurator right = new RightPanelConfigurator();
+        LeftPanelConfigurator left = new LeftPanelConfigurator(right);
+
+        JPanel rightPanel = RightPanelConfigurator.configureRightPanel();
+        JPanel leftPanel = LeftPanelConfigurator.configureLeftPanel(index);
 
         // Add the left and right panels to the main panel
         panel.add(leftPanel);

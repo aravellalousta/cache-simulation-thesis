@@ -4,14 +4,17 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-public class RightPanelConfigurator extends InitGUI {
+public class RightPanelConfigurator extends InitGUI implements RightPanelListener {
+
     /*
      * Contains 2 tables showcasing the state of the RAM and Cache,
      * a text field which is used for loading the addresses, a panel to indicate a
      * hit or miss
      * and a section for displaying results.
      */
-    public static void configureRightPanel(JPanel rightPanel) {
+    public static JPanel configureRightPanel() {
+        JPanel rightPanel = new JPanel(new GridBagLayout());
+
         // Create GridBagConstraints for right column
         GridBagConstraints rightConstraints = new GridBagConstraints();
         rightConstraints.anchor = GridBagConstraints.WEST;
@@ -114,6 +117,14 @@ public class RightPanelConfigurator extends InitGUI {
         rightConstraints.gridy = 6;
         rightPanel.add(missRate, rightConstraints);
 
+        return rightPanel;
+
+    }
+
+    @Override
+    public void onLeftPanelSubmit() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'onLeftPanelSubmit'");
     }
 
 }
