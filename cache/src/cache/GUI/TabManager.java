@@ -67,4 +67,5 @@ public class TabManager extends InitGUI {
         panel.add(rightPanel);
 
     }
+
 }

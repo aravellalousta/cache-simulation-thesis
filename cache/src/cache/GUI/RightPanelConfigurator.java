@@ -4,7 +4,10 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import cache.Ram;
+
 public class RightPanelConfigurator extends InitGUI implements RightPanelListener {
+    static DefaultTableModel modelAddress = new DefaultTableModel();
 
     /*
      * Contains 2 tables showcasing the state of the RAM and Cache,
@@ -28,19 +31,14 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         rightPanel.add(rightColumnLabel, rightConstraints);
 
         // Cache Table
-        JLabel cacheTableLabel = new JLabel("Current State of Cache");
+        JLabel memoryTableLabel = new JLabel("Memory Address Analysis");
         rightConstraints.gridx = 0;
         rightConstraints.gridy = 1;
-        rightPanel.add(cacheTableLabel, rightConstraints);
+        rightPanel.add(memoryTableLabel, rightConstraints);
 
-        DefaultTableModel modelCache = new DefaultTableModel();
-        modelCache.addColumn("Tag");
-        modelCache.addColumn("Line");
-        modelCache.addColumn("Offset");
+        JTable addressTable = new JTable(modelAddress);
 
-        JTable cacheTable = new JTable(modelCache);
-
-        JScrollPane scrollPane = new JScrollPane(cacheTable);
+        JScrollPane scrollPane = new JScrollPane(addressTable);
         scrollPane.setPreferredSize(new Dimension(200, 100));
 
         rightConstraints.gridx = 0;
@@ -48,15 +46,15 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         rightPanel.add(scrollPane, rightConstraints);
 
         // Ram Table
-        JLabel ramTableLabel = new JLabel("Current State of RAM");
+        JLabel cacheTableLabel = new JLabel("Current State of RAM");
         rightConstraints.gridx = 1;
         rightConstraints.gridy = 1;
-        rightPanel.add(ramTableLabel, rightConstraints);
+        rightPanel.add(cacheTableLabel, rightConstraints);
 
-        DefaultTableModel modelRam = new DefaultTableModel();
-        modelRam.addColumn("Tag");
-        modelRam.addColumn("Data");
-        JTable ramTable = new JTable(modelRam);
+        DefaultTableModel modelCache = new DefaultTableModel();
+        modelCache.addColumn("Tag");
+        modelCache.addColumn("Data");
+        JTable ramTable = new JTable(modelCache);
 
         JScrollPane scrollPaneRam = new JScrollPane(ramTable);
         scrollPaneRam.setPreferredSize(new Dimension(200, 100));
@@ -121,10 +119,20 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
 
     }
 
-    @Override
-    public void onLeftPanelSubmit() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'onLeftPanelSubmit'");
+    public void refreshRightPanel(Ram myRam) {
+        modelAddress.addColumn("Tag");
+        modelAddress.addColumn("Line");
+        modelAddress.addColumn("Offset");
+
+        int tag = myRam.getTagBits();
+        int line = myRam.getLineBits();
+        int offset = myRam.getOffsetBits();
+
+        modelAddress.addRow(new Object[] { tag, line, offset });
     }
 
+    @Override
+    public void onLeftPanelSubmit(Ram myRam) {
+        refreshRightPanel(myRam);
+    }
 }

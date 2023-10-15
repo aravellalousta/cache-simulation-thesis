@@ -5,7 +5,6 @@ import java.util.Scanner;
 import javax.swing.table.DefaultTableModel;
 
 import cache.CacheTypes.*;
-import cache.CacheTypes.FullyAssociativeCache;
 
 public class Ram {
     public int size, addressBits, offsetBits, cacheLines, lineBits, tagBits, numOfSets, setBits;
@@ -13,6 +12,74 @@ public class Ram {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public int getSize() {
+        return this.size;
+    }
+
+    public int getAddressBits() {
+        return this.addressBits;
+    }
+
+    public void setAddressBits(int addressBits) {
+        this.addressBits = addressBits;
+    }
+
+    public int getOffsetBits() {
+        return this.offsetBits;
+    }
+
+    public void setOffsetBits(int offsetBits) {
+        this.offsetBits = offsetBits;
+    }
+
+    public int getCacheLines() {
+        return this.cacheLines;
+    }
+
+    public void setCacheLines(int cacheLines) {
+        this.cacheLines = cacheLines;
+    }
+
+    public int getLineBits() {
+        return this.lineBits;
+    }
+
+    public void setLineBits(int lineBits) {
+        this.lineBits = lineBits;
+    }
+
+    public int getTagBits() {
+        return this.tagBits;
+    }
+
+    public void setTagBits(int tagBits) {
+        this.tagBits = tagBits;
+    }
+
+    public int getNumOfSets() {
+        return this.numOfSets;
+    }
+
+    public void setNumOfSets(int numOfSets) {
+        this.numOfSets = numOfSets;
+    }
+
+    public int getSetBits() {
+        return this.setBits;
+    }
+
+    public void setSetBits(int setBits) {
+        this.setBits = setBits;
+    }
+
+    public String getSearchAdd() {
+        return this.searchAdd;
+    }
+
+    public void setSearchAdd(String searchAdd) {
+        this.searchAdd = searchAdd;
     }
 
     /*
@@ -30,7 +97,7 @@ public class Ram {
         addressBits = (int) (Math.log(ramSize) / Math.log(2));
         cacheLines = (int) (cacheSize / blockSize);
 
-        if (cacheType == 1) {
+        if (cacheType == 0) {
             // For the Direct Mapped Cache the structure is ( tag, line, word )
             offsetBits = (int) (Math.log(blockSize) / Math.log(2));
             lineBits = (int) (Math.log(cacheLines) / Math.log(2));
@@ -43,10 +110,10 @@ public class Ram {
             dm.createArrayDM(cacheLines);
 
             // Search for an address in the cache
-            searchAdd = checkAddressInput(addressBits);
-            dm.searchAddressDM(searchAdd);
+            // searchAdd = checkAddressInput(addressBits);
+            // dm.searchAddressDM(searchAdd);
 
-        } else if (cacheType == 2) {
+        } else if (cacheType == 1) {
             // For the Fully Associative Cache the structure is ( tag, word )
             offsetBits = (int) (Math.log(blockSize) / Math.log(2));
             tagBits = addressBits - offsetBits;
@@ -62,7 +129,7 @@ public class Ram {
             searchAdd = checkAddressInput(addressBits);
             fa.searchAddressFA(searchAdd, cacheLines);
 
-        } else if (cacheType == 3) {
+        } else if (cacheType == 2) {
             // For the Set Associative Cache the structure is ( tag, set, word )
             offsetBits = (int) (Math.log(blockSize) / Math.log(2));
             cacheLines = (int) (cacheSize / blockSize);

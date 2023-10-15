@@ -4,8 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import cache.Ram;
+
 public class LeftPanelConfigurator extends InitGUI {
-    private RightPanelListener rightPanelListener; // Reference to the right panel listener
+    private static RightPanelConfigurator rightPanelConfigurator;
+    private static RightPanelListener rightPanelListener; // Reference to the right panel listener
     protected static int blockSize;
     protected static int cacheSize;
     protected static int ramSize;
@@ -157,6 +160,10 @@ public class LeftPanelConfigurator extends InitGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("selected options are: " + cacheSize + ramSize + blockSize);
+                Ram myRam = new Ram();
+                myRam.addressAnalysis(ramSize, index, cacheSize, blockSize, 0);
+
+                rightPanelListener.onLeftPanelSubmit(myRam);
             }
         });
 
