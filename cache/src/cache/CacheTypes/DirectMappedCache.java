@@ -1,6 +1,8 @@
 package cache.CacheTypes;
 
 import java.util.*;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 public class DirectMappedCache extends Cache {
 

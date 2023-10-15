@@ -5,9 +5,6 @@ import java.awt.*;
 
 public class InitGUI extends JPanel {
     public static final Font customFont = new Font("Arial", Font.BOLD, 16);
-    private JPanel directPanel;
-    private JPanel fullyPanel;
-    private JPanel setPanel;
 
     public InitGUI() {
         super(new GridLayout(1, 1));

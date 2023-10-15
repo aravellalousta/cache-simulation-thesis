@@ -2,7 +2,10 @@ package cache;
 
 import java.util.Scanner;
 
+import javax.swing.table.DefaultTableModel;
+
 import cache.CacheTypes.*;
+import cache.CacheTypes.FullyAssociativeCache;
 
 public class Ram {
     public int size, addressBits, offsetBits, cacheLines, lineBits, tagBits, numOfSets, setBits;
@@ -68,6 +71,10 @@ public class Ram {
             tagBits = addressBits - offsetBits - setBits;
         }
 
+    }
+
+    public void fillTableInGUI(DefaultTableModel modelAddress) {
+        modelAddress.addRow(new Object[] { tagBits, lineBits, offsetBits });
     }
 
     public String checkAddressInput(int addressBits) {
