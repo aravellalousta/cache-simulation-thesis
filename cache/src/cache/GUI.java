@@ -18,6 +18,7 @@ public class GUI extends JPanel {
         super(new GridLayout(1, 1));
     }
 
+    // Initial frame configuration
     public void frameConfiguration() {
         JFrame frame = new JFrame("Cache Simulation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,6 +33,7 @@ public class GUI extends JPanel {
         frame.setVisible(true);
     }
 
+    // Configuration for each tab
     public JTabbedPane tabsConfiguration() {
         // Create a JTabbedPane
         JTabbedPane tabbedPane = new JTabbedPane();
@@ -51,19 +53,20 @@ public class GUI extends JPanel {
         // Link the tabs to their respective methods
         for (int i = 0; i < 3; i++) {
             if (i == 0) {
-                displaySelectedTabContents(directPanel);
+                displaySelectedTabContents(directPanel, i);
             } else if (i == 1) {
-                displaySelectedTabContents(fullyPanel);
+                displaySelectedTabContents(fullyPanel, i);
             } else if (i == 2) {
 
                 // TO CHANGE : need to change this in order to add the k-ways option
-                displaySelectedTabContents(setPanel);
+                displaySelectedTabContents(setPanel, i);
             }
         }
 
         return tabbedPane;
     }
 
+    // Styling for the tabs (background color, selected tab color)
     public void stylingTabs(JTabbedPane tabbedPane) {
         Color selectedTabColor = Color.BLUE;
 
@@ -83,12 +86,17 @@ public class GUI extends JPanel {
         tabbedPane.setBackgroundAt(tabbedPane.getSelectedIndex(), selectedTabColor);
     }
 
-    // Add methods for functionality of each tab
-    public void displaySelectedTabContents(JPanel panel) {
+    /*
+     * Methods for displaying the appropriate UI of each tab.
+     * Every tab consists of 2 panels, left and right.
+     * The left panel includes all options to initialize the simulation.
+     * The right panel displays the simulation in action.
+     */
+    public void displaySelectedTabContents(JPanel panel, int index) {
         // Left column: Add a nested JPanel with GridLayout for 3 input fields
         JPanel leftPanel = new JPanel(new GridBagLayout());
         leftPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-        configureLeftPanel(panel, leftPanel);
+        configureLeftPanel(panel, leftPanel, index);
 
         JPanel rightPanel = new JPanel(new GridBagLayout());
         configureRightPanel(rightPanel);
@@ -99,6 +107,119 @@ public class GUI extends JPanel {
 
     }
 
+    // Contains radio buttons for all options and a button to run the simulation
+    private void configureLeftPanel(JPanel panel, JPanel leftPanel, int index) {
+        // Create GridBagConstraints for left column
+        GridBagConstraints leftConstraints = new GridBagConstraints();
+        leftConstraints.anchor = GridBagConstraints.WEST;
+        leftConstraints.insets = new Insets(5, 5, 5, 5);
+
+        JLabel leftColumnLabel = new JLabel("Configuration");
+        leftColumnLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0)); // Set top padding
+
+        leftColumnLabel.setFont(customFont);
+
+        JLabel ramSizeInputLabel = new JLabel("Choose RAM Size");
+        JRadioButton ramSizeOption1 = new JRadioButton("128 bytes");
+        JRadioButton ramSizeOption2 = new JRadioButton("256 bytes");
+
+        JLabel cacheSizeInputLabel = new JLabel("Choose Cache Size");
+        JRadioButton cacheSizeOption1 = new JRadioButton("16 bytes");
+        JRadioButton cacheSizeOption2 = new JRadioButton("32 bytes");
+
+        JLabel blockSizeInputLabel = new JLabel("Choose Block Size:");
+        JRadioButton blockSizeOption = new JRadioButton("4 words");
+
+        if (index == 1) {
+            JLabel replacementAlgorithmLabel = new JLabel("Choose Replacement Algorithm:");
+            JRadioButton replacementAlgorithmOption = new JRadioButton("LRU");
+
+            leftConstraints.gridx = 0;
+            leftConstraints.gridy = 4;
+            leftPanel.add(replacementAlgorithmLabel, leftConstraints);
+
+            leftConstraints.gridx = 1;
+            leftConstraints.gridy = 4;
+            leftPanel.add(replacementAlgorithmOption, leftConstraints);
+
+        } else if (index == 2) {
+            JLabel replacementAlgorithmLabel = new JLabel("Choose Replacement Algorithm:");
+            JRadioButton replacementAlgorithmOption = new JRadioButton("LRU");
+
+            JLabel kWaysLabel = new JLabel("Choose k-ways:");
+            JRadioButton kWaysOption1 = new JRadioButton("2 ways");
+            JRadioButton kWaysOption2 = new JRadioButton("4 ways");
+
+            leftConstraints.gridx = 0;
+            leftConstraints.gridy = 4;
+            leftPanel.add(replacementAlgorithmLabel, leftConstraints);
+
+            leftConstraints.gridx = 1;
+            leftConstraints.gridy = 4;
+            leftPanel.add(replacementAlgorithmOption, leftConstraints);
+
+            leftConstraints.gridx = 0;
+            leftConstraints.gridy = 5;
+            leftPanel.add(kWaysLabel, leftConstraints);
+
+            leftConstraints.gridx = 1;
+            leftConstraints.gridy = 5;
+            leftPanel.add(kWaysOption1, leftConstraints);
+
+            leftConstraints.gridx = 2;
+            leftConstraints.gridy = 5;
+            leftPanel.add(kWaysOption2, leftConstraints);
+        }
+
+        JButton submitBtn = new JButton("Submit");
+
+        leftConstraints.gridx = 0;
+        leftConstraints.gridy = 0;
+        leftPanel.add(leftColumnLabel, leftConstraints);
+
+        leftConstraints.gridx = 0;
+        leftConstraints.gridy = 1;
+        leftPanel.add(ramSizeInputLabel, leftConstraints);
+
+        leftConstraints.gridx = 0;
+        leftConstraints.gridy = 2;
+        leftPanel.add(cacheSizeInputLabel, leftConstraints);
+
+        leftConstraints.gridx = 0;
+        leftConstraints.gridy = 3;
+        leftPanel.add(blockSizeInputLabel, leftConstraints);
+
+        leftConstraints.gridx = 1;
+        leftConstraints.gridy = 1;
+        leftPanel.add(ramSizeOption1, leftConstraints);
+
+        leftConstraints.gridx = 2;
+        leftConstraints.gridy = 1;
+        leftPanel.add(ramSizeOption2, leftConstraints);
+
+        leftConstraints.gridx = 1;
+        leftConstraints.gridy = 2;
+        leftPanel.add(cacheSizeOption1, leftConstraints);
+
+        leftConstraints.gridx = 2;
+        leftConstraints.gridy = 2;
+        leftPanel.add(cacheSizeOption2, leftConstraints);
+
+        leftConstraints.gridx = 1;
+        leftConstraints.gridy = 3;
+        leftPanel.add(blockSizeOption, leftConstraints);
+
+        leftConstraints.gridx = 1;
+        leftConstraints.gridy = 6;
+        leftPanel.add(submitBtn, leftConstraints);
+    }
+
+    /*
+     * Contains 2 tables showcasing the state of the RAM and Cache,
+     * a text field which is used for loading the addresses, a panel to indicate a
+     * hit or miss
+     * and a section for displaying results.
+     */
     private void configureRightPanel(JPanel rightPanel) {
         // Create GridBagConstraints for right column
         GridBagConstraints rightConstraints = new GridBagConstraints();
@@ -202,79 +323,6 @@ public class GUI extends JPanel {
         rightConstraints.gridy = 6;
         rightPanel.add(missRate, rightConstraints);
 
-    }
-
-    private void configureLeftPanel(JPanel panel, JPanel leftPanel) {
-        // Create GridBagConstraints for left column
-        GridBagConstraints leftConstraints = new GridBagConstraints();
-        leftConstraints.anchor = GridBagConstraints.WEST;
-        leftConstraints.insets = new Insets(5, 5, 5, 5);
-
-        JLabel leftColumnLabel = new JLabel("Configuration");
-        leftColumnLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0)); // Set top padding
-
-        leftColumnLabel.setFont(customFont);
-
-        JLabel ramSizeInputLabel = new JLabel("Choose RAM Size");
-        JRadioButton ramSizeOption1 = new JRadioButton("128 bytes");
-        JRadioButton ramSizeOption2 = new JRadioButton("256 bytes");
-
-        JLabel cacheSizeInputLabel = new JLabel("Choose Cache Size");
-        JRadioButton cacheSizeOption1 = new JRadioButton("16 bytes");
-        JRadioButton cacheSizeOption2 = new JRadioButton("32 bytes");
-
-        JLabel blockSizeInputLabel = new JLabel("Choose Block Size:");
-        JRadioButton blockSizeOption = new JRadioButton("4 words");
-
-        JButton submitBtn = new JButton("Submit");
-
-        leftConstraints.gridx = 0;
-        leftConstraints.gridy = 0;
-        leftPanel.add(leftColumnLabel, leftConstraints);
-
-        leftConstraints.gridx = 0;
-        leftConstraints.gridy = 1;
-        leftPanel.add(ramSizeInputLabel, leftConstraints);
-
-        leftConstraints.gridx = 0;
-        leftConstraints.gridy = 2;
-        leftPanel.add(cacheSizeInputLabel, leftConstraints);
-
-        leftConstraints.gridx = 0;
-        leftConstraints.gridy = 3;
-        leftPanel.add(blockSizeInputLabel, leftConstraints);
-
-        leftConstraints.gridx = 1;
-        leftConstraints.gridy = 1;
-        leftPanel.add(ramSizeOption1, leftConstraints);
-
-        leftConstraints.gridx = 2;
-        leftConstraints.gridy = 1;
-        leftPanel.add(ramSizeOption2, leftConstraints);
-
-        leftConstraints.gridx = 1;
-        leftConstraints.gridy = 2;
-        leftPanel.add(cacheSizeOption1, leftConstraints);
-
-        leftConstraints.gridx = 2;
-        leftConstraints.gridy = 2;
-        leftPanel.add(cacheSizeOption2, leftConstraints);
-
-        leftConstraints.gridx = 1;
-        leftConstraints.gridy = 3;
-        leftPanel.add(blockSizeOption, leftConstraints);
-
-        leftConstraints.gridx = 1;
-        leftConstraints.gridy = 4;
-        leftPanel.add(submitBtn, leftConstraints);
-    }
-
-    public void performFullyAssociativeCacheAction() {
-        System.out.println("Fully Associative Cache Action Performed");
-    }
-
-    public void performSetAssociativeCacheAction() {
-        System.out.println("Set Associative Cache Action Performed");
     }
 
 }
