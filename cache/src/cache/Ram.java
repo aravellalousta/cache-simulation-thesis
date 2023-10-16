@@ -105,6 +105,7 @@ public class Ram {
 
             // Create a Direct Mapped Cache object based on the structure indicated above
             DirectMappedCache dm = new DirectMappedCache(tagBits, lineBits, offsetBits);
+            dm.generateAddresses();
 
             // Creating the Cache array
             dm.createArrayDM(cacheLines);
