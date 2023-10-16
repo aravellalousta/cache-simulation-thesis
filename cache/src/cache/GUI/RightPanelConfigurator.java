@@ -1,13 +1,20 @@
 package cache.GUI;
 
 import java.awt.*;
+import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import cache.Ram;
 
 public class RightPanelConfigurator extends InitGUI implements RightPanelListener {
+    static GridBagConstraints rightConstraints = new GridBagConstraints();
     static DefaultTableModel modelAddress = new DefaultTableModel();
+    static JPanel rightPanel = new JPanel(new GridBagLayout());
+
+    AddressGenerator generator = new AddressGenerator();
+    private static JLabel testingAddress;
 
     /*
      * Contains 2 tables showcasing the state of the RAM and Cache,
@@ -16,10 +23,8 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
      * and a section for displaying results.
      */
     public static JPanel configureRightPanel() {
-        JPanel rightPanel = new JPanel(new GridBagLayout());
 
         // Create GridBagConstraints for right column
-        GridBagConstraints rightConstraints = new GridBagConstraints();
         rightConstraints.anchor = GridBagConstraints.WEST;
         rightConstraints.insets = new Insets(5, 5, 5, 5);
 
@@ -68,7 +73,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         JLabel testingAddressLabel = new JLabel("Testing Address:");
         testingAddressLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Set top padding
 
-        JLabel testingAddress = new JLabel("000000000");
+        testingAddress = new JLabel();
         testingAddress.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Set top padding
 
         rightConstraints.gridx = 0;
@@ -128,11 +133,56 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         int line = myRam.getLineBits();
         int offset = myRam.getOffsetBits();
 
-        modelAddress.addRow(new Object[] { tag, line, offset });
+        // modelAddress.addRow(new Object[] { tag, line, offset });
+
+    }
+
+    public void loadingAddresses(Ram myRam, JLabel testingAddress, int tabIndex) {
+        String[][] addressesArray = generator.generateAddresses();
+        int ramSize = myRam.getSize();
+        JPanel selectedPanel = TabManager.getTab(tabIndex);
+
+        Timer timer = new Timer(2000, new ActionListener() {
+            private int currentIndex = 0;
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (ramSize == 128) {
+                    if (currentIndex < addressesArray.length) {
+                        testingAddress.setText(addressesArray[currentIndex][0]);
+                        currentIndex++;
+                    } else {
+                        ((Timer) e.getSource()).stop(); // Stop the timer when all addresses have been shown
+                    }
+                } else {
+                    if (currentIndex < addressesArray.length) {
+                        testingAddress.setText(addressesArray[currentIndex][1]);
+                        System.out.println(testingAddress.getText());
+                        currentIndex++;
+                    } else {
+                        ((Timer) e.getSource()).stop(); // Stop the timer when all addresses have been shown
+                    }
+                }
+                // Update the label for the selectedPanel
+                selectedPanel.add(testingAddress);
+                testingAddress.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Set top padding
+
+                rightConstraints.gridx = 1;
+                rightConstraints.gridy = 3;
+                rightPanel.add(testingAddress, rightConstraints);
+
+                selectedPanel.revalidate();
+                selectedPanel.repaint();
+            }
+        });
+
+        timer.start();
+
     }
 
     @Override
     public void onLeftPanelSubmit(Ram myRam) {
         refreshRightPanel(myRam);
+        loadingAddresses(myRam, RightPanelConfigurator.testingAddress, TabManager.getTabIndex());
     }
 }

@@ -4,12 +4,25 @@ import java.awt.*;
 import javax.swing.*;
 
 public class TabManager extends InitGUI {
+    static JPanel directPanel, fullyPanel, setPanel;
+    static JTabbedPane tabbedPane = new JTabbedPane();
+    static private boolean[] flag = { false, false, false };
+
+    public static int getTabIndex() {
+        Component selectedComponent = tabbedPane.getSelectedComponent();
+        int index = 0;
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            if (tabbedPane.getComponentAt(i) == selectedComponent) {
+                index = i;
+            }
+        }
+        return index;
+    }
 
     public static JTabbedPane createTabs() {
-        JTabbedPane tabbedPane = new JTabbedPane();
-        JPanel directPanel = createTab("Direct Mapped Cache");
-        JPanel fullyPanel = createTab("Fully Associative Cache");
-        JPanel setPanel = createTab("Set Associative Cache");
+        directPanel = createTab("Direct Mapped Cache");
+        fullyPanel = createTab("Fully Associative Cache");
+        setPanel = createTab("Set Associative Cache");
 
         tabbedPane.addTab("Direct Mapped Cache", directPanel);
         tabbedPane.addTab("Fully Associative Cache", fullyPanel);
@@ -17,10 +30,19 @@ public class TabManager extends InitGUI {
 
         stylingTabs(tabbedPane);
         displaySelectedTabContents(directPanel, 0);
-        displaySelectedTabContents(fullyPanel, 1);
-        displaySelectedTabContents(setPanel, 2);
 
         return tabbedPane;
+    }
+
+    public static JPanel getTab(int index) {
+        if (index == 0) {
+            return directPanel;
+        } else if (index == 1) {
+            return fullyPanel;
+        } else if (index == 3) {
+            return setPanel;
+        }
+        return null;
     }
 
     private static JPanel createTab(String title) {
@@ -38,6 +60,14 @@ public class TabManager extends InitGUI {
             for (int i = 0; i < tabbedPane.getTabCount(); i++) {
                 if (tabbedPane.getComponentAt(i) == selectedComponent) {
                     tabbedPane.setBackgroundAt(i, selectedTabColor);
+                    if (i == 0) {
+                        displaySelectedTabContents(directPanel, 0);
+                    } else if (i == 1) {
+                        displaySelectedTabContents(fullyPanel, 1);
+                    } else {
+                        displaySelectedTabContents(setPanel, 2);
+                    }
+
                 } else {
                     tabbedPane.setBackgroundAt(i, null);
                 }
@@ -60,10 +90,13 @@ public class TabManager extends InitGUI {
         LeftPanelConfigurator left = new LeftPanelConfigurator(right);
 
         JPanel rightPanel = RightPanelConfigurator.configureRightPanel();
-        JPanel leftPanel = LeftPanelConfigurator.configureLeftPanel(index);
 
         // Add the left and right panels to the main panel
-        panel.add(leftPanel);
+        if (flag[index] == false) {
+            JPanel leftPanel = LeftPanelConfigurator.configureLeftPanel(index);
+            panel.add(leftPanel);
+            flag[index] = true;
+        }
         panel.add(rightPanel);
 
     }
