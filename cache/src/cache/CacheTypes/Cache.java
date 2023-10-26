@@ -62,14 +62,4 @@ public class Cache {
 		}
 	}
 
-	public static void printCacheContents(String[][] cache) {
-		// Printing the contents of the Cache array for demonstration
-		for (int i = 0; i < cache.length; i++) {
-			for (int j = 0; j < 2; j++) {
-				System.out.print(cache[i][j] + " ");
-			}
-			System.out.println();
-		}
-	}
-
 }
