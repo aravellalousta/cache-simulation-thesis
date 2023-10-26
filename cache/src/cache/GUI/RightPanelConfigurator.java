@@ -7,11 +7,13 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import cache.Ram;
+import cache.CacheTypes.DirectMappedCache;
 
 public class RightPanelConfigurator extends InitGUI implements RightPanelListener {
     static GridBagConstraints rightConstraints = new GridBagConstraints();
     static DefaultTableModel modelAddress = new DefaultTableModel();
     static JPanel rightPanel = new JPanel(new GridBagLayout());
+    static DirectMappedCache dm;
 
     AddressGenerator generator = new AddressGenerator();
     private static JLabel testingAddress;
@@ -44,7 +46,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         JTable addressTable = new JTable(modelAddress);
 
         JScrollPane scrollPane = new JScrollPane(addressTable);
-        scrollPane.setPreferredSize(new Dimension(200, 100));
+        scrollPane.setPreferredSize(new Dimension(200, 200));
 
         rightConstraints.gridx = 0;
         rightConstraints.gridy = 2;
@@ -62,14 +64,12 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         JTable ramTable = new JTable(modelCache);
 
         JScrollPane scrollPaneRam = new JScrollPane(ramTable);
-        scrollPaneRam.setPreferredSize(new Dimension(200, 100));
+        scrollPaneRam.setPreferredSize(new Dimension(200, 200));
 
         rightConstraints.gridx = 1;
         rightConstraints.gridy = 2;
         rightPanel.add(scrollPaneRam, rightConstraints);
 
-        // Input for searching in the Cache
-        // TO CHANGE
         JLabel testingAddressLabel = new JLabel("Testing Address:");
         testingAddressLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Set top padding
 
@@ -124,31 +124,37 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
 
     }
 
-    public void refreshRightPanel(Ram myRam) {
-        modelAddress.addColumn("Tag");
-        modelAddress.addColumn("Line");
-        modelAddress.addColumn("Offset");
+    public void refreshRightPanel(Ram myRam, int tabIndex) {
+        System.out.println(myRam.size);
+        if (tabIndex == 0) {
+            int tag = myRam.getTagBits();
+            int line = myRam.getLineBits();
+            int offset = myRam.getOffsetBits();
 
-        int tag = myRam.getTagBits();
-        int line = myRam.getLineBits();
-        int offset = myRam.getOffsetBits();
+            modelAddress.addColumn("Tag");
+            modelAddress.addColumn("Line");
+            modelAddress.addColumn("Offset");
 
-        // modelAddress.addRow(new Object[] { tag, line, offset });
+            dm = new DirectMappedCache(tag, line, offset);
+
+        }
 
     }
 
     public void loadingAddresses(Ram myRam, JLabel testingAddress, int tabIndex) {
         String[][] addressesArray = generator.generateAddresses();
-        int ramSize = myRam.getSize();
         JPanel selectedPanel = TabManager.getTab(tabIndex);
 
-        Timer timer = new Timer(2000, new ActionListener() {
+        Timer timer = new Timer(1500, new ActionListener() {
             private int currentIndex = 0;
+            private String addressText;
+            int ramSize = myRam.getSize();
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (ramSize == 128) {
                     if (currentIndex < addressesArray.length) {
+                        addressText = addressesArray[currentIndex][0];
                         testingAddress.setText(addressesArray[currentIndex][0]);
                         currentIndex++;
                     } else {
@@ -156,8 +162,8 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
                     }
                 } else {
                     if (currentIndex < addressesArray.length) {
+                        addressText = addressesArray[currentIndex][1];
                         testingAddress.setText(addressesArray[currentIndex][1]);
-                        System.out.println(testingAddress.getText());
                         currentIndex++;
                     } else {
                         ((Timer) e.getSource()).stop(); // Stop the timer when all addresses have been shown
@@ -173,6 +179,13 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
 
                 selectedPanel.revalidate();
                 selectedPanel.repaint();
+
+                dm.inputAddressAnalysis(addressText);
+                String tag = dm.getTagBits();
+                String line = dm.getLineBits();
+                String offset = dm.getOffsetBits();
+
+                modelAddress.addRow(new Object[] { tag, line, offset });
             }
         });
 
@@ -182,7 +195,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
 
     @Override
     public void onLeftPanelSubmit(Ram myRam) {
-        refreshRightPanel(myRam);
+        refreshRightPanel(myRam, TabManager.getTabIndex());
         loadingAddresses(myRam, RightPanelConfigurator.testingAddress, TabManager.getTabIndex());
     }
 }

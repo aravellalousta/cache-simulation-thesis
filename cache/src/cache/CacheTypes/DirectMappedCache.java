@@ -9,6 +9,7 @@ public class DirectMappedCache extends Cache {
 	private int line;
 	private int validBit;
 	private String[][] dmCache;
+	private String tagBits, lineBits, offsetBits;
 
 	public DirectMappedCache(int tag, int line, int offset) {
 		super(tag, offset);
@@ -25,6 +26,42 @@ public class DirectMappedCache extends Cache {
 
 	public void setValidBit(int validBit) {
 		this.validBit = validBit;
+	}
+
+	public void setLine(int line) {
+		this.line = line;
+	}
+
+	public String[][] getDmCache() {
+		return this.dmCache;
+	}
+
+	public void setDmCache(String[][] dmCache) {
+		this.dmCache = dmCache;
+	}
+
+	public String getTagBits() {
+		return this.tagBits;
+	}
+
+	public void setTagBits(String tagBits) {
+		this.tagBits = tagBits;
+	}
+
+	public String getLineBits() {
+		return this.lineBits;
+	}
+
+	public void setLineBits(String lineBits) {
+		this.lineBits = lineBits;
+	}
+
+	public String getOffsetBits() {
+		return this.offsetBits;
+	}
+
+	public void setOffsetBits(String offsetBits) {
+		this.offsetBits = offsetBits;
 	}
 
 	public void createArrayDM(int cacheLines) {
@@ -74,14 +111,14 @@ public class DirectMappedCache extends Cache {
 			System.out.println("Error: The sum of variables exceeds the number of digits in the input.");
 		}
 
-		String tagBits = input.substring(0, tagLength);
-		String lineBits = input.substring(tagLength, tagLength + lineLength);
-		String offsetBits = input.substring(tagLength + lineLength, tagLength + lineLength + offsetLength);
+		tagBits = input.substring(0, tagLength);
+		lineBits = input.substring(tagLength, tagLength + lineLength);
+		offsetBits = input.substring(tagLength + lineLength, tagLength + lineLength + offsetLength);
 
 		bits.put("Tag", tagBits);
 		bits.put("Line", lineBits);
 		bits.put("Offset", offsetBits);
-		bits.forEach((key, value) -> System.out.println(key + " " + value));
+		// bits.forEach((key, value) -> System.out.println(key + " " + value));
 		return bits;
 	}
 

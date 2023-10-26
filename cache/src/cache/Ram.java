@@ -10,6 +10,10 @@ public class Ram {
     public int size, addressBits, offsetBits, cacheLines, lineBits, tagBits, numOfSets, setBits;
     private String searchAdd;
 
+    public Ram(int size) {
+        this.size = size;
+    }
+
     public void setSize(int size) {
         this.size = size;
     }
@@ -126,7 +130,6 @@ public class Ram {
             fa.createArrayFA(cacheLines);
 
             // Search for an address in the cache
-            searchAdd = checkAddressInput(addressBits);
             fa.searchAddressFA(searchAdd, cacheLines);
 
         } else if (cacheType == 2) {
@@ -140,21 +143,4 @@ public class Ram {
 
     }
 
-    public void fillTableInGUI(DefaultTableModel modelAddress) {
-        modelAddress.addRow(new Object[] { tagBits, lineBits, offsetBits });
-    }
-
-    public String checkAddressInput(int addressBits) {
-        Scanner userInput = new Scanner(System.in);
-
-        System.out.println("Enter a valid " + addressBits + " bit address to search in the Cache.");
-        String searchAdd = userInput.nextLine();
-        while (searchAdd.length() != addressBits) {
-            System.out.println("Error. Please enter an address that is exactly " + addressBits + " bits long.");
-            searchAdd = userInput.nextLine();
-        }
-
-        userInput.close();
-        return searchAdd;
-    }
 }

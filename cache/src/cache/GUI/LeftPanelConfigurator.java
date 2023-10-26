@@ -159,8 +159,7 @@ public class LeftPanelConfigurator extends InitGUI {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("selected options are: " + cacheSize + ramSize + blockSize);
-                Ram myRam = new Ram();
+                Ram myRam = new Ram(ramSize);
                 myRam.addressAnalysis(ramSize, index, cacheSize, blockSize, 0);
 
                 rightPanelListener.onLeftPanelSubmit(myRam);
