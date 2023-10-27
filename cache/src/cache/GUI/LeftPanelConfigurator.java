@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import cache.Ram;
+import cache.CacheTypes.*;
 
 public class LeftPanelConfigurator extends InitGUI {
     private static RightPanelConfigurator rightPanelConfigurator;
@@ -143,7 +144,7 @@ public class LeftPanelConfigurator extends InitGUI {
                 cacheSize = 16;
             }
         });
-        cacheSizeOption1.addActionListener(new ActionListener() {
+        cacheSizeOption2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cacheSize = 32;
@@ -161,8 +162,15 @@ public class LeftPanelConfigurator extends InitGUI {
             public void actionPerformed(ActionEvent e) {
                 Ram myRam = new Ram(ramSize);
                 myRam.addressAnalysis(ramSize, index, cacheSize, blockSize, 0);
+                int tag = myRam.getTagBits();
+                int line = myRam.getLineBits();
+                int offset = myRam.getOffsetBits();
 
-                rightPanelListener.onLeftPanelSubmit(myRam);
+                if (index != 1 && index != 2) {
+                    DirectMappedCache myCache = new DirectMappedCache(tag, line, offset);
+                    rightPanelListener.onLeftPanelSubmit(myRam, myCache);
+                }
+
             }
         });
 

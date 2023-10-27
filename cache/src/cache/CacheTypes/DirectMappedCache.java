@@ -104,6 +104,7 @@ public class DirectMappedCache extends Cache {
 		int tagLength = super.getTag();
 		int lineLength = getLine();
 		int offsetLength = super.getOffset();
+		System.out.println(tagLength + " " + lineLength + " " + offsetLength);
 
 		int totalDigits = String.valueOf(input).length(); // Calculate the total number of digits in the input
 

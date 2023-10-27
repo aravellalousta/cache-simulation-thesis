@@ -5,6 +5,7 @@ import java.util.Scanner;
 import javax.swing.table.DefaultTableModel;
 
 import cache.CacheTypes.*;
+import cache.CacheTypes.FullyAssociativeCache;
 
 public class Ram {
     public int size, addressBits, offsetBits, cacheLines, lineBits, tagBits, numOfSets, setBits;

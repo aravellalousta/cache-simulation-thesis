@@ -2,28 +2,28 @@ package cache.GUI;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Random;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import cache.Ram;
-import cache.CacheTypes.DirectMappedCache;
+import cache.CacheTypes.*;
 
 public class RightPanelConfigurator extends InitGUI implements RightPanelListener {
+    // GUI elements
+    static JPanel rightPanel = new JPanel(new GridBagLayout());
     static GridBagConstraints rightConstraints = new GridBagConstraints();
     static DefaultTableModel modelAddress = new DefaultTableModel();
     static DefaultTableModel modelRam = new DefaultTableModel();
 
-    static JPanel rightPanel = new JPanel(new GridBagLayout());
-    static DirectMappedCache dm;
-    static String[][] addressesArray;
-
+    // Managing the display of addresses
     AddressGenerator generator = new AddressGenerator();
+    static String[][] addressesArray;
     private static JLabel testingAddress;
 
     /*
-     * Contains 2 tables showcasing the state of the RAM and Cache,
+     * Contains 2 tables showcasing the Memory Address analysis and the state of the
+     * Cache,
      * a text field which is used for loading the addresses, a panel to indicate a
      * hit or miss
      * and a section for displaying results.
@@ -57,14 +57,14 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         rightPanel.add(scrollPane, rightConstraints);
 
         // Ram Table
-        JLabel ramTableLabel = new JLabel("Current State of RAM");
+        JLabel cacheTableLabel = new JLabel("Current State of Cache");
         rightConstraints.gridx = 1;
         rightConstraints.gridy = 1;
-        rightPanel.add(ramTableLabel, rightConstraints);
+        rightPanel.add(cacheTableLabel, rightConstraints);
 
-        JTable ramTable = new JTable(modelRam);
+        JTable cacheStateTable = new JTable(modelRam);
 
-        JScrollPane scrollPaneRam = new JScrollPane(ramTable);
+        JScrollPane scrollPaneRam = new JScrollPane(cacheStateTable);
         scrollPaneRam.setPreferredSize(new Dimension(200, 200));
 
         rightConstraints.gridx = 1;
@@ -125,24 +125,18 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
 
     }
 
-    public void refreshRightPanel(Ram myRam, int tabIndex) {
+    public void refreshRightPanel(Ram myRam, DirectMappedCache myCache, int tabIndex) {
         if (tabIndex == 0) {
-            int tag = myRam.getTagBits();
-            int line = myRam.getLineBits();
-            int offset = myRam.getOffsetBits();
-
             modelAddress.addColumn("Tag");
             modelAddress.addColumn("Line");
             modelAddress.addColumn("Offset");
-
-            dm = new DirectMappedCache(tag, line, offset);
         }
         modelRam.addColumn("Tag");
         modelRam.addColumn("Data");
 
     }
 
-    public void loadingAddresses(Ram myRam, JLabel testingAddress, int tabIndex) {
+    public void loadingAddresses(Ram myRam, DirectMappedCache myCache, JLabel testingAddress, int tabIndex) {
         addressesArray = generator.generateAddresses();
         JPanel selectedPanel = TabManager.getTab(tabIndex);
 
@@ -181,10 +175,10 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
                 selectedPanel.revalidate();
                 selectedPanel.repaint();
 
-                dm.inputAddressAnalysis(addressText);
-                String tag = dm.getTagBits();
-                String line = dm.getLineBits();
-                String offset = dm.getOffsetBits();
+                myCache.inputAddressAnalysis(addressText);
+                String tag = myCache.getTagBits();
+                String line = myCache.getLineBits();
+                String offset = myCache.getOffsetBits();
 
                 modelAddress.addRow(new Object[] { tag, line, offset });
             }
@@ -194,25 +188,21 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
 
     }
 
-    public void fillRamTableWithDummyData(Ram myRam) {
-        String binaryString = "";
-        int tagBits = myRam.getTagBits();
-        Random random = new Random();
+    public void fillCacheTableWithData(Cache myCache, int tabIndex) {
+        int cacheSize = myCache.getCacheLines();
 
-        for (int i = 0; i < addressesArray.length; i++) {
-            int maxValue = (int) Math.pow(2, tagBits) - 1;
-            int binaryValue = (int) (Math.random() * (maxValue + 1));
-            binaryString = Integer.toBinaryString(binaryValue);
-            String randomNumber = String.valueOf(random.nextInt(1000)); // Change the range as needed
+        for (int i = 0; i < cacheSize; i++) {
+            if (tabIndex == 0) {
 
-            modelRam.addRow(new Object[] { binaryString, randomNumber });
+            }
+            // modelRam.addRow(new Object[] { binaryString, randomNumber });
         }
     }
 
     @Override
-    public void onLeftPanelSubmit(Ram myRam) {
-        refreshRightPanel(myRam, TabManager.getTabIndex());
-        loadingAddresses(myRam, RightPanelConfigurator.testingAddress, TabManager.getTabIndex());
-        fillRamTableWithDummyData(myRam);
+    public void onLeftPanelSubmit(Ram myRam, DirectMappedCache myCache) {
+        refreshRightPanel(myRam, myCache, TabManager.getTabIndex());
+        loadingAddresses(myRam, myCache, RightPanelConfigurator.testingAddress, TabManager.getTabIndex());
+        fillCacheTableWithData(myCache, TabManager.getTabIndex());
     }
 }

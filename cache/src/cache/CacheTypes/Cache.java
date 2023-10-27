@@ -43,23 +43,4 @@ public class Cache {
 		return hex;
 	}
 
-	public static void fillArrayWithTags(String[][] cache, int tagBits) {
-		for (int i = 0; i < cache.length; i++) {
-			int maxValue = (int) Math.pow(2, tagBits) - 1;
-			int binaryValue = (int) (Math.random() * (maxValue + 1));
-			String binaryString = Integer.toBinaryString(binaryValue);
-
-			cache[i][0] = binaryString;
-		}
-	}
-
-	public static void fillArrayWithDummyData(String[][] cache) {
-		Random random = new Random();
-		for (int i = 0; i < cache.length; i++) {
-			// Generate a random number as a string
-			String randomNumber = String.valueOf(random.nextInt(1000)); // Change the range as needed
-			cache[i][1] = randomNumber;
-		}
-	}
-
 }
