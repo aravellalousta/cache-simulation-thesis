@@ -7,7 +7,6 @@ import javax.swing.table.DefaultTableModel;
 public class DirectMappedCache extends Cache {
 
 	private int line;
-	private int validBit;
 	private String[][] dmCache;
 	private String tagBits, lineBits, offsetBits;
 
@@ -18,14 +17,6 @@ public class DirectMappedCache extends Cache {
 
 	public int getLine() {
 		return this.line;
-	}
-
-	public int getValidBit() {
-		return this.validBit;
-	}
-
-	public void setValidBit(int validBit) {
-		this.validBit = validBit;
 	}
 
 	public void setLine(int line) {
@@ -69,6 +60,13 @@ public class DirectMappedCache extends Cache {
 		dmCache = new String[cacheLines][2];
 	}
 
+	public void printDM(String[][] dmCache) {
+		for (int i = 0; i < dmCache.length; i++) {
+			System.out.println(dmCache[i][0]);
+		}
+
+	}
+
 	public boolean searchAddressDM(String address) {
 		/*
 		 * Split the input address String into the Direct Mapped Cache structure
@@ -86,15 +84,17 @@ public class DirectMappedCache extends Cache {
 		// Example to see if hit works for input address 0001101
 		// with ramSize=128, cacheSize=16, blockSize=4
 		// dmCache[2][0] = "000";
+		printDM(dmCache);
 
-		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine) - 1][0])) {
+		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine)][0])) {
 			System.out.println("Hit!");
+			return true;
 		} else {
 			System.out.println("Miss!");
-			dmCache[Integer.parseInt(searchLine) - 1][0] = addressBits.get("Tag");
+			dmCache[Integer.parseInt(searchLine)][0] = addressBits.get("Tag");
+			return false;
 		}
 
-		return true;
 	}
 
 	public Map<String, String> inputAddressAnalysis(String input) {

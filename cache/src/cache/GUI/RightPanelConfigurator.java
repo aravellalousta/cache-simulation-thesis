@@ -14,7 +14,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
     static JPanel rightPanel = new JPanel(new GridBagLayout());
     static GridBagConstraints rightConstraints = new GridBagConstraints();
     static DefaultTableModel modelAddress = new DefaultTableModel();
-    static DefaultTableModel modelRam = new DefaultTableModel();
+    static DefaultTableModel modelCache = new DefaultTableModel();
 
     // Managing the display of addresses
     AddressGenerator generator = new AddressGenerator();
@@ -22,6 +22,11 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
     private static JLabel testingAddress;
 
     private Timer timer;
+
+    static JLabel rightColumnLabel, memoryTableLabel, cacheTableLabel, testingAddressLabel, hitMissLabel, statsLabel,
+            missRateLabel, missRate;
+
+    static JPanel indicatorPanel;
 
     /*
      * Contains 2 tables showcasing the Memory Address analysis and the state of the
@@ -36,7 +41,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         rightConstraints.anchor = GridBagConstraints.WEST;
         rightConstraints.insets = new Insets(5, 5, 5, 5);
 
-        JLabel rightColumnLabel = new JLabel("Cache Mapping");
+        rightColumnLabel = new JLabel("Cache Mapping");
         rightColumnLabel.setFont(customFont);
 
         rightConstraints.gridx = 0;
@@ -44,7 +49,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         rightPanel.add(rightColumnLabel, rightConstraints);
 
         // Cache Table
-        JLabel memoryTableLabel = new JLabel("Memory Address Analysis");
+        memoryTableLabel = new JLabel("Memory Address Analysis");
         rightConstraints.gridx = 0;
         rightConstraints.gridy = 1;
         rightPanel.add(memoryTableLabel, rightConstraints);
@@ -59,12 +64,12 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         rightPanel.add(scrollPane, rightConstraints);
 
         // Ram Table
-        JLabel cacheTableLabel = new JLabel("Current State of Cache");
+        cacheTableLabel = new JLabel("Current State of Cache");
         rightConstraints.gridx = 1;
         rightConstraints.gridy = 1;
         rightPanel.add(cacheTableLabel, rightConstraints);
 
-        JTable cacheStateTable = new JTable(modelRam);
+        JTable cacheStateTable = new JTable(modelCache);
 
         JScrollPane scrollPaneRam = new JScrollPane(cacheStateTable);
         scrollPaneRam.setPreferredSize(new Dimension(200, 200));
@@ -73,7 +78,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         rightConstraints.gridy = 2;
         rightPanel.add(scrollPaneRam, rightConstraints);
 
-        JLabel testingAddressLabel = new JLabel("Testing Address:");
+        testingAddressLabel = new JLabel("Testing Address:");
         testingAddressLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Set top padding
 
         testingAddress = new JLabel();
@@ -88,14 +93,14 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         rightPanel.add(testingAddress, rightConstraints);
 
         // Area highlighting hit or miss
-        JPanel indicatorPanel = new JPanel();
+        indicatorPanel = new JPanel();
         indicatorPanel.setLayout(new GridBagLayout());
         indicatorPanel.setBackground(Color.green);
 
-        JLabel label = new JLabel("Hit");
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-        label.setVerticalAlignment(SwingConstants.CENTER);
-        indicatorPanel.add(label);
+        hitMissLabel = new JLabel("Hit");
+        hitMissLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        hitMissLabel.setVerticalAlignment(SwingConstants.CENTER);
+        indicatorPanel.add(hitMissLabel);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0; // Start at column 0
@@ -105,7 +110,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         rightPanel.add(indicatorPanel, gbc);
 
         // Section for stats
-        JLabel statsLabel = new JLabel("Results");
+        statsLabel = new JLabel("Results");
         statsLabel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0)); // Set top padding
         statsLabel.setFont(customFont);
 
@@ -113,12 +118,12 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         rightConstraints.gridy = 5;
         rightPanel.add(statsLabel, rightConstraints);
 
-        JLabel missRateLabel = new JLabel("Miss Rate");
+        missRateLabel = new JLabel("Miss Rate");
         rightConstraints.gridx = 0;
         rightConstraints.gridy = 6;
         rightPanel.add(missRateLabel, rightConstraints);
 
-        JLabel missRate = new JLabel("0.0%");
+        missRate = new JLabel("0.0%");
         rightConstraints.gridx = 1;
         rightConstraints.gridy = 6;
         rightPanel.add(missRate, rightConstraints);
@@ -133,8 +138,11 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
             modelAddress.addColumn("Line");
             modelAddress.addColumn("Offset");
         }
-        modelRam.addColumn("Tag");
-        modelRam.addColumn("Data");
+        modelCache.addColumn("Tag");
+        modelCache.addColumn("Data");
+
+        int cacheSize = myCache.getCacheLines();
+        myCache.createArrayDM(cacheSize);
 
     }
 
@@ -158,10 +166,9 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(resetStatus);
-
                 if (ramSize == 128) {
                     if (currentIndex < addressesArray.length) {
+                        System.out.println(currentIndex);
                         addressText = addressesArray[currentIndex][0];
                         testingAddress.setText(addressesArray[currentIndex][0]);
                         currentIndex++;
@@ -177,23 +184,29 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
                         ((Timer) e.getSource()).stop(); // Stop the timer when all addresses have been shown
                     }
                 }
-                // Update the label for the selectedPanel
-                selectedPanel.add(testingAddress);
-                testingAddress.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Set top padding
 
-                rightConstraints.gridx = 1;
-                rightConstraints.gridy = 3;
-                rightPanel.add(testingAddress, rightConstraints);
+                if (timer.isRunning()) {
+                    // Update the label for the selectedPanel
+                    selectedPanel.add(testingAddress);
+                    testingAddress.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Set top padding
 
-                selectedPanel.revalidate();
-                selectedPanel.repaint();
+                    rightConstraints.gridx = 1;
+                    rightConstraints.gridy = 3;
+                    rightPanel.add(testingAddress, rightConstraints);
 
-                myCache.inputAddressAnalysis(addressText);
-                String tag = myCache.getTagBits();
-                String line = myCache.getLineBits();
-                String offset = myCache.getOffsetBits();
+                    selectedPanel.revalidate();
+                    selectedPanel.repaint();
 
-                modelAddress.addRow(new Object[] { tag, line, offset });
+                    myCache.inputAddressAnalysis(addressText);
+                    String tag = myCache.getTagBits();
+                    String line = myCache.getLineBits();
+                    String offset = myCache.getOffsetBits();
+
+                    modelAddress.addRow(new Object[] { tag, line, offset });
+
+                    fillCacheTableWithData(myCache, tabIndex, addressText);
+                }
+
             }
         });
 
@@ -201,33 +214,41 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
 
     }
 
-    public void fillCacheTableWithData(Cache myCache, int tabIndex) {
+    public void fillCacheTableWithData(DirectMappedCache myCache, int tabIndex, String addressText) {
         int cacheSize = myCache.getCacheLines();
+        String[][] dmCache = myCache.getDmCache();
 
-        for (int i = 0; i < cacheSize; i++) {
-            if (tabIndex == 0) {
+        if (tabIndex == 0) {
 
+            if (myCache.searchAddressDM(addressText)) {
+                indicatorPanel.setBackground(Color.green);
+                hitMissLabel.setText("Miss!");
+                // modelCache.addRow(new Object[] { , });
+
+            } else {
+                indicatorPanel.setBackground(Color.red);
+                hitMissLabel.setText("Hit!");
             }
+
             // modelRam.addRow(new Object[] { binaryString, randomNumber });
         }
     }
 
     public void clearRightPanel() {
-
+        modelAddress.setColumnCount(0);
         modelAddress.setRowCount(0);
-        modelRam.setRowCount(0);
+        modelCache.setColumnCount(0);
+        modelCache.setRowCount(0);
         testingAddress.setText("");
 
     }
 
     @Override
     public void onLeftPanelSubmit(Ram myRam, DirectMappedCache myCache, boolean resetStatus) {
-        System.out.println(resetStatus);
         if (!resetStatus) {
             refreshRightPanel(myRam, myCache, TabManager.getTabIndex());
             loadingAddresses(myRam, myCache, RightPanelConfigurator.testingAddress, TabManager.getTabIndex(),
                     resetStatus);
-            fillCacheTableWithData(myCache, TabManager.getTabIndex());
         } else {
             clearRightPanel();
             loadingAddresses(myRam, myCache, RightPanelConfigurator.testingAddress, TabManager.getTabIndex(),

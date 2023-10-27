@@ -180,9 +180,11 @@ public class LeftPanelConfigurator extends InitGUI {
                 int tag = myRam.getTagBits();
                 int line = myRam.getLineBits();
                 int offset = myRam.getOffsetBits();
+                int cacheLines = cacheSize / blockSize;
 
                 if (index != 1 && index != 2 && !resetStatus) {
                     DirectMappedCache myCache = new DirectMappedCache(tag, line, offset);
+                    myCache.setCacheLines(cacheLines);
                     rightPanelListener.onLeftPanelSubmit(myRam, myCache, resetStatus);
                 }
 
