@@ -4,5 +4,5 @@ import cache.Ram;
 import cache.CacheTypes.*;
 
 public interface RightPanelListener {
-    void onLeftPanelSubmit(Ram myRam, DirectMappedCache myCache);
+    void onLeftPanelSubmit(Ram myRam, DirectMappedCache myCache, boolean resetStatus);
 }

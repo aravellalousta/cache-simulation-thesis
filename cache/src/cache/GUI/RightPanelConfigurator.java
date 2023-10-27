@@ -21,6 +21,8 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
     static String[][] addressesArray;
     private static JLabel testingAddress;
 
+    private Timer timer;
+
     /*
      * Contains 2 tables showcasing the Memory Address analysis and the state of the
      * Cache,
@@ -136,17 +138,28 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
 
     }
 
-    public void loadingAddresses(Ram myRam, DirectMappedCache myCache, JLabel testingAddress, int tabIndex) {
+    public void loadingAddresses(Ram myRam, DirectMappedCache myCache, JLabel testingAddress, int tabIndex,
+            boolean resetStatus) {
         addressesArray = generator.generateAddresses();
         JPanel selectedPanel = TabManager.getTab(tabIndex);
 
-        Timer timer = new Timer(1500, new ActionListener() {
+        if (resetStatus) {
+            // Stop the timer if resetStatus is true
+            if (timer != null && timer.isRunning()) {
+                timer.stop();
+            }
+            return;
+        }
+
+        timer = new Timer(1500, new ActionListener() {
             private int currentIndex = 0;
             private String addressText;
             int ramSize = myRam.getSize();
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println(resetStatus);
+
                 if (ramSize == 128) {
                     if (currentIndex < addressesArray.length) {
                         addressText = addressesArray[currentIndex][0];
@@ -199,10 +212,27 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         }
     }
 
+    public void clearRightPanel() {
+
+        modelAddress.setRowCount(0);
+        modelRam.setRowCount(0);
+        testingAddress.setText("");
+
+    }
+
     @Override
-    public void onLeftPanelSubmit(Ram myRam, DirectMappedCache myCache) {
-        refreshRightPanel(myRam, myCache, TabManager.getTabIndex());
-        loadingAddresses(myRam, myCache, RightPanelConfigurator.testingAddress, TabManager.getTabIndex());
-        fillCacheTableWithData(myCache, TabManager.getTabIndex());
+    public void onLeftPanelSubmit(Ram myRam, DirectMappedCache myCache, boolean resetStatus) {
+        System.out.println(resetStatus);
+        if (!resetStatus) {
+            refreshRightPanel(myRam, myCache, TabManager.getTabIndex());
+            loadingAddresses(myRam, myCache, RightPanelConfigurator.testingAddress, TabManager.getTabIndex(),
+                    resetStatus);
+            fillCacheTableWithData(myCache, TabManager.getTabIndex());
+        } else {
+            clearRightPanel();
+            loadingAddresses(myRam, myCache, RightPanelConfigurator.testingAddress, TabManager.getTabIndex(),
+                    resetStatus);
+            return;
+        }
     }
 }

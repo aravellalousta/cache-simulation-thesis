@@ -10,9 +10,18 @@ import cache.CacheTypes.*;
 public class LeftPanelConfigurator extends InitGUI {
     private static RightPanelConfigurator rightPanelConfigurator;
     private static RightPanelListener rightPanelListener; // Reference to the right panel listener
+
+    private static JLabel leftColumnLabel, ramSizeInputLabel, cacheSizeInputLabel, blockSizeInputLabel,
+            replacementAlgorithmLabel, kWaysLabel;
+
+    private static JRadioButton ramSizeOption1, ramSizeOption2, cacheSizeOption1, cacheSizeOption2, kWaysOption1,
+            kWaysOption2, replacementAlgorithmOption, blockSizeOption;
+
     protected static int blockSize;
     protected static int cacheSize;
     protected static int ramSize;
+
+    static boolean resetStatus = false;
 
     // Constructor to set the right panel listener
     public LeftPanelConfigurator(RightPanelListener rightPanelListener) {
@@ -27,25 +36,25 @@ public class LeftPanelConfigurator extends InitGUI {
         leftConstraints.anchor = GridBagConstraints.WEST;
         leftConstraints.insets = new Insets(5, 5, 5, 5);
 
-        JLabel leftColumnLabel = new JLabel("Configuration");
+        leftColumnLabel = new JLabel("Configuration");
         leftColumnLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0)); // Set top padding
 
         leftColumnLabel.setFont(customFont);
 
-        JLabel ramSizeInputLabel = new JLabel("Choose RAM Size");
-        JRadioButton ramSizeOption1 = new JRadioButton("128 bytes");
-        JRadioButton ramSizeOption2 = new JRadioButton("256 bytes");
+        ramSizeInputLabel = new JLabel("Choose RAM Size");
+        ramSizeOption1 = new JRadioButton("128 bytes");
+        ramSizeOption2 = new JRadioButton("256 bytes");
 
-        JLabel cacheSizeInputLabel = new JLabel("Choose Cache Size");
-        JRadioButton cacheSizeOption1 = new JRadioButton("16 bytes");
-        JRadioButton cacheSizeOption2 = new JRadioButton("32 bytes");
+        cacheSizeInputLabel = new JLabel("Choose Cache Size");
+        cacheSizeOption1 = new JRadioButton("16 bytes");
+        cacheSizeOption2 = new JRadioButton("32 bytes");
 
-        JLabel blockSizeInputLabel = new JLabel("Choose Block Size:");
-        JRadioButton blockSizeOption = new JRadioButton("4 words");
+        blockSizeInputLabel = new JLabel("Choose Block Size:");
+        blockSizeOption = new JRadioButton("4 words");
 
         if (index == 1) {
-            JLabel replacementAlgorithmLabel = new JLabel("Choose Replacement Algorithm:");
-            JRadioButton replacementAlgorithmOption = new JRadioButton("LRU");
+            replacementAlgorithmLabel = new JLabel("Choose Replacement Algorithm:");
+            replacementAlgorithmOption = new JRadioButton("LRU");
 
             leftConstraints.gridx = 0;
             leftConstraints.gridy = 4;
@@ -56,12 +65,12 @@ public class LeftPanelConfigurator extends InitGUI {
             leftPanel.add(replacementAlgorithmOption, leftConstraints);
 
         } else if (index == 2) {
-            JLabel replacementAlgorithmLabel = new JLabel("Choose Replacement Algorithm:");
-            JRadioButton replacementAlgorithmOption = new JRadioButton("LRU");
+            replacementAlgorithmLabel = new JLabel("Choose Replacement Algorithm:");
+            replacementAlgorithmOption = new JRadioButton("LRU");
 
-            JLabel kWaysLabel = new JLabel("Choose k-ways:");
-            JRadioButton kWaysOption1 = new JRadioButton("2 ways");
-            JRadioButton kWaysOption2 = new JRadioButton("4 ways");
+            kWaysLabel = new JLabel("Choose k-ways:");
+            kWaysOption1 = new JRadioButton("2 ways");
+            kWaysOption2 = new JRadioButton("4 ways");
 
             leftConstraints.gridx = 0;
             leftConstraints.gridy = 4;
@@ -85,6 +94,7 @@ public class LeftPanelConfigurator extends InitGUI {
         }
 
         JButton submitBtn = new JButton("Submit");
+        JButton resetBtn = new JButton("Reset");
 
         leftConstraints.gridx = 0;
         leftConstraints.gridy = 0;
@@ -126,6 +136,10 @@ public class LeftPanelConfigurator extends InitGUI {
         leftConstraints.gridy = 6;
         leftPanel.add(submitBtn, leftConstraints);
 
+        leftConstraints.gridx = 2;
+        leftConstraints.gridy = 6;
+        leftPanel.add(resetBtn, leftConstraints);
+
         ramSizeOption1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -162,15 +176,38 @@ public class LeftPanelConfigurator extends InitGUI {
             public void actionPerformed(ActionEvent e) {
                 Ram myRam = new Ram(ramSize);
                 myRam.addressAnalysis(ramSize, index, cacheSize, blockSize, 0);
+
                 int tag = myRam.getTagBits();
                 int line = myRam.getLineBits();
                 int offset = myRam.getOffsetBits();
 
-                if (index != 1 && index != 2) {
+                if (index != 1 && index != 2 && !resetStatus) {
                     DirectMappedCache myCache = new DirectMappedCache(tag, line, offset);
-                    rightPanelListener.onLeftPanelSubmit(myRam, myCache);
+                    rightPanelListener.onLeftPanelSubmit(myRam, myCache, resetStatus);
                 }
 
+            }
+        });
+
+        resetBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ramSizeOption1.setSelected(false);
+                ramSizeOption2.setSelected(false);
+
+                cacheSizeOption1.setSelected(false);
+                cacheSizeOption2.setSelected(false);
+
+                blockSizeOption.setSelected(false);
+
+                if (index == 1) {
+                    replacementAlgorithmOption.setSelected(false);
+                } else if (index == 2) {
+                    replacementAlgorithmOption.setSelected(false);
+                    kWaysOption1.setSelected(false);
+                    kWaysOption2.setSelected(false);
+                }
+                rightPanelListener.onLeftPanelSubmit(null, null, true);
             }
         });
 

@@ -1,7 +1,5 @@
 package cache.CacheTypes;
 
-import java.util.Random;
-
 public class Cache {
 	protected int tag;
 	protected int offset;

@@ -1,11 +1,6 @@
 package cache;
 
-import java.util.Scanner;
-
-import javax.swing.table.DefaultTableModel;
-
 import cache.CacheTypes.*;
-import cache.CacheTypes.FullyAssociativeCache;
 
 public class Ram {
     public int size, addressBits, offsetBits, cacheLines, lineBits, tagBits, numOfSets, setBits;
@@ -88,7 +83,7 @@ public class Ram {
     }
 
     /*
-     * This method calculates the bit lengths for the tag, line, set and word
+     * This method calculates the bit lengths for the tag, line, set and offset
      * components
      * based on the given ramSize, cacheType, cacheSize, and blockSize parameters.
      * It then creates an instance of the specific Cache
@@ -107,16 +102,6 @@ public class Ram {
             offsetBits = (int) (Math.log(blockSize) / Math.log(2));
             lineBits = (int) (Math.log(cacheLines) / Math.log(2));
             tagBits = addressBits - offsetBits - lineBits;
-
-            // Create a Direct Mapped Cache object based on the structure indicated above
-            DirectMappedCache dm = new DirectMappedCache(tagBits, lineBits, offsetBits);
-
-            // Creating the Cache array
-            dm.createArrayDM(cacheLines);
-
-            // Search for an address in the cache
-            // searchAdd = checkAddressInput(addressBits);
-            // dm.searchAddressDM(searchAdd);
 
         } else if (cacheType == 1) {
             // For the Fully Associative Cache the structure is ( tag, word )
