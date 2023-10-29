@@ -28,16 +28,8 @@ public class DirectMappedCache extends Cache {
 		return this.line;
 	}
 
-	public void setLine(int line) {
-		this.line = line;
-	}
-
 	public String[][] getDmCache() {
 		return this.dmCache;
-	}
-
-	public void setDmCache(String[][] dmCache) {
-		this.dmCache = dmCache;
 	}
 
 	public String getTagBits() {
@@ -101,15 +93,12 @@ public class DirectMappedCache extends Cache {
 
 		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine)][0])) {
 			hitCounter++;
-			System.out.println("Hit!" + hitCounter);
+			System.out.println("Hit!" + "No: " + hitCounter);
 			return true;
 		} else {
 			missCounter++;
-			System.out.println("Miss!" + missCounter);
-			System.out.println("Goes in line: " + searchLine);
-
+			System.out.println("Miss!" + "No: " + missCounter);
 			dmCache[Integer.parseInt(searchLine)][0] = addressBits.get("Tag");
-
 			missRate = calculateMissRate(missCounter, hitCounter);
 
 			return false;
@@ -132,10 +121,6 @@ public class DirectMappedCache extends Cache {
 		int offsetLength = super.getOffset();
 
 		int totalDigits = String.valueOf(input).length(); // Calculate the total number of digits in the input
-
-		while (totalDigits < tagLength + lineLength + offsetLength) {
-			System.out.println("Error: The sum of variables exceeds the number of digits in the input.");
-		}
 
 		tagBits = input.substring(0, tagLength);
 		lineBits = input.substring(tagLength, tagLength + lineLength);

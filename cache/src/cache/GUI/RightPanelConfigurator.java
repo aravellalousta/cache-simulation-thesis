@@ -206,7 +206,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
                     modelAddress.addRow(new Object[] { tag, line, offset });
 
                     fillCacheTableWithData(myCache, tabIndex, addressText, blockSize);
-                    System.out.println("miss rate is: " + myCache.getMissRate());
+                    System.out.println("Miss rate is: " + myCache.getMissRate());
                 } else {
                     missRate.setText(myCache.getMissRate());
                 }

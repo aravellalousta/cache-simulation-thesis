@@ -24,16 +24,8 @@ public class Cache {
 		return this.tag;
 	}
 
-	public void setTag(int tag) {
-		this.tag = tag;
-	}
-
 	public int getOffset() {
 		return this.offset;
-	}
-
-	public void setOffset(int offset) {
-		this.offset = offset;
 	}
 
 	public String binaryToHexString(String binary) {
