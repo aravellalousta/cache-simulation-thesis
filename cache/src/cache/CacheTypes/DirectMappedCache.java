@@ -8,15 +8,20 @@ import cache.Ram;
 
 public class DirectMappedCache extends Cache {
 
-	private int line;
+	private static int line, hitCounter = 0, missCounter = 0;
 	private String[][] dmCache;
 	private String tagBits, lineBits, offsetBits;
 	Ram myRam;
+	private String missRate;
 	static String searchLine;
 
 	public DirectMappedCache(int tag, int line, int offset) {
 		super(tag, offset);
 		this.line = line;
+	}
+
+	public String getMissRate() {
+		return this.missRate;
 	}
 
 	public int getLine() {
@@ -72,7 +77,6 @@ public class DirectMappedCache extends Cache {
 		for (int i = 0; i < dmCache.length; i++) {
 			System.out.println(dmCache[i][0]);
 		}
-
 	}
 
 	public boolean searchAddressDM(String address) {
@@ -96,13 +100,17 @@ public class DirectMappedCache extends Cache {
 		printDM(dmCache);
 
 		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine)][0])) {
-			System.out.println("Hit!");
+			hitCounter++;
+			System.out.println("Hit!" + hitCounter);
 			return true;
 		} else {
-			System.out.println("Miss!");
+			missCounter++;
+			System.out.println("Miss!" + missCounter);
 			System.out.println("Goes in line: " + searchLine);
 
 			dmCache[Integer.parseInt(searchLine)][0] = addressBits.get("Tag");
+
+			missRate = calculateMissRate(missCounter, hitCounter);
 
 			return false;
 		}

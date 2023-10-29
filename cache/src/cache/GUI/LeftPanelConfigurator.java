@@ -144,25 +144,30 @@ public class LeftPanelConfigurator extends InitGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ramSize = 128;
-
+                ramSizeOption2.setEnabled(false);
             }
         });
         ramSizeOption2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ramSize = 256;
+                ramSizeOption1.setEnabled(false);
             }
         });
         cacheSizeOption1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cacheSize = 16;
+                cacheSizeOption2.setEnabled(false);
+
             }
         });
         cacheSizeOption2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cacheSize = 32;
+                cacheSizeOption1.setEnabled(false);
+
             }
         });
         blockSizeOption.addActionListener(new ActionListener() {
@@ -202,6 +207,12 @@ public class LeftPanelConfigurator extends InitGUI {
         resetBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ramSizeOption1.setEnabled(true);
+                ramSizeOption2.setEnabled(true);
+
+                cacheSizeOption1.setEnabled(true);
+                cacheSizeOption2.setEnabled(true);
+
                 ramSizeOption1.setSelected(false);
                 ramSizeOption2.setSelected(false);
 

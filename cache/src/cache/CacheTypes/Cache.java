@@ -4,6 +4,7 @@ public class Cache {
 	protected int tag;
 	protected int offset;
 	public static int cacheLines;
+	static DirectMappedCache dm;
 
 	public Cache(int tag, int offset) {
 		super();
@@ -44,6 +45,11 @@ public class Cache {
 	public static int binaryToDecimal(String binary) {
 		int decimal = Integer.parseInt(binary, 2);
 		return decimal;
+	}
+
+	public String calculateMissRate(int miss, int hit) {
+		double missRate = ((double) miss / (miss + hit)) * 100;
+		return String.format("%.2f%%", missRate);
 	}
 
 }

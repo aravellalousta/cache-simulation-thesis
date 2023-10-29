@@ -126,7 +126,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         rightConstraints.gridy = 6;
         rightPanel.add(missRateLabel, rightConstraints);
 
-        missRate = new JLabel("0.0%");
+        missRate = new JLabel();
         rightConstraints.gridx = 1;
         rightConstraints.gridy = 6;
         rightPanel.add(missRate, rightConstraints);
@@ -160,7 +160,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
             return;
         }
 
-        timer = new Timer(1500, new ActionListener() {
+        timer = new Timer(100, new ActionListener() {
             private int currentIndex = 0;
             private String addressText;
             int ramSize = myRam.getSize();
@@ -206,6 +206,9 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
                     modelAddress.addRow(new Object[] { tag, line, offset });
 
                     fillCacheTableWithData(myCache, tabIndex, addressText, blockSize);
+                    System.out.println("miss rate is: " + myCache.getMissRate());
+                } else {
+                    missRate.setText(myCache.getMissRate());
                 }
 
             }
@@ -257,6 +260,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
             refreshRightPanel(myRam, myCache, TabManager.getTabIndex());
             loadingAddresses(myRam, myCache, RightPanelConfigurator.testingAddress, TabManager.getTabIndex(),
                     resetStatus);
+
         } else {
             clearRightPanel();
             loadingAddresses(myRam, myCache, RightPanelConfigurator.testingAddress, TabManager.getTabIndex(),
