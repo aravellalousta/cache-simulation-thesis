@@ -160,7 +160,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
             return;
         }
 
-        timer = new Timer(100, new ActionListener() {
+        timer = new Timer(800, new ActionListener() {
             private int currentIndex = 0;
             private String addressText;
             int ramSize = myRam.getSize();
@@ -251,7 +251,9 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         modelCache.fireTableDataChanged();
         modelCache.setRowCount(8);
         testingAddress.setText("");
-
+        indicatorPanel.setBackground(Color.gray);
+        hitMissLabel.setText("   ");
+        missRate.setText("");
     }
 
     @Override
