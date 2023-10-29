@@ -14,7 +14,10 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
     static JPanel rightPanel = new JPanel(new GridBagLayout());
     static GridBagConstraints rightConstraints = new GridBagConstraints();
     static DefaultTableModel modelAddress = new DefaultTableModel();
-    static DefaultTableModel modelCache = new DefaultTableModel();
+
+    static String[] data = { "Tag", "Data" };
+    static DefaultTableModel modelCache = new DefaultTableModel(data, 8);
+    static JTable cacheStateTable;
 
     // Managing the display of addresses
     AddressGenerator generator = new AddressGenerator();
@@ -69,7 +72,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         rightConstraints.gridy = 1;
         rightPanel.add(cacheTableLabel, rightConstraints);
 
-        JTable cacheStateTable = new JTable(modelCache);
+        cacheStateTable = new JTable(modelCache);
 
         JScrollPane scrollPaneRam = new JScrollPane(cacheStateTable);
         scrollPaneRam.setPreferredSize(new Dimension(200, 200));
@@ -95,9 +98,9 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
         // Area highlighting hit or miss
         indicatorPanel = new JPanel();
         indicatorPanel.setLayout(new GridBagLayout());
-        indicatorPanel.setBackground(Color.green);
+        indicatorPanel.setBackground(Color.gray);
 
-        hitMissLabel = new JLabel("Hit");
+        hitMissLabel = new JLabel("   ");
         hitMissLabel.setHorizontalAlignment(SwingConstants.CENTER);
         hitMissLabel.setVerticalAlignment(SwingConstants.CENTER);
         indicatorPanel.add(hitMissLabel);
@@ -138,8 +141,6 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
             modelAddress.addColumn("Line");
             modelAddress.addColumn("Offset");
         }
-        modelCache.addColumn("Tag");
-        modelCache.addColumn("Data");
 
         int cacheSize = myCache.getCacheLines();
         myCache.createArrayDM(cacheSize);
@@ -163,12 +164,12 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
             private int currentIndex = 0;
             private String addressText;
             int ramSize = myRam.getSize();
+            int blockSize = myRam.getBlockSize();
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (ramSize == 128) {
                     if (currentIndex < addressesArray.length) {
-                        System.out.println(currentIndex);
                         addressText = addressesArray[currentIndex][0];
                         testingAddress.setText(addressesArray[currentIndex][0]);
                         currentIndex++;
@@ -204,7 +205,7 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
 
                     modelAddress.addRow(new Object[] { tag, line, offset });
 
-                    fillCacheTableWithData(myCache, tabIndex, addressText);
+                    fillCacheTableWithData(myCache, tabIndex, addressText, blockSize);
                 }
 
             }
@@ -214,20 +215,26 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
 
     }
 
-    public void fillCacheTableWithData(DirectMappedCache myCache, int tabIndex, String addressText) {
+    public void fillCacheTableWithData(DirectMappedCache myCache, int tabIndex, String addressText, int blockSize) {
         int cacheSize = myCache.getCacheLines();
         String[][] dmCache = myCache.getDmCache();
+        String tagBits = myCache.getTagBits();
+        int memoryBlock;
+        int row;
 
         if (tabIndex == 0) {
 
             if (myCache.searchAddressDM(addressText)) {
-                indicatorPanel.setBackground(Color.green);
-                hitMissLabel.setText("Miss!");
-                // modelCache.addRow(new Object[] { , });
-
-            } else {
                 indicatorPanel.setBackground(Color.red);
                 hitMissLabel.setText("Hit!");
+            } else {
+                indicatorPanel.setBackground(Color.green);
+                hitMissLabel.setText("Miss!");
+                memoryBlock = myCache.returnMemoryBlock(blockSize, addressText);
+                row = Integer.parseInt(myCache.getSearchLine());
+
+                cacheStateTable.getModel().setValueAt(tagBits, row, 0);
+                cacheStateTable.getModel().setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
             }
 
             // modelRam.addRow(new Object[] { binaryString, randomNumber });
@@ -237,8 +244,9 @@ public class RightPanelConfigurator extends InitGUI implements RightPanelListene
     public void clearRightPanel() {
         modelAddress.setColumnCount(0);
         modelAddress.setRowCount(0);
-        modelCache.setColumnCount(0);
-        modelCache.setRowCount(0);
+        modelCache.getDataVector().removeAllElements();
+        modelCache.fireTableDataChanged();
+        modelCache.setRowCount(8);
         testingAddress.setText("");
 
     }

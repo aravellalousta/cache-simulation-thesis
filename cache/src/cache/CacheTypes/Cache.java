@@ -35,10 +35,15 @@ public class Cache {
 		this.offset = offset;
 	}
 
-	public String binaryToHex(String binary) {
+	public String binaryToHexString(String binary) {
 		int decimal = Integer.parseInt(binary, 2); // Convert binary to decimal
 		String hex = Integer.toHexString(decimal); // Convert decimal to hexadecimal
 		return hex;
+	}
+
+	public static int binaryToDecimal(String binary) {
+		int decimal = Integer.parseInt(binary, 2);
+		return decimal;
 	}
 
 }

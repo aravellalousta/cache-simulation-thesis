@@ -3,7 +3,7 @@ package cache;
 import cache.CacheTypes.*;
 
 public class Ram {
-    public int size, addressBits, offsetBits, cacheLines, lineBits, tagBits, numOfSets, setBits;
+    public int size, addressBits, offsetBits, cacheLines, lineBits, tagBits, numOfSets, setBits, blockSize;
     private String searchAdd;
 
     public Ram(int size) {
@@ -80,6 +80,14 @@ public class Ram {
 
     public void setSearchAdd(String searchAdd) {
         this.searchAdd = searchAdd;
+    }
+
+    public int getBlockSize() {
+        return this.blockSize;
+    }
+
+    public void setBlockSize(int blockSize) {
+        this.blockSize = blockSize;
     }
 
     /*

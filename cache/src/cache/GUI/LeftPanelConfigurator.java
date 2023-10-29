@@ -144,6 +144,7 @@ public class LeftPanelConfigurator extends InitGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ramSize = 128;
+
             }
         });
         ramSizeOption2.addActionListener(new ActionListener() {
@@ -174,18 +175,25 @@ public class LeftPanelConfigurator extends InitGUI {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Ram myRam = new Ram(ramSize);
-                myRam.addressAnalysis(ramSize, index, cacheSize, blockSize, 0);
+                if (checkAllOptionsSelected(index)) {
+                    Ram myRam = new Ram(ramSize);
+                    myRam.addressAnalysis(ramSize, index, cacheSize, blockSize, 0);
+                    myRam.setBlockSize(blockSize);
 
-                int tag = myRam.getTagBits();
-                int line = myRam.getLineBits();
-                int offset = myRam.getOffsetBits();
-                int cacheLines = cacheSize / blockSize;
+                    int tag = myRam.getTagBits();
+                    int line = myRam.getLineBits();
+                    int offset = myRam.getOffsetBits();
+                    int cacheLines = cacheSize / blockSize;
 
-                if (index != 1 && index != 2 && !resetStatus) {
-                    DirectMappedCache myCache = new DirectMappedCache(tag, line, offset);
-                    myCache.setCacheLines(cacheLines);
-                    rightPanelListener.onLeftPanelSubmit(myRam, myCache, resetStatus);
+                    if (index != 1 && index != 2 && !resetStatus) {
+                        DirectMappedCache myCache = new DirectMappedCache(tag, line, offset);
+                        myCache.setCacheLines(cacheLines);
+                        rightPanelListener.onLeftPanelSubmit(myRam, myCache, resetStatus);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(leftPanel, "Please select all options before submitting.",
+                            "Warning",
+                            JOptionPane.WARNING_MESSAGE);
                 }
 
             }
@@ -214,6 +222,21 @@ public class LeftPanelConfigurator extends InitGUI {
         });
 
         return leftPanel;
+    }
+
+    public static boolean checkAllOptionsSelected(int index) {
+        if ((ramSizeOption1.isSelected() || ramSizeOption2.isSelected())
+                && (cacheSizeOption1.isSelected() || cacheSizeOption2.isSelected())
+                && blockSizeOption.isSelected()) {
+            if (index == 1 && replacementAlgorithmOption.isSelected()) {
+                return true;
+            } else if (index == 2 && replacementAlgorithmOption.isSelected()
+                    && (kWaysOption1.isSelected() || kWaysOption2.isSelected())) {
+                return true;
+            }
+            return true;
+        }
+        return false;
     }
 
 }

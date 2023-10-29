@@ -4,11 +4,15 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import cache.Ram;
+
 public class DirectMappedCache extends Cache {
 
 	private int line;
 	private String[][] dmCache;
 	private String tagBits, lineBits, offsetBits;
+	Ram myRam;
+	static String searchLine;
 
 	public DirectMappedCache(int tag, int line, int offset) {
 		super(tag, offset);
@@ -55,6 +59,10 @@ public class DirectMappedCache extends Cache {
 		this.offsetBits = offsetBits;
 	}
 
+	public String getSearchLine() {
+		return this.searchLine;
+	}
+
 	public void createArrayDM(int cacheLines) {
 		// Cache structure is (tag, data)
 		dmCache = new String[cacheLines][2];
@@ -79,11 +87,12 @@ public class DirectMappedCache extends Cache {
 		Map<String, String> addressBits = inputAddressAnalysis(address);
 
 		// In order to find the line we need to convert the bits to hex value
-		String searchLine = binaryToHex(addressBits.get("Line"));
+		searchLine = binaryToHexString(addressBits.get("Line"));
 
 		// Example to see if hit works for input address 0001101
 		// with ramSize=128, cacheSize=16, blockSize=4
 		// dmCache[2][0] = "000";
+
 		printDM(dmCache);
 
 		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine)][0])) {
@@ -91,10 +100,19 @@ public class DirectMappedCache extends Cache {
 			return true;
 		} else {
 			System.out.println("Miss!");
+			System.out.println("Goes in line: " + searchLine);
+
 			dmCache[Integer.parseInt(searchLine)][0] = addressBits.get("Tag");
+
 			return false;
 		}
 
+	}
+
+	public int returnMemoryBlock(int blockSize, String address) {
+		int addressInDecimal = binaryToDecimal(address);
+		int memoryBlock = addressInDecimal / blockSize;
+		return memoryBlock;
 	}
 
 	public Map<String, String> inputAddressAnalysis(String input) {
