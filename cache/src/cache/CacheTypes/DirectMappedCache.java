@@ -8,11 +8,11 @@ import cache.Ram;
 
 public class DirectMappedCache extends Cache {
 
-	private static int line, hitCounter = 0, missCounter = 0;
-	private String[][] dmCache;
-	private String tagBits, lineBits, offsetBits;
+	public static int line, hitCounter = 0, missCounter = 0;
+	public String[][] dmCache;
+	public String tagBits, lineBits, offsetBits;
 	Ram myRam;
-	private String missRate;
+	public String missRate;
 	static String searchLine;
 
 	public DirectMappedCache(int tag, int line, int offset) {

@@ -13,7 +13,7 @@ public class InitGUI extends JPanel {
     public void createAndShowGUI() {
         JFrame frame = new JFrame("Cache Simulation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1100, 500);
+        frame.setSize(1100, 650);
 
         JTabbedPane tabbedPane = TabManager.createTabs();
         frame.add(tabbedPane);

@@ -84,21 +84,13 @@ public class TabManager extends InitGUI {
      * The right panel displays the simulation in action.
      */
     public static void displaySelectedTabContents(JPanel panel, int index) {
-        // Left column: Add a nested JPanel with GridLayout for 3 input fields
-
-        RightPanelConfigurator right = new RightPanelConfigurator();
-        LeftPanelConfigurator left = new LeftPanelConfigurator(right);
-
-        JPanel rightPanel = RightPanelConfigurator.configureRightPanel();
 
         // Add the left and right panels to the main panel
         if (flag[index] == false) {
-            JPanel leftPanel = LeftPanelConfigurator.configureLeftPanel(index);
+            JPanel leftPanel = PanelConfigurator.configurePanel(index);
             panel.add(leftPanel);
             flag[index] = true;
         }
-        panel.add(rightPanel);
-
     }
 
 }
