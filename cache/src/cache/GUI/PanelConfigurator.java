@@ -16,7 +16,7 @@ public class PanelConfigurator extends InitGUI {
             replacementAlgorithmLabel, kWaysLabel;
 
     public static JRadioButton ramSizeOption1, ramSizeOption2, cacheSizeOption1, cacheSizeOption2, kWaysOption1,
-            kWaysOption2, replacementAlgorithmOption, blockSizeOption;
+            kWaysOption2, replacementAlgorithmOption, blockSizeOption, manualOption, automaticOption;
 
     public static int blockSize;
     public static int cacheSize;
@@ -40,7 +40,7 @@ public class PanelConfigurator extends InitGUI {
     public static Timer timer;
 
     static JLabel rightColumnLabel, memoryTableLabel, cacheTableLabel, testingAddressLabel, hitMissLabel, statsLabel,
-            missRateLabel, missRate;
+            missRateLabel, missRate, manuaLabel;
 
     static JPanel indicatorPanel;
 
@@ -67,6 +67,10 @@ public class PanelConfigurator extends InitGUI {
 
         blockSizeInputLabel = new JLabel("Choose Block Size:");
         blockSizeOption = new JRadioButton("4 words");
+
+        manuaLabel = new JLabel("Type of simulation:");
+        manualOption = new JRadioButton("Manual");
+        automaticOption = new JRadioButton("Automatic");
 
         if (index == 1) {
             replacementAlgorithmLabel = new JLabel("Choose Replacement Algorithm:");
@@ -148,14 +152,27 @@ public class PanelConfigurator extends InitGUI {
         constraints.gridy = 3;
         panel.add(blockSizeOption, constraints);
 
+        constraints.gridx = 0;
+        constraints.gridy = 6;
+        panel.add(manuaLabel, constraints);
+
         constraints.gridx = 1;
         constraints.gridy = 6;
-        panel.add(submitBtn, constraints);
+        panel.add(manualOption, constraints);
 
         constraints.gridx = 2;
         constraints.gridy = 6;
+        panel.add(automaticOption, constraints);
+
+        constraints.gridx = 1;
+        constraints.gridy = 7;
+        panel.add(submitBtn, constraints);
+
+        constraints.gridx = 2;
+        constraints.gridy = 7;
         panel.add(resetBtn, constraints);
 
+        // Right Column
         rightColumnLabel = new JLabel("Cache Mapping");
         rightColumnLabel.setFont(customFont);
 
@@ -280,6 +297,22 @@ public class PanelConfigurator extends InitGUI {
             }
         });
 
+        manualOption.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // setting something to true
+                automaticOption.setEnabled(false);
+            }
+        });
+
+        automaticOption.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // setting something to true
+                manualOption.setEnabled(false);
+            }
+        });
+
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -391,6 +424,12 @@ public class PanelConfigurator extends InitGUI {
         cacheSizeOption2.setSelected(false);
 
         blockSizeOption.setSelected(false);
+
+        manualOption.setSelected(false);
+        automaticOption.setSelected(false);
+
+        manualOption.setEnabled(true);
+        automaticOption.setEnabled(true);
 
         if (index == 1) {
             replacementAlgorithmOption.setSelected(false);
