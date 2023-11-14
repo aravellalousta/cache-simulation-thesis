@@ -59,17 +59,6 @@ public class Ram {
             // For the Fully Associative Cache the structure is ( tag, word )
             offsetBits = (int) (Math.log(blockSize) / Math.log(2));
             tagBits = addressBits - offsetBits;
-
-            // Create a Fully Associative Cache object based on the structure indicated
-            // above
-            FullyAssociativeCache fa = new FullyAssociativeCache(tagBits, offsetBits);
-
-            // Creating the Cache array
-            fa.createArrayFA(cacheLines);
-
-            // Search for an address in the cache
-            fa.searchAddressFA(searchAdd, cacheLines);
-
         } else if (cacheType == 2) {
             // For the Set Associative Cache the structure is ( tag, set, word )
             offsetBits = (int) (Math.log(blockSize) / Math.log(2));

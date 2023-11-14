@@ -11,6 +11,7 @@ import cache.CacheTypes.*;
 public class PanelConfigurator extends InitGUI {
     public static Ram myRam;
     public static DirectMappedCache dmCache;
+    public static FullyAssociativeCache faCache;
 
     public static JLabel leftColumnLabel, ramSizeInputLabel, cacheSizeInputLabel, blockSizeInputLabel,
             replacementAlgorithmLabel, kWaysLabel;
@@ -330,6 +331,10 @@ public class PanelConfigurator extends InitGUI {
                         dmCache = new DirectMappedCache(tag, line, offset);
                         dmCache.setCacheLines(cacheLines);
                         onSubmit(index);
+                    } else if (index == 1) {
+                        faCache = new FullyAssociativeCache(tag, offset);
+                        faCache.setCacheLines(cacheLines);
+                        onSubmit(index);
                     }
                 } else {
                     JOptionPane.showMessageDialog(panel, "Please select all options before submitting.",
@@ -368,7 +373,6 @@ public class PanelConfigurator extends InitGUI {
                 if (ramSize == 128) {
                     if (currentIndex < addressesArray.length) {
                         addressText = addressesArray[currentIndex][0];
-                        // testingAddress.setText(addressesArray[currentIndex][0]);
                         currentIndex++;
                     } else {
                         ((Timer) e.getSource()).stop(); // Stop the timer when all addresses have been shown
@@ -376,7 +380,6 @@ public class PanelConfigurator extends InitGUI {
                 } else {
                     if (currentIndex < addressesArray.length) {
                         addressText = addressesArray[currentIndex][1];
-                        // testingAddress.setText(addressesArray[currentIndex][1]);
                         currentIndex++;
                     } else {
                         ((Timer) e.getSource()).stop(); // Stop the timer when all addresses have been shown
@@ -389,16 +392,25 @@ public class PanelConfigurator extends InitGUI {
                     selectedPanel.revalidate();
                     selectedPanel.repaint();
 
-                    dmCache.inputAddressAnalysis(addressText);
-                    String tag = dmCache.getTagBits();
-                    String line = dmCache.getLineBits();
-                    String offset = dmCache.getOffsetBits();
+                    if (index == 0) {
+                        dmCache.inputAddressAnalysis(addressText);
+                        String tag = dmCache.getTagBits();
+                        String line = dmCache.getLineBits();
+                        String offset = dmCache.getOffsetBits();
 
-                    modelAddress.addRow(new Object[] { tag, line, offset });
+                        modelAddress.addRow(new Object[] { tag, line, offset });
+                    } else if (index == 1) {
+                        faCache.inputAddressAnalysis(addressText);
+                        String tag = faCache.getTagBits();
+                        String offset = faCache.getOffsetBits();
+                        modelAddress.addRow(new Object[] { tag, offset });
+                    }
 
                     fillCacheTableWithData(index, addressText);
                 } else {
-                    missRate.setText(dmCache.getMissRate());
+                    if (index == 0) {
+                        missRate.setText(dmCache.getMissRate());
+                    }
                 }
 
             }
@@ -467,11 +479,11 @@ public class PanelConfigurator extends InitGUI {
     }
 
     public static void fillCacheTableWithData(int index, String addressText) {
-        String tagBits = dmCache.getTagBits();
         int memoryBlock;
         int row;
 
         if (index == 0) {
+            String tagBits = dmCache.getTagBits();
             testingAddress.setText(addressText);
 
             if (dmCache.searchAddressDM(addressText)) {
@@ -486,8 +498,14 @@ public class PanelConfigurator extends InitGUI {
                 cacheStateTable.getModel().setValueAt(tagBits, row, 0);
                 cacheStateTable.getModel().setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
             }
+        } else if (index == 1) {
+            testingAddress.setText(addressText);
+            int cacheLines = faCache.getCacheLines();
+            if (faCache.searchAddressFA(addressText, cacheLines)) {
+                indicatorPanel.setBackground(Color.green);
+                hitMissLabel.setText("Miss!");
+            }
 
-            // modelRam.addRow(new Object[] { binaryString, randomNumber });
         }
     }
 
@@ -496,10 +514,15 @@ public class PanelConfigurator extends InitGUI {
             modelAddress.addColumn("Tag");
             modelAddress.addColumn("Line");
             modelAddress.addColumn("Offset");
-        }
+            int cacheSize = dmCache.getCacheLines();
+            dmCache.createArrayDM(cacheSize);
 
-        int cacheSize = dmCache.getCacheLines();
-        dmCache.createArrayDM(cacheSize);
+        } else if (tabIndex == 1) {
+            modelAddress.addColumn("Tag");
+            modelAddress.addColumn("Offset");
+            int cacheSize = faCache.getCacheLines();
+            faCache.createArrayFA(cacheSize);
+        }
 
     }
 }

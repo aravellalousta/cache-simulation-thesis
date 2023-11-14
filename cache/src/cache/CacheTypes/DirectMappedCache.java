@@ -84,11 +84,6 @@ public class DirectMappedCache extends Cache {
 
 		// In order to find the line we need to convert the bits to hex value
 		searchLine = binaryToHexString(addressBits.get("Line"));
-
-		// Example to see if hit works for input address 0001101
-		// with ramSize=128, cacheSize=16, blockSize=4
-		// dmCache[2][0] = "000";
-
 		printDM(dmCache);
 
 		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine)][0])) {
@@ -119,8 +114,6 @@ public class DirectMappedCache extends Cache {
 		int tagLength = super.getTag();
 		int lineLength = getLine();
 		int offsetLength = super.getOffset();
-
-		int totalDigits = String.valueOf(input).length(); // Calculate the total number of digits in the input
 
 		tagBits = input.substring(0, tagLength);
 		lineBits = input.substring(tagLength, tagLength + lineLength);
