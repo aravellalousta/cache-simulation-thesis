@@ -4,35 +4,49 @@ import java.util.Deque;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class LRUImplementation {
 
     // store keys of cache
-    private Deque<String> doublyQueue;
+    private static Deque<String> doublyQueue;
+    static int row;
 
     public Deque<String> getDoublyQueue() {
         return this.doublyQueue;
+    }
+
+    public void setCACHE_SIZE(int cacheSize) {
+        CACHE_SIZE = cacheSize;
+    }
+
+    public static int getRow() {
+        return row;
     }
 
     // store references of key in cache
     private HashSet<String> hashSet;
 
     // maximum capacity of cache
-    private final int CACHE_SIZE;
+    private int CACHE_SIZE;
 
-    public LRUImplementation(int capacity) {
+    public LRUImplementation() {
         doublyQueue = new LinkedList<>();
         hashSet = new HashSet<>();
-        CACHE_SIZE = capacity;
     }
 
     /* Refer the page within the LRU cache */
-    public void refer(String page) {
+    public boolean refer(String page) {
+        boolean found;
         if (!hashSet.contains(page)) {
             if (doublyQueue.size() == CACHE_SIZE) {
                 String last = doublyQueue.removeLast();
                 hashSet.remove(last);
             }
+            found = false;
+            System.out.println("\n miss");
         } else { /*
                   * The found page may not be always the last
                   * element, even if it's an intermediate
@@ -40,9 +54,13 @@ public class LRUImplementation {
                   * to the start of the Queue
                   */
             doublyQueue.remove(page);
+            found = true;
+            System.out.println("\n hit");
         }
         doublyQueue.push(page);
         hashSet.add(page);
+
+        return found;
     }
 
     // display contents of cache
@@ -52,4 +70,17 @@ public class LRUImplementation {
             System.out.print(itr.next() + " ");
         }
     }
+
+    public static void updateColumnValues(DefaultTableModel tableModel, int columnIndex) {
+        int rowCount = tableModel.getRowCount();
+        Iterator<String> iterator = doublyQueue.iterator();
+
+        for (int row = 0; row < rowCount; row++) {
+            if (iterator.hasNext()) {
+                String newValue = iterator.next();
+                tableModel.setValueAt(newValue, row, columnIndex);
+            }
+        }
+    }
+
 }

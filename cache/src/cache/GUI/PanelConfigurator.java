@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import cache.LRUImplementation;
 import cache.Ram;
 import cache.CacheTypes.*;
 
@@ -481,9 +482,10 @@ public class PanelConfigurator extends InitGUI {
     public static void fillCacheTableWithData(int index, String addressText) {
         int memoryBlock;
         int row;
+        String tagBits;
 
         if (index == 0) {
-            String tagBits = dmCache.getTagBits();
+            tagBits = dmCache.getTagBits();
             testingAddress.setText(addressText);
 
             if (dmCache.searchAddressDM(addressText)) {
@@ -500,10 +502,17 @@ public class PanelConfigurator extends InitGUI {
             }
         } else if (index == 1) {
             testingAddress.setText(addressText);
+            memoryBlock = faCache.returnMemoryBlock(blockSize, addressText);
+            tagBits = faCache.getTagBits();
+
             int cacheLines = faCache.getCacheLines();
             if (faCache.searchAddressFA(addressText, cacheLines)) {
                 indicatorPanel.setBackground(Color.green);
                 hitMissLabel.setText("Miss!");
+                LRUImplementation.updateColumnValues(modelCache, 0);
+            } else {
+                indicatorPanel.setBackground(Color.red);
+                hitMissLabel.setText("Hit!");
             }
 
         }

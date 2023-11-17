@@ -8,6 +8,7 @@ public class FullyAssociativeCache extends Cache {
 
 	private String[][] faCache;
 	public String tagBits, offsetBits;
+	LRUImplementation LRU = new LRUImplementation();
 
 	public FullyAssociativeCache(int tag, int offset) {
 		super(tag, offset);
@@ -28,8 +29,9 @@ public class FullyAssociativeCache extends Cache {
 
 	public void printFA(Deque<String> doublyQueue) {
 		Iterator<String> itr = doublyQueue.iterator();
+		System.out.println("QUEUE STATUS IS: ");
 		while (itr.hasNext()) {
-			System.out.print("queue " + itr + itr.next() + " ");
+			System.out.print(itr.next() + " ");
 		}
 	}
 
@@ -42,17 +44,18 @@ public class FullyAssociativeCache extends Cache {
 		 * by the splitting of the address based on the structure above.
 		 */
 
-		LRUImplementation LRU = new LRUImplementation(cacheLines);
+		LRU.setCACHE_SIZE(cacheLines);
 		Deque<String> doublyQueue = LRU.getDoublyQueue();
-
-		boolean found = false;
-
-		LRU.refer(address);
-
 		printFA(doublyQueue);
+
+		if (LRU.refer(address)) {
+			return false;
+		} else {
+			return true;
+		}
+
 		// LRU.display();
 
-		return true;
 	}
 
 	public Map<String, String> inputAddressAnalysis(String input) {
@@ -69,5 +72,11 @@ public class FullyAssociativeCache extends Cache {
 		bits.put("Offset", offsetBits);
 		// bits.forEach((key, value) -> System.out.println(key + " " + value));
 		return bits;
+	}
+
+	public int returnMemoryBlock(int blockSize, String address) {
+		int addressInDecimal = binaryToDecimal(address);
+		int memoryBlock = addressInDecimal / blockSize;
+		return memoryBlock;
 	}
 }
