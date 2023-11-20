@@ -74,7 +74,7 @@ public class FullyAssociativeCache extends Cache {
 		return bits;
 	}
 
-	public int returnMemoryBlock(int blockSize, String address) {
+	public static int returnMemoryBlock(int blockSize, String address) {
 		int addressInDecimal = binaryToDecimal(address);
 		int memoryBlock = addressInDecimal / blockSize;
 		return memoryBlock;

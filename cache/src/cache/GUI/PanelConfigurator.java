@@ -502,7 +502,6 @@ public class PanelConfigurator extends InitGUI {
             }
         } else if (index == 1) {
             testingAddress.setText(addressText);
-            memoryBlock = faCache.returnMemoryBlock(blockSize, addressText);
 
             int cacheLines = faCache.getCacheLines();
             if (faCache.searchAddressFA(addressText, cacheLines)) {

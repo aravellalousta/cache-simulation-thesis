@@ -85,6 +85,9 @@ public class LRUImplementation {
                 String tagBits = faCache.getTagBits();
 
                 tableModel.setValueAt(tagBits, row, columnIndex);
+
+                int memoryBlock = FullyAssociativeCache.returnMemoryBlock(4, newValue);
+                tableModel.setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
             }
         }
     }
