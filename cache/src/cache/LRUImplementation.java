@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import cache.CacheTypes.*;
+import cache.CacheTypes.FullyAssociativeCache;
 
 public class LRUImplementation {
 
@@ -71,14 +73,18 @@ public class LRUImplementation {
         }
     }
 
-    public static void updateColumnValues(DefaultTableModel tableModel, int columnIndex) {
+    public static void updateColumnValues(FullyAssociativeCache faCache, DefaultTableModel tableModel,
+            int columnIndex) {
         int rowCount = tableModel.getRowCount();
         Iterator<String> iterator = doublyQueue.iterator();
 
         for (int row = 0; row < rowCount; row++) {
             if (iterator.hasNext()) {
                 String newValue = iterator.next();
-                tableModel.setValueAt(newValue, row, columnIndex);
+                faCache.inputAddressAnalysis(newValue);
+                String tagBits = faCache.getTagBits();
+
+                tableModel.setValueAt(tagBits, row, columnIndex);
             }
         }
     }

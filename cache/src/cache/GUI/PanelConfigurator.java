@@ -503,13 +503,12 @@ public class PanelConfigurator extends InitGUI {
         } else if (index == 1) {
             testingAddress.setText(addressText);
             memoryBlock = faCache.returnMemoryBlock(blockSize, addressText);
-            tagBits = faCache.getTagBits();
 
             int cacheLines = faCache.getCacheLines();
             if (faCache.searchAddressFA(addressText, cacheLines)) {
                 indicatorPanel.setBackground(Color.green);
                 hitMissLabel.setText("Miss!");
-                LRUImplementation.updateColumnValues(modelCache, 0);
+                LRUImplementation.updateColumnValues(faCache, modelCache, 0);
             } else {
                 indicatorPanel.setBackground(Color.red);
                 hitMissLabel.setText("Hit!");
