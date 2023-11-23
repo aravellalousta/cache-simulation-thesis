@@ -9,6 +9,7 @@ public class FullyAssociativeCache extends Cache {
 	private String[][] faCache;
 	public String tagBits, offsetBits;
 	LRUImplementation LRU = new LRUImplementation();
+	Map<String, String> bits = new HashMap<>();
 
 	public FullyAssociativeCache(int tag, int offset) {
 		super(tag, offset);
@@ -46,9 +47,14 @@ public class FullyAssociativeCache extends Cache {
 
 		LRU.setCACHE_SIZE(cacheLines);
 		Deque<String> doublyQueue = LRU.getDoublyQueue();
-		printFA(doublyQueue);
+		// printFA(doublyQueue);
 
-		if (LRU.refer(address)) {
+		System.out.println("Address " + address);
+		System.out.println("tag bits : " + bits.get("Tag"));
+
+		String tagBits = bits.get("Tag");
+
+		if (LRU.refer(tagBits)) {
 			return false;
 		} else {
 			return true;
@@ -59,8 +65,6 @@ public class FullyAssociativeCache extends Cache {
 	}
 
 	public Map<String, String> inputAddressAnalysis(String input) {
-
-		Map<String, String> bits = new HashMap<>();
 
 		int tagLength = super.getTag();
 		int offsetLength = super.getOffset();

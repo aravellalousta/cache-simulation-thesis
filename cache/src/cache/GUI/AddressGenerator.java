@@ -9,7 +9,7 @@ public class AddressGenerator {
      * If the RAM size is 128 bytes it means the address is 7 bits long
      * If the RAM size is 256 bytes it means the address is 8 bits long
      */
-    public String[][] addressesArray = new String[10][2];
+    public String[][] addressesArray = new String[15][2];
 
     // Generate random binary addresses with different lengths
     public String[][] generateAddresses() {
