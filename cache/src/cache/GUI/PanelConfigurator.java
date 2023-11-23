@@ -37,16 +37,18 @@ public class PanelConfigurator extends InitGUI {
 
     // Managing the display of addresses
     static AddressGenerator generator = new AddressGenerator();
-    static String[][] addressesArray = {
-            { "0000011", "00000000" },
-            { "0000010", "00000000" },
-            { "0010010", "00000000" },
-            { "0000010", "00000000" },
-            { "1000000", "00000000" },
-            { "0100010", "00000000" },
-            { "1000000", "00000000" },
-            { "0000010", "00000000" },
-    };
+    static String[][] addressesArray;
+
+    // static String[][] addressesArray = {
+    // { "0000011", "01100000" },
+    // { "0000010", "00100000" },
+    // { "0010010", "10010000" },
+    // { "0000010", "01100000" },
+    // { "1000000", "00100000" },
+    // { "0100010", "10000000" },
+    // { "1000000", "01110000" },
+    // { "0000010", "00100000" },
+    // };
     public static JLabel testingAddress;
     public static Timer timer;
 
@@ -369,11 +371,11 @@ public class PanelConfigurator extends InitGUI {
     }
 
     public static void onSubmit(int index) {
-        // addressesArray = generator.generateAddresses();
+        addressesArray = generator.generateAddresses();
 
         JPanel selectedPanel = TabManager.getTab(index);
 
-        timer = new Timer(2500, new ActionListener() {
+        timer = new Timer(1000, new ActionListener() {
             public int currentIndex = 0;
             public String addressText;
             int ramSize = myRam.getSize();
@@ -421,6 +423,9 @@ public class PanelConfigurator extends InitGUI {
                 } else {
                     if (index == 0) {
                         missRate.setText(dmCache.getMissRate());
+                    } else if (index == 1) {
+                        missRate.setText(faCache.getMissRate());
+
                     }
                 }
 

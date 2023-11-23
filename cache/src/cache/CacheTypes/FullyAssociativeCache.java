@@ -15,6 +15,10 @@ public class FullyAssociativeCache extends Cache {
 		super(tag, offset);
 	}
 
+	public String getMissRate() {
+		return Cache.missRate;
+	}
+
 	public void createArrayFA(int cacheLines) {
 		// Cache structure is (tag, data)
 		faCache = new String[cacheLines][2];
@@ -30,7 +34,6 @@ public class FullyAssociativeCache extends Cache {
 
 	public void printFA(Deque<String> doublyQueue) {
 		Iterator<String> itr = doublyQueue.iterator();
-		System.out.println("QUEUE STATUS IS: ");
 		while (itr.hasNext()) {
 			System.out.print(itr.next() + " ");
 		}
@@ -49,14 +52,16 @@ public class FullyAssociativeCache extends Cache {
 		Deque<String> doublyQueue = LRU.getDoublyQueue();
 		// printFA(doublyQueue);
 
-		System.out.println("Address " + address);
-		System.out.println("tag bits : " + bits.get("Tag"));
-
 		String tagBits = bits.get("Tag");
 
 		if (LRU.refer(tagBits)) {
+			// this is hit!
+			Cache.hitCounter++;
 			return false;
 		} else {
+			// this is miss!
+			Cache.missCounter++;
+			Cache.missRate = calculateMissRate(missCounter, hitCounter);
 			return true;
 		}
 

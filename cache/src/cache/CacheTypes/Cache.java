@@ -5,6 +5,8 @@ public class Cache {
 	protected int offset;
 	public static int cacheLines;
 	static DirectMappedCache dm;
+	public static int hitCounter = 0, missCounter = 0;
+	public static String missRate;
 
 	public Cache(int tag, int offset) {
 		super();
