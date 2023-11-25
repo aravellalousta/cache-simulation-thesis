@@ -57,12 +57,12 @@ public class FullyAssociativeCache extends Cache {
 		if (LRU.refer(tagBits)) {
 			// this is hit!
 			Cache.hitCounter++;
-			return false;
+			return true;
 		} else {
 			// this is miss!
 			Cache.missCounter++;
 			Cache.missRate = calculateMissRate(missCounter, hitCounter);
-			return true;
+			return false;
 		}
 
 		// LRU.display();

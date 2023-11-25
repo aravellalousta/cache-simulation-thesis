@@ -64,7 +64,7 @@ public class TabManager extends InitGUI {
                         displaySelectedTabContents(directPanel, 0);
                     } else if (i == 1) {
                         displaySelectedTabContents(fullyPanel, 1);
-                    } else {
+                    } else if (i == 2) {
                         displaySelectedTabContents(setPanel, 2);
                     }
 
