@@ -8,21 +8,24 @@ import cache.LRUImplementation;
 public class SetAssociativeCache extends Cache {
 
 	private int set;
-	public String[][] saCache = {
-			{ "0000", "01100000" },
-			{ "0000", "00100000" },
-			{ "0110", "10010000" },
-			{ "0000", "01100000" },
-			{ "1100", "00100000" },
-			{ "0100", "10000000" },
-			{ "1000", "01110000" },
-			{ "0000", "00100000" },
-	};
+	public String[][] saCache;
+	// = {
+	// { "0000", "01100000" },
+	// { "0000", "00100000" },
+	// { "0110", "10010000" },
+	// { "0000", "01100000" },
+	// { "1100", "00100000" },
+	// { "0100", "10000000" },
+	// { "1000", "01110000" },
+	// { "0000", "00100000" },
+	// };
 	public String tagBits, setBits, offsetBits, searchSet;
-	LRUImplementation setOneLRU = new LRUImplementation();
-	LRUImplementation setTwoLRU = new LRUImplementation();
-	LRUImplementation setThreeLRU = new LRUImplementation();
-	LRUImplementation setFourLRU = new LRUImplementation();
+	LRUImplementation LRU1 = new LRUImplementation();
+	LRUImplementation LRU2 = new LRUImplementation();
+
+	LRUImplementation LRU3 = new LRUImplementation();
+
+	LRUImplementation LRU4 = new LRUImplementation();
 
 	public SetAssociativeCache(int tag, int set, int offset) {
 		super(tag, offset);
@@ -83,10 +86,12 @@ public class SetAssociativeCache extends Cache {
 	public boolean searchAddressSA(String address, int kWaysInput, int cacheLines) {
 		Map<String, String> addressBits = inputAddressAnalysis(address);
 		searchSet = addressBits.get("Set");
-		System.out.println(searchSet);
+
 		if (cacheLines == 8) {
 			if (kWaysInput == 2 || kWaysInput == 4) {
+
 				int setIndex = Integer.parseInt(searchSet, 2);
+
 				int baseLine = (kWaysInput == 2) ? setIndex * 2 : 0;
 				int endLine = baseLine + kWaysInput - 1;
 
@@ -97,15 +102,37 @@ public class SetAssociativeCache extends Cache {
 				}
 			}
 		} else if (cacheLines == 4 && kWaysInput == 2) {
+			LRU1.setCACHE_SIZE(kWaysInput);
+			LRU2.setCACHE_SIZE(kWaysInput);
 			int setIndex = Integer.parseInt(searchSet, 2);
+
+			if (setIndex == 0) {
+				System.out.println("bazw stin lru1");
+				if (LRU1.refer(addressBits.get("Tag"))) {
+					// System.out.println("HIT");
+				}
+				System.out.println("LRU1 : ");
+				LRU1.display();
+				System.out.println("\n-------");
+			} else if (setIndex == 1) {
+				System.out.println("bazw stin lru2");
+
+				if (LRU2.refer(addressBits.get("Tag"))) {
+					// System.out.println("HIT");
+				}
+				System.out.println("\nLRU2 : ");
+				LRU2.display();
+				System.out.println("\n-------");
+			}
+
 			int baseLine = setIndex * 2;
 			int endLine = baseLine + kWaysInput - 1;
 
-			for (int i = baseLine; i <= endLine; i++) {
-				if (addressBits.get("Tag").equals(saCache[i][0])) {
-					return true;
-				}
-			}
+			// for (int i = baseLine; i <= endLine; i++) {
+			// if (addressBits.get("Tag").equals(saCache[i][0])) {
+			// return true;
+			// }
+			// }
 		}
 
 		return false;
