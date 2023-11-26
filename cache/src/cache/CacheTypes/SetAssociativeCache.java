@@ -3,6 +3,8 @@ package cache.CacheTypes;
 import java.util.HashMap;
 import java.util.Map;
 
+import cache.LRUImplementation;
+
 public class SetAssociativeCache extends Cache {
 
 	private int set;
@@ -17,6 +19,10 @@ public class SetAssociativeCache extends Cache {
 			{ "0000", "00100000" },
 	};
 	public String tagBits, setBits, offsetBits, searchSet;
+	LRUImplementation setOneLRU = new LRUImplementation();
+	LRUImplementation setTwoLRU = new LRUImplementation();
+	LRUImplementation setThreeLRU = new LRUImplementation();
+	LRUImplementation setFourLRU = new LRUImplementation();
 
 	public SetAssociativeCache(int tag, int set, int offset) {
 		super(tag, offset);
@@ -76,8 +82,8 @@ public class SetAssociativeCache extends Cache {
 
 	public boolean searchAddressSA(String address, int kWaysInput, int cacheLines) {
 		Map<String, String> addressBits = inputAddressAnalysis(address);
-		searchSet = binaryToHexString(addressBits.get("Set"));
-
+		searchSet = addressBits.get("Set");
+		System.out.println(searchSet);
 		if (cacheLines == 8) {
 			if (kWaysInput == 2 || kWaysInput == 4) {
 				int setIndex = Integer.parseInt(searchSet, 2);

@@ -49,7 +49,7 @@ public class FullyAssociativeCache extends Cache {
 		 */
 
 		LRU.setCACHE_SIZE(cacheLines);
-		Deque<String> doublyQueue = LRU.getDoublyQueue();
+		// Deque<String> doublyQueue = LRU.getDoublyQueue();
 		// printFA(doublyQueue);
 
 		String tagBits = bits.get("Tag");
