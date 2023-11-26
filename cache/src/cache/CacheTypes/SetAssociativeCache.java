@@ -7,14 +7,14 @@ public class SetAssociativeCache extends Cache {
 
 	private int set;
 	public String[][] saCache = {
-			{ "0000011", "01100000" },
-			{ "0000010", "00100000" },
-			{ "0110010", "10010000" },
-			{ "0000110", "01100000" },
-			{ "1100000", "00100000" },
-			{ "0100110", "10000000" },
-			{ "1000100", "01110000" },
-			{ "0000010", "00100000" },
+			{ "0000", "01100000" },
+			{ "0000", "00100000" },
+			{ "0110", "10010000" },
+			{ "0000", "01100000" },
+			{ "1100", "00100000" },
+			{ "0100", "10000000" },
+			{ "1000", "01110000" },
+			{ "0000", "00100000" },
 	};
 	public String tagBits, setBits, offsetBits, searchSet;
 
@@ -77,8 +77,6 @@ public class SetAssociativeCache extends Cache {
 	public boolean searchAddressSA(String address, int kWaysInput, int cacheLines) {
 		Map<String, String> addressBits = inputAddressAnalysis(address);
 		searchSet = binaryToHexString(addressBits.get("Set"));
-		System.out.println("kways pou lamvanw: " + kWaysInput);
-		System.out.println("-----------------\n");
 
 		if (cacheLines == 8) {
 			if (kWaysInput == 2 || kWaysInput == 4) {
@@ -88,20 +86,17 @@ public class SetAssociativeCache extends Cache {
 
 				for (int i = baseLine; i <= endLine; i++) {
 					if (addressBits.get("Tag").equals(saCache[i][0])) {
-						System.out.println("FOUND IT");
 						return true;
 					}
 				}
 			}
 		} else if (cacheLines == 4 && kWaysInput == 2) {
-			System.out.println("mpainw!");
 			int setIndex = Integer.parseInt(searchSet, 2);
 			int baseLine = setIndex * 2;
 			int endLine = baseLine + kWaysInput - 1;
 
 			for (int i = baseLine; i <= endLine; i++) {
 				if (addressBits.get("Tag").equals(saCache[i][0])) {
-					System.out.println("FOUND IT");
 					return true;
 				}
 			}

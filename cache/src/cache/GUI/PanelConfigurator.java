@@ -570,12 +570,8 @@ public class PanelConfigurator extends InitGUI {
         } else if (index == 2) {
             testingAddress.setText(addressText);
             int cacheLines = saCache.getCacheLines();
-            int kWaysInput = saCache.getSet();
-            // PROBLIMA EDW!
-            System.out.println("addresstext: " + addressText);
-            System.out.println("kways pou mpainei: " + kWaysInput);
 
-            if (saCache.searchAddressSA(addressText, kWaysInput, cacheLines)) {
+            if (saCache.searchAddressSA(addressText, kways, cacheLines)) {
                 indicatorPanel.setBackground(Color.red);
                 hitMissLabel.setText("Hit!");
             } else {
