@@ -59,6 +59,8 @@ public class LRUImplementation {
         }
         doublyQueue.push(page);
         hashSet.add(page);
+        System.out.println("-----------");
+        display();
         return found;
     }
 
