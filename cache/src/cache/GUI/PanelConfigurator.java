@@ -498,6 +498,8 @@ public class PanelConfigurator extends InitGUI {
             replacementAlgorithmOption.setSelected(false);
             kWaysOption1.setSelected(false);
             kWaysOption2.setSelected(false);
+            kWaysOption2.setEnabled(true);
+
         }
 
         modelAddress.setColumnCount(0);
