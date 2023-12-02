@@ -72,16 +72,28 @@ public class LRUSetAssociative {
         }
     }
 
-    public static void updateColumnValues(FullyAssociativeCache faCache,
-            DefaultTableModel tableModel, Deque<String> doublyQueue) {
+    public static void updateColumnValues(SetAssociativeCache saCache, DefaultTableModel tableModel,
+            Deque<String> doublyQueue, String set) {
         int rowCount = tableModel.getRowCount();
         Iterator<String> iterator = doublyQueue.iterator();
-        for (int row = 0; row < rowCount; row++) {
-            if (iterator.hasNext()) {
-                String newValue = iterator.next();
-                tableModel.setValueAt(newValue, row, 0);
-                int memoryBlock = FullyAssociativeCache.returnMemoryBlock(4, newValue);
-                tableModel.setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
+
+        if (set.equals("0")) {
+            for (int row = 0; row < rowCount; row++) {
+                if (iterator.hasNext()) {
+                    String newValue = iterator.next();
+                    tableModel.setValueAt(newValue, row, 0);
+                    int memoryBlock = SetAssociativeCache.returnMemoryBlock(4, newValue);
+                    tableModel.setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
+                }
+            }
+        } else if (set.equals("1")) {
+            for (int row = 2; row < rowCount; row++) {
+                if (iterator.hasNext()) {
+                    String newValue = iterator.next();
+                    tableModel.setValueAt(newValue, row, 0);
+                    int memoryBlock = SetAssociativeCache.returnMemoryBlock(4, newValue);
+                    tableModel.setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
+                }
             }
         }
 

@@ -417,7 +417,7 @@ public class PanelConfigurator extends InitGUI {
     public static void onSubmit(int index) {
         // addressesArray = generator.generateAddresses();
 
-        timer = new Timer(1000, new ActionListener() {
+        timer = new Timer(3000, new ActionListener() {
             public int currentIndex = 0;
             public String addressText;
             int ramSize = myRam.getSize();
@@ -584,8 +584,10 @@ public class PanelConfigurator extends InitGUI {
                 hitMissLabel.setText("Miss!");
             }
 
+            String set = saCache.getSetBits();
+            System.out.println("Set is: " + set);
             Deque<String> doublyQueue = LRUSet.getDoublyQueue();
-            LRUSetAssociative.updateColumnValues(faCache, modelCache, doublyQueue);
+            LRUSetAssociative.updateColumnValues(saCache, modelCache, doublyQueue, set);
 
         }
     }
