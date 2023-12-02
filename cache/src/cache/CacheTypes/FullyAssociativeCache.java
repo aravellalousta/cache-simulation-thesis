@@ -72,7 +72,6 @@ public class FullyAssociativeCache extends Cache {
 
 		bits.put("Tag", tagBits);
 		bits.put("Offset", offsetBits);
-		// bits.forEach((key, value) -> System.out.println(key + " " + value));
 		return bits;
 	}
 

@@ -83,12 +83,6 @@ public class SetAssociativeCache extends Cache {
 		saCache = new String[cacheLines][2];
 	}
 
-	public void printSA(String[][] saCache) {
-		for (int i = 0; i < saCache.length; i++) {
-			System.out.println(saCache[i][0]);
-		}
-	}
-
 	public boolean searchAddressSA(String address, int kWaysInput, int cacheLines) {
 		Map<String, String> addressBits = inputAddressAnalysis(address);
 		searchSet = addressBits.get("Set");
@@ -103,7 +97,6 @@ public class SetAssociativeCache extends Cache {
 				int setIndex = Integer.parseInt(searchSet, 2);
 
 				if (setIndex == 0) {
-					System.out.println("\nbazw stin lru1");
 					if (LRU1.refer(addressBits.get("Tag"))) {
 						Cache.hitCounter++;
 						return true;
@@ -114,7 +107,6 @@ public class SetAssociativeCache extends Cache {
 					}
 
 				} else if (setIndex == 1) {
-					System.out.println("\nbazw stin lru2");
 					if (LRU2.refer(addressBits.get("Tag"))) {
 						Cache.hitCounter++;
 						return true;
@@ -125,7 +117,6 @@ public class SetAssociativeCache extends Cache {
 					}
 
 				} else if (setIndex == 2) {
-					System.out.println("\nbazw stin lru3");
 					if (LRU3.refer(addressBits.get("Tag"))) {
 						Cache.hitCounter++;
 						return true;
@@ -136,7 +127,6 @@ public class SetAssociativeCache extends Cache {
 					}
 
 				} else if (setIndex == 3) {
-					System.out.println("\nbazw stin lru4");
 					if (LRU4.refer(addressBits.get("Tag"))) {
 						Cache.hitCounter++;
 						return true;
@@ -155,7 +145,6 @@ public class SetAssociativeCache extends Cache {
 			int setIndex = Integer.parseInt(searchSet, 2);
 
 			if (setIndex == 0) {
-				System.out.println("\nbazw stin lru1");
 				if (LRU1.refer(addressBits.get("Tag"))) {
 					Cache.hitCounter++;
 					return true;
@@ -165,8 +154,6 @@ public class SetAssociativeCache extends Cache {
 					return false;
 				}
 			} else if (setIndex == 1) {
-				System.out.println("\nbazw stin lru2");
-
 				if (LRU2.refer(addressBits.get("Tag"))) {
 					Cache.hitCounter++;
 					return true;
@@ -203,7 +190,6 @@ public class SetAssociativeCache extends Cache {
 		bits.put("Tag", tagBits);
 		bits.put("Set", setBits);
 		bits.put("Offset", offsetBits);
-		// bits.forEach((key, value) -> System.out.println(key + " " + value));
 		return bits;
 	}
 
