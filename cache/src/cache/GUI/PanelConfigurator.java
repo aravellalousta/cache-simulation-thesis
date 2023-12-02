@@ -2,11 +2,8 @@ package cache.GUI;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Deque;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 import cache.LRUFullyAssociative;
 import cache.LRUSetAssociative;
 import cache.Ram;
@@ -41,30 +38,8 @@ public class PanelConfigurator extends InitGUI {
 
     // Managing the display of addresses
     static AddressGenerator generator = new AddressGenerator();
-    // static String[][] addressesArray;
+    static String[][] addressesArray;
 
-    // static String[][] addressesArray = {
-    // { "0000011", "01100000" },
-    // { "0000010", "00100000" },
-    // { "0010010", "10010000" },
-    // { "0000010", "01100000" },
-    // { "1000000", "00100000" },
-    // { "0100010", "10000000" },
-    // { "1000000", "01110000" },
-    // { "0000010", "00100000" },
-    // };
-
-    // TESTING FOR SET ASSOCIATIVE
-    static String[][] addressesArray = {
-            { "0000011", "01111110" },
-            { "0000010", "00100110" },
-            { "0010010", "10011000" },
-            { "0000010", "01111000" },
-            { "1000000", "00101100" },
-            { "0100100", "10110000" },
-            { "1111000", "01111000" },
-            { "0011110", "00100000" },
-    };
     public static JLabel testingAddress;
     public static Timer timer;
 
@@ -352,7 +327,6 @@ public class PanelConfigurator extends InitGUI {
         manualOption.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // setting something to true
                 automaticOption.setEnabled(false);
             }
         });
@@ -360,7 +334,6 @@ public class PanelConfigurator extends InitGUI {
         automaticOption.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // setting something to true
                 manualOption.setEnabled(false);
             }
         });
@@ -415,9 +388,23 @@ public class PanelConfigurator extends InitGUI {
     }
 
     public static void onSubmit(int index) {
-        // addressesArray = generator.generateAddresses();
 
-        timer = new Timer(3000, new ActionListener() {
+        if (automaticOption.isSelected()) {
+            addressesArray = generator.generateAddresses();
+        } else if (manualOption.isSelected()) {
+            addressesArray = new String[][] {
+                    { "0000011", "01111110" },
+                    { "0000010", "00100110" },
+                    { "0010010", "10011000" },
+                    { "0000010", "01111000" },
+                    { "1000000", "00101100" },
+                    { "0100100", "10110000" },
+                    { "1111000", "01111000" },
+                    { "0011110", "00100000" },
+            };
+        }
+
+        timer = new Timer(1000, new ActionListener() {
             public int currentIndex = 0;
             public String addressText;
             int ramSize = myRam.getSize();
@@ -521,12 +508,15 @@ public class PanelConfigurator extends InitGUI {
         hitMissLabel.setText("   ");
         missRate.setText("");
 
+        resetStatus = false;
+
     }
 
     public static boolean checkAllOptionsSelected(int index) {
         if ((ramSizeOption1.isSelected() || ramSizeOption2.isSelected())
                 && (cacheSizeOption1.isSelected() || cacheSizeOption2.isSelected())
-                && blockSizeOption.isSelected()) {
+                && blockSizeOption.isSelected()
+                && (manualOption.isSelected() || automaticOption.isSelected())) {
             if (index == 1 && replacementAlgorithmOption.isSelected()) {
                 return true;
             } else if (index == 2 && replacementAlgorithmOption.isSelected()

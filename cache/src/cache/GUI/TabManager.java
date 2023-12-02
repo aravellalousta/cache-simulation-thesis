@@ -79,13 +79,9 @@ public class TabManager extends InitGUI {
 
     /*
      * Methods for displaying the appropriate UI of each tab.
-     * Every tab consists of 2 panels, left and right.
-     * The left panel includes all options to initialize the simulation.
-     * The right panel displays the simulation in action.
      */
     public static void displaySelectedTabContents(JPanel panel, int index) {
 
-        // Add the left and right panels to the main panel
         if (flag[index] == false) {
             JPanel leftPanel = PanelConfigurator.configurePanel(index);
             panel.add(leftPanel);
