@@ -2,6 +2,8 @@ package cache.GUI;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Deque;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,6 +16,7 @@ public class PanelConfigurator extends InitGUI {
     public static DirectMappedCache dmCache;
     public static FullyAssociativeCache faCache;
     public static SetAssociativeCache saCache;
+    public static LRUImplementation LRU = new LRUImplementation();
 
     public static JLabel leftColumnLabel, ramSizeInputLabel, cacheSizeInputLabel, blockSizeInputLabel,
             replacementAlgorithmLabel, kWaysLabel;
@@ -51,14 +54,14 @@ public class PanelConfigurator extends InitGUI {
 
     // TESTING FOR SET ASSOCIATIVE
     static String[][] addressesArray = {
-            { "0000011", "01100000" },
-            { "0000010", "00100000" },
-            { "0010010", "10010000" },
-            { "0000010", "01100000" },
-            { "1000000", "00100000" },
-            { "0100100", "10000000" },
-            { "1111000", "01110000" },
-            { "0011010", "00100000" },
+            { "0000011", "01111110" },
+            { "0000010", "00100110" },
+            { "0010010", "10011000" },
+            { "0000010", "01111000" },
+            { "1000000", "00101100" },
+            { "0100100", "10110000" },
+            { "1111000", "01111000" },
+            { "0011110", "00100000" },
     };
     public static JLabel testingAddress;
     public static Timer timer;
@@ -566,7 +569,8 @@ public class PanelConfigurator extends InitGUI {
                 hitMissLabel.setText("Miss!");
             }
 
-            LRUImplementation.updateColumnValues(faCache, modelCache);
+            Deque<String> doublyQueue = LRU.getDoublyQueue();
+            LRUImplementation.updateColumnValues(faCache, modelCache, doublyQueue);
         } else if (index == 2) {
             testingAddress.setText(addressText);
             int cacheLines = saCache.getCacheLines();
