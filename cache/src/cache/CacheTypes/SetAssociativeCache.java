@@ -1,7 +1,11 @@
 package cache.CacheTypes;
 
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+
+import javax.swing.table.DefaultTableModel;
 
 import cache.LRUSetAssociative;
 
@@ -179,6 +183,43 @@ public class SetAssociativeCache extends Cache {
 		bits.put("Offset", offsetBits);
 		// bits.forEach((key, value) -> System.out.println(key + " " + value));
 		return bits;
+	}
+
+	public void updateColumnValues(Deque<String> doublyQueue, DefaultTableModel tableModel, String set) {
+		int rowCount = tableModel.getRowCount();
+		Iterator<String> iterator = doublyQueue.iterator();
+
+		Deque<String> d1 = LRU1.getDoublyQueue();
+		Iterator<String> iteratorOfD1 = d1.iterator();
+		System.out.println("LRU1: " + d1);
+
+		Deque<String> d2 = LRU2.getDoublyQueue();
+		Iterator<String> iteratorOfD2 = d2.iterator();
+
+		System.out.println("LRU2: " + d2);
+
+		if (set.equals("0")) {
+			System.out.println("bazw panw");
+			for (int row = 0; row < rowCount; row++) {
+				if (iteratorOfD1.hasNext()) {
+					String newValue = iteratorOfD1.next();
+					tableModel.setValueAt(newValue, row, 0);
+					int memoryBlock = SetAssociativeCache.returnMemoryBlock(4, newValue);
+					tableModel.setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
+				}
+			}
+		} else if (set.equals("1")) {
+			System.out.println("bazw katw");
+			for (int row = 2; row < rowCount; row++) {
+				if (iteratorOfD2.hasNext()) {
+					String newValue = iteratorOfD2.next();
+					tableModel.setValueAt(newValue, row, 0);
+					int memoryBlock = SetAssociativeCache.returnMemoryBlock(4, newValue);
+					tableModel.setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
+				}
+			}
+		}
+
 	}
 
 }

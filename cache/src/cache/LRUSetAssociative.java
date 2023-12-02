@@ -1,14 +1,7 @@
 package cache;
 
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import javax.swing.*;
+import java.util.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import cache.CacheTypes.*;
-import cache.CacheTypes.FullyAssociativeCache;
 import cache.CacheTypes.SetAssociativeCache;
 
 public class LRUSetAssociative {
@@ -61,46 +54,14 @@ public class LRUSetAssociative {
         doublyQueue.push(page);
         hashSet.add(page);
 
-        System.out.println("-----------");
         return found;
     }
 
-    // display contents of cache
     public void display() {
         Iterator<String> itr = doublyQueue.iterator();
         while (itr.hasNext()) {
             System.out.print(itr.next() + " ");
         }
-    }
-
-    public void updateColumnValues(SetAssociativeCache saCache, DefaultTableModel tableModel,
-            Deque<String> doublyQueue, String set) {
-        int rowCount = tableModel.getRowCount();
-        Iterator<String> iterator = doublyQueue.iterator();
-
-        System.out.println(doublyQueue);
-
-        if (set.equals("0")) {
-            for (int row = 0; row < rowCount; row++) {
-                if (iterator.hasNext()) {
-                    System.out.println("????");
-                    String newValue = iterator.next();
-                    tableModel.setValueAt(newValue, row, 0);
-                    int memoryBlock = SetAssociativeCache.returnMemoryBlock(4, newValue);
-                    tableModel.setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
-                }
-            }
-        } else if (set.equals("1")) {
-            for (int row = 2; row < rowCount; row++) {
-                if (iterator.hasNext()) {
-                    String newValue = iterator.next();
-                    tableModel.setValueAt(newValue, row, 0);
-                    int memoryBlock = SetAssociativeCache.returnMemoryBlock(4, newValue);
-                    tableModel.setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
-                }
-            }
-        }
-
     }
 
 }

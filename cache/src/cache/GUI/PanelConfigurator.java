@@ -586,8 +586,7 @@ public class PanelConfigurator extends InitGUI {
 
             String set = saCache.getSetBits();
             Deque<String> doublyQueue = LRUSet.getDoublyQueue();
-            System.out.println(doublyQueue);
-            LRUSet.updateColumnValues(saCache, modelCache, doublyQueue, set);
+            saCache.updateColumnValues(doublyQueue, modelCache, set);
 
         }
     }
