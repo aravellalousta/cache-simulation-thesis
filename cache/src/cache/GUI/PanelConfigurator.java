@@ -7,7 +7,8 @@ import java.util.Deque;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import cache.LRUImplementation;
+import cache.LRUFullyAssociative;
+import cache.LRUSetAssociative;
 import cache.Ram;
 import cache.CacheTypes.*;
 
@@ -16,7 +17,8 @@ public class PanelConfigurator extends InitGUI {
     public static DirectMappedCache dmCache;
     public static FullyAssociativeCache faCache;
     public static SetAssociativeCache saCache;
-    public static LRUImplementation LRU = new LRUImplementation();
+    public static LRUFullyAssociative LRUFully = new LRUFullyAssociative();
+    public static LRUFullyAssociative LRUSet = new LRUFullyAssociative();
 
     public static JLabel leftColumnLabel, ramSizeInputLabel, cacheSizeInputLabel, blockSizeInputLabel,
             replacementAlgorithmLabel, kWaysLabel;
@@ -569,7 +571,7 @@ public class PanelConfigurator extends InitGUI {
                 hitMissLabel.setText("Miss!");
             }
 
-            LRUImplementation.updateColumnValues(faCache, modelCache);
+            LRUFullyAssociative.updateColumnValues(faCache, modelCache);
         } else if (index == 2) {
             testingAddress.setText(addressText);
             int cacheLines = saCache.getCacheLines();
@@ -581,6 +583,9 @@ public class PanelConfigurator extends InitGUI {
                 indicatorPanel.setBackground(Color.green);
                 hitMissLabel.setText("Miss!");
             }
+
+            Deque<String> doublyQueue = LRUSet.getDoublyQueue();
+            LRUSetAssociative.updateColumnValues(faCache, modelCache, doublyQueue);
 
         }
     }

@@ -10,7 +10,7 @@ import javax.swing.table.TableModel;
 import cache.CacheTypes.*;
 import cache.CacheTypes.FullyAssociativeCache;
 
-public class LRUImplementation {
+public class LRUFullyAssociative {
 
     // store keys of cache
     private static Deque<String> doublyQueue;
@@ -34,7 +34,7 @@ public class LRUImplementation {
     // maximum capacity of cache
     private int CACHE_SIZE;
 
-    public LRUImplementation() {
+    public LRUFullyAssociative() {
         doublyQueue = new LinkedList<>();
         hashSet = new HashSet<>();
     }

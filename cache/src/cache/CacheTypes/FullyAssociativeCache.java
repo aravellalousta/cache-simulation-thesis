@@ -2,13 +2,13 @@ package cache.CacheTypes;
 
 import java.util.*;
 
-import cache.LRUImplementation;
+import cache.LRUFullyAssociative;
 
 public class FullyAssociativeCache extends Cache {
 
 	private String[][] faCache;
 	public String tagBits, offsetBits;
-	LRUImplementation LRU = new LRUImplementation();
+	LRUFullyAssociative LRU = new LRUFullyAssociative();
 	Map<String, String> bits = new HashMap<>();
 
 	public FullyAssociativeCache(int tag, int offset) {
