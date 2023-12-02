@@ -32,13 +32,6 @@ public class FullyAssociativeCache extends Cache {
 		return this.offsetBits;
 	}
 
-	public void printFA(Deque<String> doublyQueue) {
-		Iterator<String> itr = doublyQueue.iterator();
-		while (itr.hasNext()) {
-			System.out.print(itr.next() + " ");
-		}
-	}
-
 	public boolean searchAddressFA(String address, int cacheLines) {
 		/*
 		 * Split the input address String into the Fully Associative Cache structure

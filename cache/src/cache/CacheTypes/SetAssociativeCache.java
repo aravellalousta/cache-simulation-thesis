@@ -3,7 +3,7 @@ package cache.CacheTypes;
 import java.util.HashMap;
 import java.util.Map;
 
-import cache.LRUFullyAssociative;
+import cache.LRUSetAssociative;
 
 public class SetAssociativeCache extends Cache {
 
@@ -20,10 +20,10 @@ public class SetAssociativeCache extends Cache {
 	// { "0000", "00100000" },
 	// };
 	public String tagBits, setBits, offsetBits, searchSet;
-	LRUFullyAssociative LRU1 = new LRUFullyAssociative();
-	LRUFullyAssociative LRU2 = new LRUFullyAssociative();
-	LRUFullyAssociative LRU3 = new LRUFullyAssociative();
-	LRUFullyAssociative LRU4 = new LRUFullyAssociative();
+	LRUSetAssociative LRU1 = new LRUSetAssociative();
+	LRUSetAssociative LRU2 = new LRUSetAssociative();
+	LRUSetAssociative LRU3 = new LRUSetAssociative();
+	LRUSetAssociative LRU4 = new LRUSetAssociative();
 
 	public SetAssociativeCache(int tag, int set, int offset) {
 		super(tag, offset);
