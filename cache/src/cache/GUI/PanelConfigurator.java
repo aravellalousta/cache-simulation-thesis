@@ -18,7 +18,7 @@ public class PanelConfigurator extends InitGUI {
     public static FullyAssociativeCache faCache;
     public static SetAssociativeCache saCache;
     public static LRUFullyAssociative LRUFully = new LRUFullyAssociative();
-    public static LRUFullyAssociative LRUSet = new LRUFullyAssociative();
+    public static LRUSetAssociative LRUSet = new LRUSetAssociative();
 
     public static JLabel leftColumnLabel, ramSizeInputLabel, cacheSizeInputLabel, blockSizeInputLabel,
             replacementAlgorithmLabel, kWaysLabel;
@@ -585,9 +585,9 @@ public class PanelConfigurator extends InitGUI {
             }
 
             String set = saCache.getSetBits();
-            System.out.println("Set is: " + set);
             Deque<String> doublyQueue = LRUSet.getDoublyQueue();
-            LRUSetAssociative.updateColumnValues(saCache, modelCache, doublyQueue, set);
+            System.out.println(doublyQueue);
+            LRUSet.updateColumnValues(saCache, modelCache, doublyQueue, set);
 
         }
     }

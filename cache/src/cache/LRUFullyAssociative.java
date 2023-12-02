@@ -17,7 +17,7 @@ public class LRUFullyAssociative {
     static int row;
 
     public Deque<String> getDoublyQueue() {
-        return this.doublyQueue;
+        return LRUFullyAssociative.doublyQueue;
     }
 
     public void setCACHE_SIZE(int cacheSize) {
