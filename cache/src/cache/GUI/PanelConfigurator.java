@@ -584,9 +584,8 @@ public class PanelConfigurator extends InitGUI {
                 hitMissLabel.setText("Miss!");
             }
 
-            String set = saCache.getSetBits();
-            Deque<String> doublyQueue = LRUSet.getDoublyQueue();
-            saCache.updateColumnValues(doublyQueue, modelCache, set);
+            int set = Integer.parseInt(saCache.getSetBits(), 2);
+            saCache.updateColumnValues(modelCache, set);
 
         }
     }

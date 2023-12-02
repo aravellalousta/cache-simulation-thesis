@@ -185,21 +185,22 @@ public class SetAssociativeCache extends Cache {
 		return bits;
 	}
 
-	public void updateColumnValues(Deque<String> doublyQueue, DefaultTableModel tableModel, String set) {
+	public void updateColumnValues(DefaultTableModel tableModel, int set) {
 		int rowCount = tableModel.getRowCount();
-		Iterator<String> iterator = doublyQueue.iterator();
 
 		Deque<String> d1 = LRU1.getDoublyQueue();
 		Iterator<String> iteratorOfD1 = d1.iterator();
-		System.out.println("LRU1: " + d1);
 
 		Deque<String> d2 = LRU2.getDoublyQueue();
 		Iterator<String> iteratorOfD2 = d2.iterator();
 
-		System.out.println("LRU2: " + d2);
+		Deque<String> d3 = LRU3.getDoublyQueue();
+		Iterator<String> iteratorOfD3 = d3.iterator();
 
-		if (set.equals("0")) {
-			System.out.println("bazw panw");
+		Deque<String> d4 = LRU4.getDoublyQueue();
+		Iterator<String> iteratorOfD4 = d4.iterator();
+
+		if (set == 0) {
 			for (int row = 0; row < rowCount; row++) {
 				if (iteratorOfD1.hasNext()) {
 					String newValue = iteratorOfD1.next();
@@ -208,11 +209,28 @@ public class SetAssociativeCache extends Cache {
 					tableModel.setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
 				}
 			}
-		} else if (set.equals("1")) {
-			System.out.println("bazw katw");
+		} else if (set == 1) {
 			for (int row = 2; row < rowCount; row++) {
 				if (iteratorOfD2.hasNext()) {
 					String newValue = iteratorOfD2.next();
+					tableModel.setValueAt(newValue, row, 0);
+					int memoryBlock = SetAssociativeCache.returnMemoryBlock(4, newValue);
+					tableModel.setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
+				}
+			}
+		} else if (set == 2) {
+			for (int row = 4; row < rowCount; row++) {
+				if (iteratorOfD3.hasNext()) {
+					String newValue = iteratorOfD3.next();
+					tableModel.setValueAt(newValue, row, 0);
+					int memoryBlock = SetAssociativeCache.returnMemoryBlock(4, newValue);
+					tableModel.setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
+				}
+			}
+		} else if (set == 3) {
+			for (int row = 6; row < rowCount; row++) {
+				if (iteratorOfD4.hasNext()) {
+					String newValue = iteratorOfD4.next();
 					tableModel.setValueAt(newValue, row, 0);
 					int memoryBlock = SetAssociativeCache.returnMemoryBlock(4, newValue);
 					tableModel.setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
