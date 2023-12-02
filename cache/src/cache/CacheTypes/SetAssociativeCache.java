@@ -89,17 +89,47 @@ public class SetAssociativeCache extends Cache {
 
 		if (cacheLines == 8) {
 			if (kWaysInput == 2 || kWaysInput == 4) {
+				LRU1.setCACHE_SIZE(kWaysInput);
+				LRU2.setCACHE_SIZE(kWaysInput);
+				LRU3.setCACHE_SIZE(kWaysInput);
+				LRU4.setCACHE_SIZE(kWaysInput);
 
 				int setIndex = Integer.parseInt(searchSet, 2);
 
-				int baseLine = (kWaysInput == 2) ? setIndex * 2 : 0;
-				int endLine = baseLine + kWaysInput - 1;
-
-				for (int i = baseLine; i <= endLine; i++) {
-					if (addressBits.get("Tag").equals(saCache[i][0])) {
+				if (setIndex == 0) {
+					System.out.println("\nbazw stin lru1");
+					if (LRU1.refer(addressBits.get("Tag"))) {
 						return true;
+					} else {
+						return false;
 					}
+
+				} else if (setIndex == 1) {
+					System.out.println("\nbazw stin lru2");
+					if (LRU2.refer(addressBits.get("Tag"))) {
+						return true;
+					} else {
+						return false;
+					}
+
+				} else if (setIndex == 2) {
+					System.out.println("\nbazw stin lru3");
+					if (LRU3.refer(addressBits.get("Tag"))) {
+						return true;
+					} else {
+						return false;
+					}
+
+				} else if (setIndex == 3) {
+					System.out.println("\nbazw stin lru4");
+					if (LRU4.refer(addressBits.get("Tag"))) {
+						return true;
+					} else {
+						return false;
+					}
+
 				}
+
 			}
 		} else if (cacheLines == 4 && kWaysInput == 2) {
 			LRU1.setCACHE_SIZE(kWaysInput);
@@ -107,32 +137,21 @@ public class SetAssociativeCache extends Cache {
 			int setIndex = Integer.parseInt(searchSet, 2);
 
 			if (setIndex == 0) {
-				System.out.println("bazw stin lru1");
+				System.out.println("\nbazw stin lru1");
 				if (LRU1.refer(addressBits.get("Tag"))) {
-					// System.out.println("HIT");
+					return true;
+				} else {
+					return false;
 				}
-				System.out.println("LRU1 : ");
-				LRU1.display();
-				System.out.println("\n-------");
 			} else if (setIndex == 1) {
-				System.out.println("bazw stin lru2");
+				System.out.println("\nbazw stin lru2");
 
 				if (LRU2.refer(addressBits.get("Tag"))) {
-					// System.out.println("HIT");
+					return true;
+				} else {
+					return false;
 				}
-				System.out.println("\nLRU2 : ");
-				LRU2.display();
-				System.out.println("\n-------");
 			}
-
-			int baseLine = setIndex * 2;
-			int endLine = baseLine + kWaysInput - 1;
-
-			// for (int i = baseLine; i <= endLine; i++) {
-			// if (addressBits.get("Tag").equals(saCache[i][0])) {
-			// return true;
-			// }
-			// }
 		}
 
 		return false;
