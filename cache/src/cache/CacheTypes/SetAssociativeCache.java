@@ -34,6 +34,10 @@ public class SetAssociativeCache extends Cache {
 		this.set = set;
 	}
 
+	public String getMissRate() {
+		return Cache.missRate;
+	}
+
 	public int getSet() {
 		return this.set;
 	}
@@ -101,32 +105,44 @@ public class SetAssociativeCache extends Cache {
 				if (setIndex == 0) {
 					System.out.println("\nbazw stin lru1");
 					if (LRU1.refer(addressBits.get("Tag"))) {
+						Cache.hitCounter++;
 						return true;
 					} else {
+						Cache.missCounter++;
+						Cache.missRate = calculateMissRate(missCounter, hitCounter);
 						return false;
 					}
 
 				} else if (setIndex == 1) {
 					System.out.println("\nbazw stin lru2");
 					if (LRU2.refer(addressBits.get("Tag"))) {
+						Cache.hitCounter++;
 						return true;
 					} else {
+						Cache.missCounter++;
+						Cache.missRate = calculateMissRate(missCounter, hitCounter);
 						return false;
 					}
 
 				} else if (setIndex == 2) {
 					System.out.println("\nbazw stin lru3");
 					if (LRU3.refer(addressBits.get("Tag"))) {
+						Cache.hitCounter++;
 						return true;
 					} else {
+						Cache.missCounter++;
+						Cache.missRate = calculateMissRate(missCounter, hitCounter);
 						return false;
 					}
 
 				} else if (setIndex == 3) {
 					System.out.println("\nbazw stin lru4");
 					if (LRU4.refer(addressBits.get("Tag"))) {
+						Cache.hitCounter++;
 						return true;
 					} else {
+						Cache.missCounter++;
+						Cache.missRate = calculateMissRate(missCounter, hitCounter);
 						return false;
 					}
 
@@ -141,16 +157,22 @@ public class SetAssociativeCache extends Cache {
 			if (setIndex == 0) {
 				System.out.println("\nbazw stin lru1");
 				if (LRU1.refer(addressBits.get("Tag"))) {
+					Cache.hitCounter++;
 					return true;
 				} else {
+					Cache.missCounter++;
+					Cache.missRate = calculateMissRate(missCounter, hitCounter);
 					return false;
 				}
 			} else if (setIndex == 1) {
 				System.out.println("\nbazw stin lru2");
 
 				if (LRU2.refer(addressBits.get("Tag"))) {
+					Cache.hitCounter++;
 					return true;
 				} else {
+					Cache.missCounter++;
+					Cache.missRate = calculateMissRate(missCounter, hitCounter);
 					return false;
 				}
 			}

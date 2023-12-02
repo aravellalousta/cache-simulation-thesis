@@ -457,6 +457,8 @@ public class PanelConfigurator extends InitGUI {
                         missRate.setText(dmCache.getMissRate());
                     } else if (index == 1) {
                         missRate.setText(faCache.getMissRate());
+                    } else if (index == 2) {
+                        missRate.setText(saCache.getMissRate());
                     }
                 }
 
