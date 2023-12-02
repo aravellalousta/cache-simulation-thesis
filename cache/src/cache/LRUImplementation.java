@@ -13,7 +13,7 @@ import cache.CacheTypes.FullyAssociativeCache;
 public class LRUImplementation {
 
     // store keys of cache
-    private Deque<String> doublyQueue;
+    private static Deque<String> doublyQueue;
     static int row;
 
     public Deque<String> getDoublyQueue() {
@@ -73,7 +73,7 @@ public class LRUImplementation {
     }
 
     public static void updateColumnValues(FullyAssociativeCache faCache,
-            DefaultTableModel tableModel, Deque<String> doublyQueue) {
+            DefaultTableModel tableModel) {
         int rowCount = tableModel.getRowCount();
         Iterator<String> iterator = doublyQueue.iterator();
         for (int row = 0; row < rowCount; row++) {

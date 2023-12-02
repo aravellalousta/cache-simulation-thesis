@@ -569,8 +569,7 @@ public class PanelConfigurator extends InitGUI {
                 hitMissLabel.setText("Miss!");
             }
 
-            Deque<String> doublyQueue = LRU.getDoublyQueue();
-            LRUImplementation.updateColumnValues(faCache, modelCache, doublyQueue);
+            LRUImplementation.updateColumnValues(faCache, modelCache);
         } else if (index == 2) {
             testingAddress.setText(addressText);
             int cacheLines = saCache.getCacheLines();

@@ -22,9 +22,7 @@ public class SetAssociativeCache extends Cache {
 	public String tagBits, setBits, offsetBits, searchSet;
 	LRUImplementation LRU1 = new LRUImplementation();
 	LRUImplementation LRU2 = new LRUImplementation();
-
 	LRUImplementation LRU3 = new LRUImplementation();
-
 	LRUImplementation LRU4 = new LRUImplementation();
 
 	public SetAssociativeCache(int tag, int set, int offset) {
