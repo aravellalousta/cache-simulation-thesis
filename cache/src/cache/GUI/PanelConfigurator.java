@@ -401,12 +401,12 @@ public class PanelConfigurator extends InitGUI {
                     { "0100100", "10110000" },
                     { "1111000", "01111000" },
                     { "0011110", "00100000" },
-                    { "0011110", "00101101" },
+                    { "1111011", "00101101" },
                     { "1011000", "00100100" }
             };
         }
 
-        timer = new Timer(3000, new ActionListener() {
+        timer = new Timer(4000, new ActionListener() {
             public int currentIndex = 0;
             public String addressText;
             int ramSize = myRam.getSize();

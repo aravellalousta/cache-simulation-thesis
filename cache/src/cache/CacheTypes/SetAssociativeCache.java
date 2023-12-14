@@ -13,16 +13,6 @@ public class SetAssociativeCache extends Cache {
 
 	private int set;
 	public String[][] saCache;
-	// = {
-	// { "0000", "01100000" },
-	// { "0000", "00100000" },
-	// { "0110", "10010000" },
-	// { "0000", "01100000" },
-	// { "1100", "00100000" },
-	// { "0100", "10000000" },
-	// { "1000", "01110000" },
-	// { "0000", "00100000" },
-	// };
 	public String tagBits, setBits, offsetBits, searchSet;
 	LRUSetAssociative LRU1 = new LRUSetAssociative();
 	LRUSetAssociative LRU2 = new LRUSetAssociative();
@@ -89,10 +79,10 @@ public class SetAssociativeCache extends Cache {
 
 		if (cacheLines == 8) {
 			if (kWaysInput == 2 || kWaysInput == 4) {
-				LRU1.setCACHE_SIZE(kWaysInput);
-				LRU2.setCACHE_SIZE(kWaysInput);
-				LRU3.setCACHE_SIZE(kWaysInput);
-				LRU4.setCACHE_SIZE(kWaysInput);
+				LRU1.setCACHE_SIZE(2);
+				LRU2.setCACHE_SIZE(2);
+				LRU3.setCACHE_SIZE(2);
+				LRU4.setCACHE_SIZE(2);
 
 				int setIndex = Integer.parseInt(searchSet, 2);
 
@@ -164,7 +154,6 @@ public class SetAssociativeCache extends Cache {
 				}
 			}
 		}
-
 		return false;
 	}
 
