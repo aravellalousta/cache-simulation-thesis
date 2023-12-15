@@ -406,7 +406,7 @@ public class PanelConfigurator extends InitGUI {
             };
         }
 
-        timer = new Timer(4000, new ActionListener() {
+        timer = new Timer(100, new ActionListener() {
             public int currentIndex = 0;
             public String addressText;
             int ramSize = myRam.getSize();
@@ -455,12 +455,13 @@ public class PanelConfigurator extends InitGUI {
 
                     fillCacheTableWithData(index, addressText);
                 } else {
+
                     if (index == 0) {
-                        missRate.setText(dmCache.getMissRate());
+                        missRate.setText(Double.toString(dmCache.getMissRate()) + "%");
                     } else if (index == 1) {
-                        missRate.setText(faCache.getMissRate());
+                        missRate.setText(Double.toString(faCache.getMissRate()) + "%");
                     } else if (index == 2) {
-                        missRate.setText(saCache.getMissRate());
+                        missRate.setText(Double.toString(saCache.getMissRate()) + "%");
                     }
                 }
 
@@ -513,6 +514,8 @@ public class PanelConfigurator extends InitGUI {
         indicatorPanel.setBackground(Color.gray);
         hitMissLabel.setText("   ");
         missRate.setText("");
+        Cache.hitCounter = 0;
+        Cache.missCounter = 0;
 
         resetStatus = false;
 

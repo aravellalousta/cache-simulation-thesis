@@ -15,7 +15,7 @@ public class FullyAssociativeCache extends Cache {
 		super(tag, offset);
 	}
 
-	public String getMissRate() {
+	public double getMissRate() {
 		return Cache.missRate;
 	}
 
@@ -41,24 +41,21 @@ public class FullyAssociativeCache extends Cache {
 		 * by the splitting of the address based on the structure above.
 		 */
 
+		boolean flag;
 		LRU.setCACHE_SIZE(cacheLines);
-		// Deque<String> doublyQueue = LRU.getDoublyQueue();
-		// printFA(doublyQueue);
 
 		String tagBits = bits.get("Tag");
 
 		if (LRU.refer(tagBits)) {
-			// this is hit!
 			Cache.hitCounter++;
-			return true;
+			flag = true;
 		} else {
-			// this is miss!
 			Cache.missCounter++;
-			Cache.missRate = calculateMissRate(missCounter, hitCounter);
-			return false;
+			flag = false;
 		}
+		Cache.missRate = calculateMissRate(missCounter, hitCounter);
 
-		// LRU.display();
+		return flag;
 
 	}
 

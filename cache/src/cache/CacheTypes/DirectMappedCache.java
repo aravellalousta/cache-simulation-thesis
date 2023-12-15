@@ -19,7 +19,7 @@ public class DirectMappedCache extends Cache {
 		this.line = line;
 	}
 
-	public String getMissRate() {
+	public double getMissRate() {
 		return Cache.missRate;
 	}
 
@@ -74,20 +74,22 @@ public class DirectMappedCache extends Cache {
 		 */
 
 		Map<String, String> addressBits = inputAddressAnalysis(address);
+		boolean flag;
 
 		// In order to find the line we need to convert the bits to hex value
 		searchLine = binaryToHexString(addressBits.get("Line"));
 
 		if (addressBits.get("Tag").equals(dmCache[Integer.parseInt(searchLine)][0])) {
 			Cache.hitCounter++;
-			return true;
+			flag = true;
 		} else {
 			Cache.missCounter++;
 			dmCache[Integer.parseInt(searchLine)][0] = addressBits.get("Tag");
-			Cache.missRate = calculateMissRate(missCounter, hitCounter);
-
-			return false;
+			flag = false;
 		}
+		Cache.missRate = calculateMissRate(missCounter, hitCounter);
+
+		return flag;
 
 	}
 

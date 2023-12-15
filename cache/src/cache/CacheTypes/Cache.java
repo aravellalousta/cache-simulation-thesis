@@ -6,7 +6,7 @@ public class Cache {
 	public static int cacheLines;
 	static DirectMappedCache dm;
 	public static int hitCounter = 0, missCounter = 0;
-	public static String missRate;
+	public static double missRate;
 
 	public Cache(int tag, int offset) {
 		super();
@@ -41,9 +41,10 @@ public class Cache {
 		return decimal;
 	}
 
-	public String calculateMissRate(int miss, int hit) {
-		double missRate = ((double) miss / (miss + hit)) * 100;
-		return String.format("%.2f%%", missRate);
+	public double calculateMissRate(int miss, int hit) {
+		double missRate = 0;
+		missRate = ((double) miss / (miss + hit)) * 100;
+		return missRate;
 	}
 
 }

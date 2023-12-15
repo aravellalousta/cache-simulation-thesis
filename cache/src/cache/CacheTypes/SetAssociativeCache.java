@@ -24,7 +24,7 @@ public class SetAssociativeCache extends Cache {
 		this.set = set;
 	}
 
-	public String getMissRate() {
+	public double getMissRate() {
 		return Cache.missRate;
 	}
 
@@ -76,6 +76,7 @@ public class SetAssociativeCache extends Cache {
 	public boolean searchAddressSA(String address, int kWaysInput, int cacheLines) {
 		Map<String, String> addressBits = inputAddressAnalysis(address);
 		searchSet = addressBits.get("Set");
+		boolean flag = false;
 
 		if (cacheLines == 8) {
 			if (kWaysInput == 2 || kWaysInput == 4) {
@@ -89,41 +90,41 @@ public class SetAssociativeCache extends Cache {
 				if (setIndex == 0) {
 					if (LRU1.refer(addressBits.get("Tag"))) {
 						Cache.hitCounter++;
-						return true;
+						flag = true;
 					} else {
 						Cache.missCounter++;
 						Cache.missRate = calculateMissRate(missCounter, hitCounter);
-						return false;
+						flag = false;
 					}
 
 				} else if (setIndex == 1) {
 					if (LRU2.refer(addressBits.get("Tag"))) {
 						Cache.hitCounter++;
-						return true;
+						flag = true;
 					} else {
 						Cache.missCounter++;
 						Cache.missRate = calculateMissRate(missCounter, hitCounter);
-						return false;
+						flag = false;
 					}
 
 				} else if (setIndex == 2) {
 					if (LRU3.refer(addressBits.get("Tag"))) {
 						Cache.hitCounter++;
-						return true;
+						flag = true;
 					} else {
 						Cache.missCounter++;
 						Cache.missRate = calculateMissRate(missCounter, hitCounter);
-						return false;
+						flag = false;
 					}
 
 				} else if (setIndex == 3) {
 					if (LRU4.refer(addressBits.get("Tag"))) {
 						Cache.hitCounter++;
-						return true;
+						flag = true;
 					} else {
 						Cache.missCounter++;
 						Cache.missRate = calculateMissRate(missCounter, hitCounter);
-						return false;
+						flag = false;
 					}
 
 				}
@@ -137,24 +138,24 @@ public class SetAssociativeCache extends Cache {
 			if (setIndex == 0) {
 				if (LRU1.refer(addressBits.get("Tag"))) {
 					Cache.hitCounter++;
-					return true;
+					flag = true;
 				} else {
 					Cache.missCounter++;
 					Cache.missRate = calculateMissRate(missCounter, hitCounter);
-					return false;
+					flag = false;
 				}
 			} else if (setIndex == 1) {
 				if (LRU2.refer(addressBits.get("Tag"))) {
 					Cache.hitCounter++;
-					return true;
+					flag = true;
 				} else {
 					Cache.missCounter++;
 					Cache.missRate = calculateMissRate(missCounter, hitCounter);
-					return false;
+					flag = false;
 				}
 			}
 		}
-		return false;
+		return flag;
 	}
 
 	public static int returnMemoryBlock(int blockSize, String address) {
