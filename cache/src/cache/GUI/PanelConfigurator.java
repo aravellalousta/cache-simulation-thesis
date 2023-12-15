@@ -606,8 +606,6 @@ public class PanelConfigurator extends InitGUI {
             modelAddress.addColumn("Tag");
             modelAddress.addColumn("Set");
             modelAddress.addColumn("Offset");
-            int cacheSize = saCache.getCacheLines();
-            // saCache.createArraySA(cacheSize);
         }
 
     }

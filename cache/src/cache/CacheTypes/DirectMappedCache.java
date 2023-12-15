@@ -27,32 +27,16 @@ public class DirectMappedCache extends Cache {
 		return this.line;
 	}
 
-	public String[][] getDmCache() {
-		return this.dmCache;
-	}
-
 	public String getTagBits() {
 		return this.tagBits;
-	}
-
-	public void setTagBits(String tagBits) {
-		this.tagBits = tagBits;
 	}
 
 	public String getLineBits() {
 		return this.lineBits;
 	}
 
-	public void setLineBits(String lineBits) {
-		this.lineBits = lineBits;
-	}
-
 	public String getOffsetBits() {
 		return this.offsetBits;
-	}
-
-	public void setOffsetBits(String offsetBits) {
-		this.offsetBits = offsetBits;
 	}
 
 	public String getSearchLine() {

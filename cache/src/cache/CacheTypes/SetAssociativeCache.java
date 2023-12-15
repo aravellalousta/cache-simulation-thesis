@@ -1,18 +1,12 @@
 package cache.CacheTypes;
 
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
+import java.util.*;
 import javax.swing.table.DefaultTableModel;
-
 import cache.LRUSetAssociative;
 
 public class SetAssociativeCache extends Cache {
 
 	private int set;
-	public String[][] saCache;
 	public String tagBits, setBits, offsetBits, searchSet;
 	LRUSetAssociative LRU1 = new LRUSetAssociative();
 	LRUSetAssociative LRU2 = new LRUSetAssociative();
@@ -32,45 +26,16 @@ public class SetAssociativeCache extends Cache {
 		return this.set;
 	}
 
-	public void setSet(int set) {
-		this.set = set;
-	}
-
-	public String[][] getSaCache() {
-		return this.saCache;
-	}
-
-	public void setSaCache(String[][] saCache) {
-		this.saCache = saCache;
-	}
-
 	public String getTagBits() {
 		return this.tagBits;
-	}
-
-	public void setTagBits(String tagBits) {
-		this.tagBits = tagBits;
 	}
 
 	public String getSetBits() {
 		return this.setBits;
 	}
 
-	public void setSetBits(String setBits) {
-		this.setBits = setBits;
-	}
-
 	public String getOffsetBits() {
 		return this.offsetBits;
-	}
-
-	public void setOffsetBits(String offsetBits) {
-		this.offsetBits = offsetBits;
-	}
-
-	public void createArraySA(int cacheLines) {
-		// Cache structure is (tag, data)
-		saCache = new String[cacheLines][2];
 	}
 
 	public boolean searchAddressSA(String address, int kWaysInput, int cacheLines) {
