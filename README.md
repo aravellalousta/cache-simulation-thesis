@@ -31,3 +31,6 @@ TODO
 
 - [@aravellalousta](https://www.github.com/aravellalousta)
 
+## License
+This project is licensed under the MIT License.
+
