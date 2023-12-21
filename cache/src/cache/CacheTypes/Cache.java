@@ -1,5 +1,9 @@
 package cache.CacheTypes;
 
+/*
+ * Parent class
+ */
+
 public class Cache {
 	protected int tag;
 	protected int offset;

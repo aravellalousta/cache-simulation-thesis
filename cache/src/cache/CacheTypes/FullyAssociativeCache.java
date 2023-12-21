@@ -3,6 +3,9 @@ package cache.CacheTypes;
 import java.util.*;
 
 import cache.LRUFullyAssociative;
+/*
+ * Child Class - Fully Associative Cache 
+ */
 
 public class FullyAssociativeCache extends Cache {
 
@@ -11,17 +14,14 @@ public class FullyAssociativeCache extends Cache {
 	LRUFullyAssociative LRU = new LRUFullyAssociative();
 	Map<String, String> bits = new HashMap<>();
 
+	// Constructor
 	public FullyAssociativeCache(int tag, int offset) {
 		super(tag, offset);
 	}
 
+	// Getter Methods
 	public double getMissRate() {
 		return Cache.missRate;
-	}
-
-	public void createArrayFA(int cacheLines) {
-		// Cache structure is (tag, data)
-		faCache = new String[cacheLines][2];
 	}
 
 	public String getTagBits() {
@@ -32,13 +32,20 @@ public class FullyAssociativeCache extends Cache {
 		return this.offsetBits;
 	}
 
+	// Initialize faCache array
+	public void createArrayFA(int cacheLines) {
+		// Cache structure is (tag, data)
+		faCache = new String[cacheLines][2];
+	}
+
+	// Search for a specific address
 	public boolean searchAddressFA(String address, int cacheLines) {
 		/*
 		 * Split the input address String into the Fully Associative Cache structure
 		 * (tag, offset)
 		 * In order to complete the search we need to compare the tag of the input
-		 * address and the tag of all cache lines. The line is indicated
-		 * by the splitting of the address based on the structure above.
+		 * address and the tag of all cache lines. We use LRU as the replacement
+		 * algorithm.
 		 */
 
 		boolean flag;
@@ -59,6 +66,7 @@ public class FullyAssociativeCache extends Cache {
 
 	}
 
+	// Analyze the input address and extract tag and offset bits
 	public Map<String, String> inputAddressAnalysis(String input) {
 
 		int tagLength = super.getTag();
@@ -72,6 +80,7 @@ public class FullyAssociativeCache extends Cache {
 		return bits;
 	}
 
+	// Calculate the memory block based on the address and block size
 	public static int returnMemoryBlock(int blockSize, String address) {
 		int addressInDecimal = binaryToDecimal(address);
 		int memoryBlock = addressInDecimal / blockSize;

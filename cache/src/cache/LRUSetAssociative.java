@@ -1,67 +1,64 @@
 package cache;
 
 import java.util.*;
-import javax.swing.table.DefaultTableModel;
-import cache.CacheTypes.SetAssociativeCache;
 
 public class LRUSetAssociative {
 
-    // store keys of cache
+    private HashSet<String> hashSet;
     private Deque<String> doublyQueue;
     static int row;
 
-    public Deque<String> getDoublyQueue() {
-        return this.doublyQueue;
+    // maximum capacity of set size
+    private int SET_SIZE;
+
+    // Constructor
+    public LRUSetAssociative() {
+        doublyQueue = new LinkedList<>();
+        hashSet = new HashSet<>();
     }
 
-    public void setCACHE_SIZE(int cacheSize) {
-        CACHE_SIZE = cacheSize;
+    // Getter methods
+    public Deque<String> getDoublyQueue() {
+        return this.doublyQueue;
     }
 
     public static int getRow() {
         return row;
     }
 
-    // store references of key in cache
-    private HashSet<String> hashSet;
-
-    // maximum capacity of cache
-    private int CACHE_SIZE;
-
-    public LRUSetAssociative() {
-        doublyQueue = new LinkedList<>();
-        hashSet = new HashSet<>();
+    // Setter methods
+    public void setSetSize(int setSize) {
+        SET_SIZE = setSize;
     }
 
-    /* Refer the page within the LRU cache */
+    // Refer the page within the LRU cache
     public boolean refer(String page) {
         boolean found;
+        // This if statement is used to determine whether the newly added item exists in
+        // the set or not.
+        // If it does, it's moved to the start of the queue.
+        // If it's completely new, the last item get's removed so there's space for the
+        // new item to be added.
+
         if (!hashSet.contains(page)) {
-            if (doublyQueue.size() == CACHE_SIZE) {
+            if (doublyQueue.size() == SET_SIZE) {
                 String last = doublyQueue.removeLast();
                 hashSet.remove(last);
             }
             found = false;
-        } else { /*
-                  * The found page may not be always the last
-                  * element, even if it's an intermediate
-                  * element that needs to be removed and added
-                  * to the start of the Queue
-                  */
+        } else {
+            // The found page may not be always the last element, even if it's an
+            // intermediate element, it needs to be removed and placed to the start of the
+            // queue
             doublyQueue.remove(page);
             found = true;
         }
+
+        // Add the tag bits to the queue and hash set
         doublyQueue.push(page);
         hashSet.add(page);
 
         return found;
-    }
-
-    public void display() {
-        Iterator<String> itr = doublyQueue.iterator();
-        while (itr.hasNext()) {
-            System.out.print(itr.next() + " ");
-        }
     }
 
 }

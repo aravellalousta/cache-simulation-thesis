@@ -48,10 +48,13 @@ public class PanelConfigurator extends InitGUI {
 
     static JPanel indicatorPanel;
 
+    // Adding all user interface elements to each panel, based on the the tab index
+    // The GUI is split into 2 columns. One for configuration and one for displaying
+    // results.
     public static JPanel configurePanel(int index) {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        // Create GridBagConstraints for left column
+        // Creating constraints that determine the placement of the GUI elements
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(5, 5, 5, 5);
@@ -76,6 +79,7 @@ public class PanelConfigurator extends InitGUI {
         manualOption = new JRadioButton("Manual");
         automaticOption = new JRadioButton("Automatic");
 
+        // Tabs 2 & 3 have some extra options
         if (index == 1) {
             replacementAlgorithmLabel = new JLabel("Choose Replacement Algorithm:");
             replacementAlgorithmOption = new JRadioButton("LRU");
@@ -176,57 +180,27 @@ public class PanelConfigurator extends InitGUI {
         constraints.gridy = 7;
         panel.add(resetBtn, constraints);
 
-        // Right Column
         rightColumnLabel = new JLabel("Cache Mapping");
         rightColumnLabel.setFont(customFont);
 
-        constraints.gridx = 4;
-        constraints.gridy = 0;
-        panel.add(rightColumnLabel, constraints);
-
-        // Cache Table
         memoryTableLabel = new JLabel("Memory Address Analysis");
-        constraints.gridx = 4;
-        constraints.gridy = 4;
-        panel.add(memoryTableLabel, constraints);
 
         JTable addressTable = new JTable(modelAddress);
 
         JScrollPane scrollPane = new JScrollPane(addressTable);
         scrollPane.setPreferredSize(new Dimension(200, 200));
 
-        constraints.gridx = 4;
-        constraints.gridy = 5;
-        panel.add(scrollPane, constraints);
-
-        // Ram Table
         cacheTableLabel = new JLabel("Current State of Cache");
-        constraints.gridx = 5;
-        constraints.gridy = 4;
-        panel.add(cacheTableLabel, constraints);
-
         cacheStateTable = new JTable(modelCache);
 
         JScrollPane scrollPaneRam = new JScrollPane(cacheStateTable);
         scrollPaneRam.setPreferredSize(new Dimension(200, 200));
-
-        constraints.gridx = 5;
-        constraints.gridy = 5;
-        panel.add(scrollPaneRam, constraints);
 
         testingAddressLabel = new JLabel("Testing Address:");
         testingAddressLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Set top padding
 
         testingAddress = new JLabel("  ");
         testingAddress.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Set top padding
-
-        constraints.gridx = 4;
-        constraints.gridy = 1;
-        panel.add(testingAddressLabel, constraints);
-
-        constraints.gridx = 5;
-        constraints.gridy = 1;
-        panel.add(testingAddress, constraints);
 
         // Area highlighting hit or miss
         indicatorPanel = new JPanel();
@@ -250,20 +224,50 @@ public class PanelConfigurator extends InitGUI {
         statsLabel.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0)); // Set top padding
         statsLabel.setFont(customFont);
 
+        missRateLabel = new JLabel("Miss Rate");
+        missRate = new JLabel();
+
+        constraints.gridx = 4;
+        constraints.gridy = 0;
+        panel.add(rightColumnLabel, constraints);
+
+        constraints.gridx = 4;
+        constraints.gridy = 4;
+        panel.add(memoryTableLabel, constraints);
+
+        constraints.gridx = 4;
+        constraints.gridy = 5;
+        panel.add(scrollPane, constraints);
+
+        constraints.gridx = 5;
+        constraints.gridy = 4;
+        panel.add(cacheTableLabel, constraints);
+
+        constraints.gridx = 5;
+        constraints.gridy = 5;
+        panel.add(scrollPaneRam, constraints);
+
+        constraints.gridx = 4;
+        constraints.gridy = 1;
+        panel.add(testingAddressLabel, constraints);
+
+        constraints.gridx = 5;
+        constraints.gridy = 1;
+        panel.add(testingAddress, constraints);
+
         constraints.gridx = 4;
         constraints.gridy = 5;
         panel.add(statsLabel, constraints);
 
-        missRateLabel = new JLabel("Miss Rate");
         constraints.gridx = 4;
         constraints.gridy = 6;
         panel.add(missRateLabel, constraints);
 
-        missRate = new JLabel();
         constraints.gridx = 5;
         constraints.gridy = 6;
         panel.add(missRate, constraints);
 
+        // Adding values to selections
         ramSizeOption1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -341,8 +345,10 @@ public class PanelConfigurator extends InitGUI {
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Check if all radio buttons have been selected
                 if (checkAllOptionsSelected(index)) {
                     myRam = new Ram(ramSize);
+                    // Based on the selections, calculate the bit lengths for every type of cache
                     myRam.addressAnalysis(ramSize, index, cacheSize, blockSize, kways);
                     myRam.setBlockSize(blockSize);
 
@@ -352,6 +358,7 @@ public class PanelConfigurator extends InitGUI {
                     int offset = myRam.getOffsetBits();
                     int cacheLines = cacheSize / blockSize;
 
+                    // Create new cache instance based on the bits extracted from the ram analysis
                     if (index != 1 && index != 2 && !resetStatus) {
                         dmCache = new DirectMappedCache(tag, line, offset);
                         dmCache.setCacheLines(cacheLines);
@@ -388,7 +395,8 @@ public class PanelConfigurator extends InitGUI {
     }
 
     public static void onSubmit(int index) {
-
+        // The automatic option uses the AddressGenerator class to generate addresses,
+        // whereas in the manual option the addresses are predifined as an array
         if (automaticOption.isSelected()) {
             addressesArray = generator.generateAddresses();
         } else if (manualOption.isSelected()) {
@@ -405,8 +413,8 @@ public class PanelConfigurator extends InitGUI {
                     { "1011000", "00100100" }
             };
         }
-
-        timer = new Timer(100, new ActionListener() {
+        // Timer running to load a new address every 2 sec
+        timer = new Timer(2000, new ActionListener() {
             public int currentIndex = 0;
             public String addressText;
             int ramSize = myRam.getSize();
@@ -432,6 +440,7 @@ public class PanelConfigurator extends InitGUI {
                 if (timer.isRunning()) {
                     testingAddress.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // Set top padding
 
+                    // Adding the address to the first table, splitting it into it's subsections
                     if (index == 0) {
                         dmCache.inputAddressAnalysis(addressText);
                         String tag = dmCache.getTagBits();
@@ -452,10 +461,10 @@ public class PanelConfigurator extends InitGUI {
 
                         modelAddress.addRow(new Object[] { tag, set, offset });
                     }
-
+                    // Method used to fill the second table
                     fillCacheTableWithData(index, addressText);
                 } else {
-
+                    // Once the timer stops, display the final miss rate
                     if (index == 0) {
                         missRate.setText(Double.toString(dmCache.getMissRate()) + "%");
                     } else if (index == 1) {
@@ -473,6 +482,8 @@ public class PanelConfigurator extends InitGUI {
 
     }
 
+    // When the reset button is clicked, return all options to the initian
+    // unselected state
     public static void onReset(int index) {
         resetStatus = true;
         ramSizeOption1.setEnabled(true);
@@ -542,14 +553,17 @@ public class PanelConfigurator extends InitGUI {
         int row;
         String tagBits;
 
+        // Direct Mapped
         if (index == 0) {
             tagBits = dmCache.getTagBits();
             testingAddress.setText(addressText);
-
+            // If the address is found in the cache, indicate a hit and continue
             if (dmCache.searchAddressDM(addressText)) {
                 indicatorPanel.setBackground(Color.red);
                 hitMissLabel.setText("Hit!");
             } else {
+                // If the address is not found in the cache, indicate a miss and add the tag to
+                // the line specified by the address
                 indicatorPanel.setBackground(Color.green);
                 hitMissLabel.setText("Miss!");
                 memoryBlock = dmCache.returnMemoryBlock(blockSize, addressText);
@@ -558,31 +572,38 @@ public class PanelConfigurator extends InitGUI {
                 cacheStateTable.getModel().setValueAt(tagBits, row, 0);
                 cacheStateTable.getModel().setValueAt("MemBlock[" + memoryBlock + "]", row, 1);
             }
-        } else if (index == 1) {
+        } // Fully Associative
+        else if (index == 1) {
             testingAddress.setText(addressText);
-
             int cacheLines = faCache.getCacheLines();
+
+            // If the address is found in the cache, indicate a hit (the replacement is
+            // handled within the class)
             if (faCache.searchAddressFA(addressText, cacheLines)) {
                 indicatorPanel.setBackground(Color.red);
                 hitMissLabel.setText("Hit!");
             } else {
+                // If the address is not found in the cache, indicate a miss (the replacement is
+                // handled within the class)
                 indicatorPanel.setBackground(Color.green);
                 hitMissLabel.setText("Miss!");
             }
-
+            // Handling replacement algorithm
             LRUFullyAssociative.updateColumnValues(faCache, modelCache);
         } else if (index == 2) {
             testingAddress.setText(addressText);
             int cacheLines = saCache.getCacheLines();
 
+            // If the address is found in the cache, indicate a hit
             if (saCache.searchAddressSA(addressText, kways, cacheLines)) {
                 indicatorPanel.setBackground(Color.red);
                 hitMissLabel.setText("Hit!");
             } else {
+                // If the address is found in the cache, indicate a miss
                 indicatorPanel.setBackground(Color.green);
                 hitMissLabel.setText("Miss!");
             }
-
+            // Handling replacement algorithm
             int set = Integer.parseInt(saCache.getSetBits(), 2);
             saCache.updateColumnValues(modelCache, set);
 

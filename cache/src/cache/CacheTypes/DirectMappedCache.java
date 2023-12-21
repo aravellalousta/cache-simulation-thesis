@@ -6,6 +6,9 @@ import javax.swing.table.DefaultTableModel;
 
 import cache.Ram;
 
+/*
+ * Child Class - Direct Mapped Cache 
+ */
 public class DirectMappedCache extends Cache {
 
 	public static int line;
@@ -14,11 +17,13 @@ public class DirectMappedCache extends Cache {
 	Ram myRam;
 	static String searchLine;
 
+	// Constructor
 	public DirectMappedCache(int tag, int line, int offset) {
 		super(tag, offset);
 		this.line = line;
 	}
 
+	// Getter methods
 	public double getMissRate() {
 		return Cache.missRate;
 	}
@@ -43,11 +48,13 @@ public class DirectMappedCache extends Cache {
 		return this.searchLine;
 	}
 
+	// Initialize dmCache array
 	public void createArrayDM(int cacheLines) {
 		// Cache structure is (tag, data)
 		dmCache = new String[cacheLines][2];
 	}
 
+	// Search for a specific address in the cache
 	public boolean searchAddressDM(String address) {
 		/*
 		 * Split the input address String into the Direct Mapped Cache structure
@@ -77,12 +84,14 @@ public class DirectMappedCache extends Cache {
 
 	}
 
+	// Calculate the memory block based on the address and block size
 	public int returnMemoryBlock(int blockSize, String address) {
 		int addressInDecimal = binaryToDecimal(address);
 		int memoryBlock = addressInDecimal / blockSize;
 		return memoryBlock;
 	}
 
+	// Analyze the input address and extract tag, line, and offset bits
 	public Map<String, String> inputAddressAnalysis(String input) {
 
 		Map<String, String> bits = new HashMap<>();

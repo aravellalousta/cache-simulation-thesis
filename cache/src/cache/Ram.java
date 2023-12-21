@@ -6,10 +6,12 @@ public class Ram {
     public int size, addressBits, offsetBits, cacheLines, lineBits, tagBits, numOfSets, setBits, blockSize;
     private String searchAdd;
 
+    // Constructor
     public Ram(int size) {
         this.size = size;
     }
 
+    // Getter Methods
     public int getSize() {
         return this.size;
     }
@@ -34,6 +36,7 @@ public class Ram {
         return this.setBits;
     }
 
+    // Setter Methods
     public void setBlockSize(int blockSize) {
         this.blockSize = blockSize;
     }

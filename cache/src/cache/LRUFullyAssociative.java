@@ -1,64 +1,64 @@
 package cache;
 
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import cache.CacheTypes.*;
 import cache.CacheTypes.FullyAssociativeCache;
 
 public class LRUFullyAssociative {
 
     // store keys of cache
     private static Deque<String> doublyQueue;
-    static int row;
-
-    public Deque<String> getDoublyQueue() {
-        return LRUFullyAssociative.doublyQueue;
-    }
-
-    public void setCACHE_SIZE(int cacheSize) {
-        CACHE_SIZE = cacheSize;
-    }
-
-    public static int getRow() {
-        return row;
-    }
-
-    // store references of key in cache
     private HashSet<String> hashSet;
-
-    // maximum capacity of cache
     private int CACHE_SIZE;
+    static int row;
 
     public LRUFullyAssociative() {
         doublyQueue = new LinkedList<>();
         hashSet = new HashSet<>();
     }
 
-    /* Refer the page within the LRU cache */
-    public boolean refer(String page) {
+    // Getter Methods
+    public Deque<String> getDoublyQueue() {
+        return LRUFullyAssociative.doublyQueue;
+    }
+
+    public static int getRow() {
+        return row;
+    }
+
+    // Setter methods
+    public void setCACHE_SIZE(int cacheSize) {
+        CACHE_SIZE = cacheSize;
+    }
+
+    /* Refer the tag within the LRU cache */
+    public boolean refer(String tagBits) {
         boolean found;
-        if (!hashSet.contains(page)) {
+
+        // This if statement is used to determine whether the newly added item exists in
+        // the set or not.
+        // If it does, it's moved to the start of the queue.
+        // If it's completely new, the last item get's removed so there's space for the
+        // new item to be added.
+
+        if (!hashSet.contains(tagBits)) {
             if (doublyQueue.size() == CACHE_SIZE) {
                 String last = doublyQueue.removeLast();
                 hashSet.remove(last);
             }
             found = false;
-        } else { /*
-                  * The found page may not be always the last
-                  * element, even if it's an intermediate
-                  * element that needs to be removed and added
-                  * to the start of the Queue
-                  */
-            doublyQueue.remove(page);
+        } else {
+            // The found tag may not be always the last element, even if it's an
+            // intermediate element, it needs to be removed and added to the start of the
+            // queue
+            doublyQueue.remove(tagBits);
             found = true;
         }
-        doublyQueue.push(page);
-        hashSet.add(page);
+
+        // Add the tag bits to the queue and hash set
+        doublyQueue.push(tagBits);
+        hashSet.add(tagBits);
         return found;
     }
 
