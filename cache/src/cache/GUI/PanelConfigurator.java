@@ -478,8 +478,7 @@ public class PanelConfigurator extends InitGUI {
         });
 
         timer.start();
-        refreshRightPanel(myRam, index);
-
+        initializeRightPanel(myRam, index);
     }
 
     // When the reset button is clicked, return all options to the initian
@@ -529,7 +528,6 @@ public class PanelConfigurator extends InitGUI {
         Cache.missCounter = 0;
 
         resetStatus = false;
-
     }
 
     public static boolean checkAllOptionsSelected(int index) {
@@ -610,7 +608,7 @@ public class PanelConfigurator extends InitGUI {
         }
     }
 
-    public static void refreshRightPanel(Ram myRam, int tabIndex) {
+    public static void initializeRightPanel(Ram myRam, int tabIndex) {
         if (tabIndex == 0) {
             modelAddress.addColumn("Tag");
             modelAddress.addColumn("Line");
