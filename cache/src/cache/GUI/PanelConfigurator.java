@@ -478,7 +478,7 @@ public class PanelConfigurator extends InitGUI {
         });
 
         timer.start();
-        initializeRightPanel(myRam, index);
+        initializeRightPanel(index);
     }
 
     // When the reset button is clicked, return all options to the initian
@@ -550,6 +550,8 @@ public class PanelConfigurator extends InitGUI {
         int memoryBlock;
         int row;
         String tagBits;
+        Color hitColor = new Color(134, 222, 183);
+        Color missColor = new Color(8, 178, 227);
 
         // Direct Mapped
         if (index == 0) {
@@ -557,12 +559,12 @@ public class PanelConfigurator extends InitGUI {
             testingAddress.setText(addressText);
             // If the address is found in the cache, indicate a hit and continue
             if (dmCache.searchAddressDM(addressText)) {
-                indicatorPanel.setBackground(Color.red);
+                indicatorPanel.setBackground(hitColor);
                 hitMissLabel.setText("Hit!");
             } else {
                 // If the address is not found in the cache, indicate a miss and add the tag to
                 // the line specified by the address
-                indicatorPanel.setBackground(Color.green);
+                indicatorPanel.setBackground(missColor);
                 hitMissLabel.setText("Miss!");
                 memoryBlock = dmCache.returnMemoryBlock(blockSize, addressText);
                 row = Integer.parseInt(dmCache.getSearchLine());
@@ -578,12 +580,12 @@ public class PanelConfigurator extends InitGUI {
             // If the address is found in the cache, indicate a hit (the replacement is
             // handled within the class)
             if (faCache.searchAddressFA(addressText, cacheLines)) {
-                indicatorPanel.setBackground(Color.red);
+                indicatorPanel.setBackground(hitColor);
                 hitMissLabel.setText("Hit!");
             } else {
                 // If the address is not found in the cache, indicate a miss (the replacement is
                 // handled within the class)
-                indicatorPanel.setBackground(Color.green);
+                indicatorPanel.setBackground(missColor);
                 hitMissLabel.setText("Miss!");
             }
             // Handling replacement algorithm
@@ -594,11 +596,11 @@ public class PanelConfigurator extends InitGUI {
 
             // If the address is found in the cache, indicate a hit
             if (saCache.searchAddressSA(addressText, kways, cacheLines)) {
-                indicatorPanel.setBackground(Color.red);
+                indicatorPanel.setBackground(hitColor);
                 hitMissLabel.setText("Hit!");
             } else {
                 // If the address is found in the cache, indicate a miss
-                indicatorPanel.setBackground(Color.green);
+                indicatorPanel.setBackground(missColor);
                 hitMissLabel.setText("Miss!");
             }
             // Handling replacement algorithm
@@ -608,7 +610,7 @@ public class PanelConfigurator extends InitGUI {
         }
     }
 
-    public static void initializeRightPanel(Ram myRam, int tabIndex) {
+    public static void initializeRightPanel(int tabIndex) {
         if (tabIndex == 0) {
             modelAddress.addColumn("Tag");
             modelAddress.addColumn("Line");

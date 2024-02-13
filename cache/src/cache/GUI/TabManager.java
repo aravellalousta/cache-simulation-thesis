@@ -30,9 +30,9 @@ public class TabManager extends InitGUI {
 
     // Create and configure the tabs
     public static JTabbedPane createTabs() {
-        directPanel = createTab("Direct Mapped Cache");
-        fullyPanel = createTab("Fully Associative Cache");
-        setPanel = createTab("Set Associative Cache");
+        directPanel = createTab();
+        fullyPanel = createTab();
+        setPanel = createTab();
 
         tabbedPane.addTab("Direct Mapped Cache", directPanel);
         tabbedPane.addTab("Fully Associative Cache", fullyPanel);
@@ -57,7 +57,7 @@ public class TabManager extends InitGUI {
         return null;
     }
 
-    private static JPanel createTab(String title) {
+    private static JPanel createTab() {
         return new JPanel(new GridLayout(1, 2));
     }
 
