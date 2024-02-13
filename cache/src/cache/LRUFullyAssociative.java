@@ -62,14 +62,6 @@ public class LRUFullyAssociative {
         return found;
     }
 
-    // display contents of cache
-    public void display() {
-        Iterator<String> itr = doublyQueue.iterator();
-        while (itr.hasNext()) {
-            System.out.print(itr.next() + " ");
-        }
-    }
-
     public static void updateColumnValues(FullyAssociativeCache faCache,
             DefaultTableModel tableModel) {
         int rowCount = tableModel.getRowCount();
