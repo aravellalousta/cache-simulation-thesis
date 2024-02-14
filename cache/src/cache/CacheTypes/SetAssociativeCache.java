@@ -50,7 +50,8 @@ public class SetAssociativeCache extends Cache {
 	 */
 	public boolean searchAddressSA(String address, int kWaysInput, int cacheLines) {
 		/*
-		 * Split the input address String into the Direct Mapped Cache structure
+		 * Split the input address String into the Set Associative Mapped Cache
+		 * structure
 		 * (tag, set, offset)
 		 * In order to complete the search we need to compare the tag of the input
 		 * address and all the tags of a specific set in the cache.
@@ -152,7 +153,6 @@ public class SetAssociativeCache extends Cache {
 
 	// Analyze the input address and extract tag, set, and offset bits
 	public Map<String, String> inputAddressAnalysis(String input) {
-
 		Map<String, String> bits = new HashMap<>();
 
 		int tagLength = super.getTag();
