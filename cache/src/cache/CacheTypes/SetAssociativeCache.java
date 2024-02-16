@@ -77,9 +77,9 @@ public class SetAssociativeCache extends Cache {
 						flag = true;
 					} else {
 						Cache.missCounter++;
-						Cache.missRate = calculateMissRate(missCounter, hitCounter);
 						flag = false;
 					}
+					Cache.missRate = calculateMissRate(missCounter, hitCounter);
 
 				} else if (setIndex == 1) {
 					if (LRU2.refer(addressBits.get("Tag"))) {
@@ -87,9 +87,9 @@ public class SetAssociativeCache extends Cache {
 						flag = true;
 					} else {
 						Cache.missCounter++;
-						Cache.missRate = calculateMissRate(missCounter, hitCounter);
 						flag = false;
 					}
+					Cache.missRate = calculateMissRate(missCounter, hitCounter);
 
 				} else if (setIndex == 2) {
 					if (LRU3.refer(addressBits.get("Tag"))) {
@@ -97,9 +97,9 @@ public class SetAssociativeCache extends Cache {
 						flag = true;
 					} else {
 						Cache.missCounter++;
-						Cache.missRate = calculateMissRate(missCounter, hitCounter);
 						flag = false;
 					}
+					Cache.missRate = calculateMissRate(missCounter, hitCounter);
 
 				} else if (setIndex == 3) {
 					if (LRU4.refer(addressBits.get("Tag"))) {
@@ -107,9 +107,9 @@ public class SetAssociativeCache extends Cache {
 						flag = true;
 					} else {
 						Cache.missCounter++;
-						Cache.missRate = calculateMissRate(missCounter, hitCounter);
 						flag = false;
 					}
+					Cache.missRate = calculateMissRate(missCounter, hitCounter);
 
 				}
 
@@ -127,20 +127,21 @@ public class SetAssociativeCache extends Cache {
 					flag = true;
 				} else {
 					Cache.missCounter++;
-					Cache.missRate = calculateMissRate(missCounter, hitCounter);
 					flag = false;
 				}
+				Cache.missRate = calculateMissRate(missCounter, hitCounter);
 			} else if (setIndex == 1) {
 				if (LRU2.refer(addressBits.get("Tag"))) {
 					Cache.hitCounter++;
 					flag = true;
 				} else {
 					Cache.missCounter++;
-					Cache.missRate = calculateMissRate(missCounter, hitCounter);
 					flag = false;
 				}
+				Cache.missRate = calculateMissRate(missCounter, hitCounter);
 			}
 		}
+
 		return flag;
 	}
 
