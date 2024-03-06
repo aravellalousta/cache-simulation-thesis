@@ -48,9 +48,6 @@ public class Cache {
 	public double calculateMissRate(int miss, int hit) {
 		double missRate = 0;
 		missRate = ((double) miss / (miss + hit)) * 100;
-		System.out.println("Here's the issue? ::: " + missRate);
-		System.out.println("Miss counter: " + miss);
-		System.out.println("Hit counter: " + hit);
 		return missRate;
 	}
 
