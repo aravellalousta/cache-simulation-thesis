@@ -17,15 +17,27 @@ As a student in the Applied Informatics - Computer Science program, this project
 
 
 ## Screenshots
+- Direct Mapped Cache
+  
+![screenshot](images/direct-mapped-simulation.png)
 
-TODO
+
+- Fully Associative Cache
+  
+![screenshot](images/fully-associative-simulation.png)
+
+
+- Set Associative Cache
+  
+![screenshot](images/set-associative-simulation.png)
 
 
 ## Configuration
 - Adjust simulation parameters, such as RAM size, cache size, block size, kWays, and associativity, in the GUI tab of each cache type.
+
 ## Installation
 
-TODO
+Download and run Cache Simulation - ics20032.jar
     
 ## Authors
 
